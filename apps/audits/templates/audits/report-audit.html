@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Audit Report</title>
+    <link rel="stylesheet" href="{% static 'css/audit_report_foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/audit_report.css' %}">
+    <link rel="stylesheet" href="{% static 'foundation-icons/foundation-icons.css' %}">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .google-visualization-legend text {
+            word-break: break-word !important;
+        }
+
+        .chart-container {
+            /* width: 100%; */
+            height: 100%;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .closebtn {
+            font-size: 35px;
+            color: #cc4b37;
+            float: right;
+            cursor: pointer;
+        }
+
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        .mySlides {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #bbb;
+            margin: 0 2px;
+        }
+
+        .active,
+        .dot:hover {
+            background-color: #717171;
+        }
+
+        .fade {
+            animation: fade 1s;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .7
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .bordered {
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+
+        .custom-container {
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas-content" data-off-canvas-content>
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="menu-text">Custom Report</li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="menu">
+                    <li><select disabled>
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                            <option>Daily</option>
+                        </select></li>
+                    <li><button class="button small secondary" disabled type="button">Add Email</button></li>
+                    <li><a href="#" class="button small" disabled>Automate</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="grid fixed custom-container">
+                <div class="grid-x header">
+                    <div class="cell small-7"></div>
+                    <div class="cell small-5">
+                        <ul class="menu vertical text-right">
+                            <li>{{ company_name }}</li>
+                            <li>{{ company_email }}</li>
+                            <li>{{ company_phone }}</li>
+                            <li>{{ company_website }}</li>
+                            <li>{{ audit_type }} Audit <span class="audit_date">{{ audit_date }}</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="building-level">
+                    <h2 class="company-info">{{ company_display_name }}</h2>
+                </div>
+
+                <div class="grid-x grid-margin-x">
+                    <div class="cell small-5">
+                        <div class="grid-x small-up-1 diversion-percentage">
+                            <div class="cell">
+                                <h3>{{ chart_title }}</h3>
+                            </div>
+                            <div class="cell">
+                                <h2>{{ diversion_percentage }}%</h2>
+                                <p class="lead">Diversion Percentage</p>
+                            </div>
+                            <div class="cell graph">
+                                <div class="chart-container">
+                                    <div id="piechart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cell small-7" style="margin-top: 10rem;">
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th>Commodities</th>
+                                    <th>Total Weight</th>
+                                    {% if audit_type == "Verification" %}
+                                    <th>Contamination Weight</th>
+                                    {% endif %}
+                                    <th>Percentage</th>
+                                    <th>Images</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in table_data %}
+                                <tr class="{% if forloop.last %}bordered{% endif %}">
+                                    <td>{{ row.name }}</td>
+                                    <td>{{ row.weight }}</td>
+                                    {% if audit_type == "Verification" %}
+                                    <td>{{row.contamination_weight}}</td>
+                                    {% endif %}
+                                    <td>{{ row.percent }}</td>
+                                    <td>
+                                        {% if row.images %}
+                                        <a href="{{ row.images }}" target="_blank">View</a>
+                                        {% else %}
+                                        NA
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="expandedImageContainer" style="display: none;">
+        <span class="closebtn" onclick="closeExpandedImage()">&times;</span>
+        <div class="slideshow-container" id="slideshowContainer"></div>
+        <div style="text-align:center" id="dotsContainer"></div>
+        <div id="imgNameCaption"></div>
+    </div>
+
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'js/vendor/foundation.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            const chartdata = {{ chartdata_json | safe }};
+            const data = new google.visualization.DataTable();
+            data.addColumn("string", "Label");
+            data.addColumn("number", "Value");
+            chartdata.forEach(item => data.addRow([item[0], parseFloat(item[1])]));
+            const options = {
+                width: 550,
+                height: 400,
+                title: "Contamination Summary",
+                sliceVisibilityThreshold: 0,
+                legend: {
+                    position: "right",
+                    alignment: "center"
+                },
+                chartArea: {
+                    left: 50,
+                    // top: 80,
+                    width: '90%', // Reduce chart width to make space for the legend
+                    height: '75%'
+                },
+            };
+            const chart = new google.visualization.PieChart(document.getElementById("piechart"));
+            chart.draw(data, options);
+        }
+    </script>
+</body>
+
+</html>

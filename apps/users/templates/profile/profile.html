@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Company Dashboard{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='profile' %}
+
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Company Dashboard' %}
+
+        <div class="dashboard-content">
+            <!-- Dashboard Full Table Begin-->
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title"
+                                            style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Company
+                                            Dashboard</p>
+                                    </div>
+                                    <div class="cell">
+                                        <input type="search" id="profile-table-search" placeholder="Search" class="pill"
+                                            style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack" id="profile-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="30">
+                                                <input id="" type="checkbox" class="checkbox"></label>
+                                            </th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Role</th>
+                                            <th>Company Name</th>
+                                            <th>Address</th>
+                                            <th>Company Logo</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>{{ user.first_name }}</td>
+                                                <td>{{ user.last_name }}</td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.phone }}</td>
+                                                <td>{{ user.user_role.last.role.name }}</td>
+                                                <td>{{ user.company_name }}</td>
+                                                <td>{{ user.client.company_address }}</td>
+                                                <td>
+                                                    {% if user.client.company_logo %}
+                                                        <img src="{{ user.client.company_logo.url }}" width="60">
+                                                    {% else %}
+                                                        --
+                                                    {% endif %}
+                                                </td>
+                                                <td><a href="{% url 'profile_edit_form' user.id %}">Edit</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dashboard Full Table End-->
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile/profile_dashboard.js' %}"></script>
+{% endblock %}

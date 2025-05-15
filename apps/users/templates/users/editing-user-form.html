@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='User Dashboard' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                        <div class="callout">
+                            <form id="edit-user-form" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                            <label>First Name
+                                <input type="text" name="first_name" value="{{ user.first_name }}" required>
+                            </label>
+                            <label>Last Name
+                                <input type="text" name="last_name" value="{{ user.last_name }}" required>
+                            </label>
+                            <label>Email
+                                <input type="email" name="email" value="{{ user.email }}" required>
+                            </label>
+                            <label>Phone
+                                <input type="text" name="phone" value="{{ user.phone }}" required>
+                            </label>
+                            <label>Role
+                                <select name="role" required>
+                                <option value="">Select Role</option>
+                                {% for role in roles %}
+                                    <option value="{{role.id}}" {% if role.id == user_role.role.id %}selected{% endif %}>{{role.name}}</option>
+                                {% endfor %}
+                                </select>
+                            </label>
+                            <label>Status
+                                <select name="status" required>
+                                <option value="">Select Status</option>
+                                <option value="active" {% if user.is_active %}selected{% endif %}>Active</option>
+                                <option value="inactive" {% if not user.is_active %}selected{% endif %}>Inactive</option>
+                                </select>
+                            </label>
+                            <label>Profile Picture
+                                <input type="file" name="profile_pic">
+                            </label>
+
+                            <button type="submit" class="button">Save</button>
+                            <div id="success-msg" class="callout success" style="display:none;">User updated!</div>
+                            <div id="error-msg" class="callout alert" style="display:none;"></div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/edit_user.js' %}"></script>
+{% endblock %}

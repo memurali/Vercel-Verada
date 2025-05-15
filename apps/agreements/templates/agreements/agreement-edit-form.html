@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Agreement{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+{% include 'includes/sidebar_router.html' with active_page='agreement_dashboard' %}
+<div class="grid-x">
+  <div class="cell large-10 large-offset-2">
+    {% include 'partials/header_authenticated.html' with page_name='Waste Generator and Collector' %}
+
+    <div class="dashboard-content">
+      <div class="grid-container">
+        <div class="grid-x">
+          <div class="cell large-7 grid-center">
+            <div class="callout">
+                <form id="agreement-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="agreement_id" value="{{ agreemnt.id }}">
+                    <div class="grid-x">
+                      <div class="cell">
+                        <label>Waste Generator</label>
+                        <select name="waste_generator" required>
+                          <option value="">Select Waste Generator</option>
+                          {% for g in generators %}
+                            <option value="{{ g.id }}" {% if g.id == agreemnt.generator.id %} selected {% endif %}>{{ g.waste_source.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  
+                      <div class="cell">
+                        <label>Waste Collector</label>
+                        <select name="waste_collector" required>
+                          <option value="">Select Waste Collector</option>
+                          {% for c in collectors %}
+                            <option value="{{ c.id }}" {% if c.id == agreemnt.collector.id%} selected {% endif %}>{{ c.name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  
+                      <div class="cell">
+                        <label>Agreement Upload</label>
+                        <input type="file" name="agreement_file" accept=".pdf,.doc,.docx">
+                      </div>
+                    </div>
+                  
+                    <div class="grid-x">
+                      <div class="cell">
+                        <div class="button-group expanded">
+                          <button type="submit" class="button pill">Submit</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  
+                <div id="error-box" class="callout alert" style="display:none;"></div>
+                <div id="success-box" class="callout success" style="display:none;"></div>             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/agreement_edit_form.js' %}"></script>
+{% endblock %}

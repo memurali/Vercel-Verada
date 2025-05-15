@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Commodity Dashboard{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='commodities' %}
+    <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Commodity Dashboard' %}
+
+        <div class="dashboard-content">
+        <div class="table-container">
+            <div class="callout">
+            <div class="dashboard-callout">
+                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                <div class="cell">
+                    <span class="sub-title">Commodities</span>
+                </div>
+                <div class="cell">
+                  <form method="get" id="commodity-search-form">
+                    <input
+                      type="search"
+                      name="q"
+                      id="commodity-search-input"
+                      placeholder="Search"
+                      class="pill"
+                      style="float: right;"
+                      value="{{ request.GET.q|default_if_none:'' }}"
+                    >
+                  </form>                  
+                </div>
+                </div>
+            </div>
+
+            <table class="stack" id="commodity-dashboard-table">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="checkbox"></th>
+                    <th>Commodity ID</th>
+                    <th>Commodity Name</th>
+                    <th>Commodity Group</th>
+                    <th>Sub Commodity</th>
+                    <th>Commodity Unit</th>
+                    <th>Upload Document</th>
+                    <th>Active Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for commodity in commodities %}
+                <tr>
+                    <td><input type="checkbox" class="checkbox"></td>
+                    <td><a href="{% url 'core:edit_commodity' commodity.id %}">C-{{ commodity.id }}</a></td>
+                    <td>{{ commodity.name }}</td>
+                    <td>{{ commodity.group.name }}</td>
+                    <td>{% if commodity.sub_commodity %} {{ commodity.sub_commodity }} {% else %} - {% endif %}</td>
+                    <td>{{ commodity.measuring_unit.name }}</td>
+                    {% if commodity_doc %}
+                      <td><a href="{{ commodity.commodity_doc.url }}" target="_blank">{{ commodity.commodity_doc }}</a></td>
+                    {% else %}
+                      <td><a href="" target="_blank">-</a></td>
+                    {% endif %}
+                    <td>{% if commodity.status == 'A' %}Active{% else %}Inactive{% endif %}</td>
+                </tr>
+                {% empty %}
+                  <tr>
+                      <td colspan="8" class="text-center">No records found</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="reveal" id="commodityModal" data-reveal>
+    <div class="grid-container">
+      <div class="grid-x">
+        <div class="cell large-7 grid-center">
+          <form id="commodity-doc-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="grid-x">
+              <div class="cell">
+                <label>Upload Document</label>
+                <input type="file" name="supporting_document" id="supporting_document" required>
+              </div>
+              <div class="cell">
+                <a href="#" download id="download-link" style="display:none;">Download</a>
+              </div>
+            </div>
+  
+            <div class="grid-x">
+              <div class="cell">
+                <div class="button-group expanded">
+                  <button type="submit" class="button pill">Submit</button>
+                </div>
+                <div class="callout success" id="doc-success" style="display:none;">File uploaded!</div>
+                <div class="callout alert" id="doc-error" style="display:none;"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/master_commodities_dashboard.js' %}"></script>
+<script src="{% static 'js/upload_commodities.js' %}"></script>
+{% endblock %}

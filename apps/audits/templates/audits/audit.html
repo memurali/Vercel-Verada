@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Audit Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="audit" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Audit Dashboard" %}
+            <div class="dashboard-content">
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">
+                                                Audit Status</span>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" id="scheduled-audit-search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack" id="scheduled-audits">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="checkbox"></th>
+                                                <th>Audit Date</th>
+                                                <th>Auditor Name</th>
+                                                <th>Location</th>
+                                                <th>Address</th>
+                                                <th>Audit Type</th>
+                                                <th>Status</th>
+                                                <th>Audit form</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for audit in upcoming_audits %}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>{{ audit.scheduled_date }}</td>
+                                                <td>{{ audit.officer.user.first_name }}</td>
+                                                <td>{{ audit.location.name }}</td>
+                                                <td>{{ audit.destination.address }}</td>
+                                                <td>{{ audit.get_audit_type_display }}</td>
+                                                <td>{{ audit.get_status_display }}</td>
+                                                <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-page"></i></a></td>
+                                                <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-pencil"></i></a></td>
+                                            </tr>
+                                            {% empty %}
+                                              <tr>
+                                                <td colspan="12" class="text-center">No audits available.</td>
+                                              </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Verification Audit
+                                                Status</span>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" id="verification-audit-search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack" id="verification-audits">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="checkbox"></th>
+                                                <th>Audit Date</th>
+                                                <th>Auditor Name</th>
+                                                <th>Location</th>
+                                                <th>Address</th>
+                                                <td>Commodity Name</td>
+                                                <td>Total Weight</td>
+                                                <td>Contamination Weight</td>
+                                                <th>Status</th>
+                                                <th>Report</th>
+                                                <th>Edit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for audit in verification_audits %}
+                                                {% if audit.audit_commoditi.all %}
+                                                    {% for commodity in audit.audit_commoditi.all %}
+                                                        <tr>
+                                                            <td><input type="checkbox" class="checkbox" value="{{ audit.id }}"></td>
+                                                            <td>{{ audit.scheduled_date }}</td>
+                                                            <td>{{ audit.officer.name }}</td>
+                                                            <td>{{ audit.location.name }}</td>
+                                                            <td>{{ audit.destination.address }}</td>
+                                                            <td>{{ commodity.commodity_group.name }}</td>
+                                                            <td>{{ commodity.weight }} </td>
+                                                            <td>{{ commodity.contamination_weight|default:"0" }}</td>
+                                                            <td>{{audit.get_status_display}}</td>
+                                                            <td><a href="{% url 'audits:audit_report' audit.id %}"><i class="fi-page"></i></a></td>
+                                                            <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-pencil"></i></a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="checkbox" value="{{ audit.id }}"></td>
+                                                        <td>{{ audit.scheduled_date }}</td>
+                                                        <td>{{ audit.officer.name }}</td>
+                                                        <td>{{ audit.location.name }}</td>
+                                                        <td>{{ audit.destination.address }}</td>
+                                                        <td colspan="3" class="text-center">Waiver Applied</td>
+                                                        <td>{{ audit.get_status_display }}</td>
+                                                        <td><a href="{% url 'audits:audit_report' audit.id %}"><i class="fi-page"></i></a></td>
+                                                        <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-pencil"></i></a></td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% empty %}
+                                              <tr>
+                                                <td colspan="12" class="text-center">No audits available.</td>
+                                              </tr>
+                                            {% endfor %}
+                                          </tbody>                                          
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Inital Audit
+                                                Status</span>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" id="inital-audit-search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack" id="inital-audits">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox" class="checkbox"></th>
+                                                <th>Audit Date</th>
+                                                <th>Auditor Name</th>
+                                                <th>Location</th>
+                                                <th>Address</th>
+                                                <td>Commodity Name</td>
+                                                <td>Total Weight</td>
+                                                <th>Status</th>
+                                                <th>Report</th>
+                                                <th>Edit</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for audit in inital_audits %}
+                                                {% if audit.audit_commoditi.all %}
+                                                    {% for commodity in audit.audit_commoditi.all %}
+                                                        <tr>
+                                                            <td><input type="checkbox" class="checkbox" value="{{ audit.id }}"></td>
+                                                            <td>{{ audit.scheduled_date }}</td>
+                                                            <td>{{ audit.officer.name }}</td>
+                                                            <td>{{ audit.location.name }}</td>
+                                                            <td>{{ audit.destination.address }}</td>
+                                                            <td>{{ commodity.commodity_group.name|default:"-" }}</td>
+                                                            <td>{{ commodity.weight|default:"0" }} </td>
+                                                            <td>{{audit.get_status_display}}</td>
+                                                            <td><a href="{% url 'audits:audit_report' audit.id %}"><i class="fi-page"></i></a></td>
+                                                            <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-pencil"></i></a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                      <td><input type="checkbox" class="checkbox" value="{{ audit.id }}"></td>
+                                                      <td>{{ audit.scheduled_date }}</td>
+                                                      <td>{{ audit.officer.name }}</td>
+                                                      <td>{{ audit.location.name }}</td>
+                                                      <td>{{ audit.destination.address }}</td>
+                                                      <td colspan="2" class="text-center">Waiver Applied</td>
+                                                      <td>{{ audit.get_status_display }}</td>
+                                                      <td><a href="{% url 'audits:audit_report' audit.id %}"><i class="fi-page"></i></a></td>
+                                                      <td><a href="{% url 'audits:add_audit' audit.id %}"><i class="fi-pencil"></i></a></td>
+                                                    </tr>
+                                                  {% endif %}
+                                            {% empty %}
+                                              <tr>
+                                                <td colspan="12" class="text-center">No audits available.</td>
+                                              </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/audit_dashboard.js' %}"></script>
+{% endblock %}

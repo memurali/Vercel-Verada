@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Schedule Audit{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/schedule_audit_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+  {% include 'includes/sidebar_router.html' with active_page='audit' %}
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+      {% include 'partials/header_authenticated.html' with page_name='Schedule Audit' %}
+
+      <div class="dashboard-content">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="cell large-7 grid-center">
+              <div class="callout">
+                <form id="audit-schedule-form" method="POST">
+                  {% csrf_token %}
+                    <div class="cell">
+                      <label>Auditor</label>
+                      <select name="auditor" class="select2" required>
+                        <option value="">Select Auditor</option>
+                        {% for auditor in auditors %}
+                        <option value="{{ auditor.id }}">{{ auditor.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="cell">
+                      <label>Date of Audit</label>
+                      <div class="grid-x grid-margin-x">
+                        <div class="cell medium-6">
+                          <label>Start Date</label>
+                          <input type="date" name="start_date" id="st_date" required>
+                        </div>
+                        <div class="cell medium-6">
+                          <label>End Date</label>
+                          <input type="date" name="end_date" id="et_date" required>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="cell">
+                      <label>Audit Location</label>
+                      <select name="audit_location" class="select2 audit-location-checks" multiple="multiple" required>
+                        {% for location in locations %}
+                          <option value="{{ location.id }}">{{ location.name }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>        
+
+                    <div class="cell">
+                      <label>Address</label>
+                      <select id="audit-address-dropdown" class="select2" name="audit_address" required>
+                        <option value="">Select Address</option>
+                      </select>
+                    </div>
+
+                    <div class="cell">
+                      <label>Audit Type</label>
+                      <select name="audit_type" class="select2" required>
+                          <option value="">Select Audit</option>
+                          <option value="verification">verification Audit</option>
+                          <option value="initial">Initial Audit</option>
+                      </select>
+                    </div>
+
+                    <div class="cell">
+                      <label>Notes</label>
+                      <textarea id="note" name="note" rows="5" cols="40" placeholder="Write your note here..."></textarea>
+                    </div>
+
+                    <div class="cell">
+                      <div class="button-group expanded">
+                        <button type="submit" class="button pill">Submit</button>
+                      </div>
+                    </div>
+
+                    <div id="success-box" class="callout success" style="display:none;"></div>
+                    <div id="error-box" class="callout alert" style="display:none;"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("st_date").value = today;
+      document.getElementById("et_date").value = today;
+  });
+</script>
+
+<script src="{% static 'js/schedule_audit_form.js' %}"></script>
+{% endblock %}

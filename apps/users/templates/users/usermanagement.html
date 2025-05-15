@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}User Management{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='User Dashboard' %}
+
+      <div class="dashboard-content">
+        <div class="table-container">
+          <div class="grid-x">
+            <div class="cell large-12">
+              <div class="callout">
+                <div class="dashboard-callout">
+                  <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                    <div class="cell">
+                      <span class="sub-title">Users</span>
+                    </div>
+                    <div class="cell">
+                      <form id="user-search-form" method="get">
+                        <input
+                          type="search"
+                          name="q"
+                          id="user-search-input"
+                          placeholder="Search"
+                          class="pill"
+                          style="width: 50%; float: right;"
+                        >
+                      </form>                      
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table">
+                  <table class="stack" id="usermanagement-table">
+                    <thead>
+                      <tr>
+                        <th><input type="checkbox" class="checkbox"></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Profile Pic</th>
+                        <th>Created Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for user in users %}
+                      <tr data-user-id="{{ user.id }}">
+                        <td><input type="checkbox" class="checkbox"></td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.phone }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.status }}</td>
+                        <td>{% if user.profile_photo_url %}<img src="{{ user.profile_photo_url }}" width="40">{% else %}--{% endif %}</td>
+                        <td>{{ user.date_joined|date:"d/m/Y" }}</td>
+                        <td>
+                          <a href="#" class="edit-btn" onclick="editUser(this)">Edit</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/usermanagement.js' %}"></script>
+{% endblock %}

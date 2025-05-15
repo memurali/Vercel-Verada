@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Audit Form{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page="audit" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Audit' %}
+
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="callout">
+                                <form id="audit-form" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="audit_id" value="{{ audit.id }}">
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <label>Audit Date</label>
+                                            <input type="date" name="scheduled_date" value="{{ audit.scheduled_date|date:'Y-m-d' }}" required>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Location</label>
+                                            <select id="location" name="location" required>
+                                                <option value="">Select Audit Type</option>
+                                                {% for location in locations %}
+                                                    <option value="{{location.id}}" {% if location.id == audit.location.id %}selected{% endif %}>{{location.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Address</label>
+                                            <input type="text" name="address"
+                                                value="{{address}}"
+                                                required>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Audit Type</label>
+                                            <select id="auditType" name="audit_type" required>
+                                                <option value="">Select Audit Type</option>
+                                                <option value="initial" {% if audit.audit_type == "initial" %}selected{% endif %}>Initial Audit</option>
+                                                <option value="verification" {% if audit.audit_type == "verification" %}selected{% endif %}>Verification Audit</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Notes</label>
+                                            <textarea id="note" name="note" rows="5" cols="40" placeholder="Write your note here...">{{audit.note}}</textarea>
+                                        </div>
+
+                                        <!-- Waiver Checkbox -->
+                                        <div class="cell">
+                                            <label>
+                                                <input type="checkbox" name="is_waiver_applied" id="waiverCheckbox" {% if audit.is_waiver_applied %}checked{% endif %}>
+                                                Waiver Applied?
+                                            </label>
+                                        </div>
+
+                                        <!-- Waiver Type (conditional) -->
+                                        <div class="cell" id="waiverTypeSection" style="{% if audit.is_waiver_applied %}display:block{% else %}display:none{% endif %}">
+                                            <label>Waiver Type</label>
+                                            <label><input type="radio" name="waiver_type" value="minimus" {% if audit.waiver_type == "minimus" %}checked{% endif %}> Minimus</label>
+                                            <label><input type="radio" name="waiver_type" value="space" {% if audit.waiver_type == "space" %}checked{% endif %}> Space</label>
+                                        </div>
+
+
+                                        <!-- Initial Audit Fields -->
+                                        <div id="initialAuditFields" class="cell" style="{% if audit.audit_type == "initial" %}display:block{% else %}display:none{% endif %}">
+                                            <label>Commodity</label>
+                                            <fieldset>
+                                                {% for group in groups %}
+                                                <div>
+                                                    <input type="checkbox" id="initial__{{ group.code }}" name="commodity[]" value="{{ group.code }}" {% if group.code in selected_commodities %}checked{% endif %} data-commodity-toggle data-type="initial">
+                                                    <label for="initial__{{ group.code }}">{{ group.name }}</label><br>
+                                                    <div id="initial__{{ group.code }}Fields" class="nested-fields" style="{% if group.code in selected_commodities %}display:block{% else %}display:none{% endif %}">
+                                                      <label>Total Weight ({{ group.name|title }})</label>
+                                                      <input type="number" name="initial_total_weight_{{ group.code }}" value="{{ weights|get_item:group.code }}" placeholder="Enter total weight">
+                                                      <label>Upload Picture ({{ group.name|title }})</label>
+                                                      <input type="file" name="initial_audit_picture_{{ group.code }}">
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </fieldset>
+                                        </div>
+                    
+                                        <!-- Verification Audit Fields -->
+                                        <div id="verificationAuditFields" class="cell" style="{% if audit.audit_type == "verification" %}display:block{% else %}display:none{% endif %}">
+                                            <label>Commodity</label>
+                                            <fieldset>
+                                                {% for group in groups %}
+                                                <div>
+                                                  <input type="checkbox"
+                                                         id="verification__{{ group.code }}"
+                                                         name="commodity[]"
+                                                         value="{{ group.code }}"
+                                                         {% if group.code in selected_commodities %}checked{% endif %}
+                                                         data-commodity-toggle
+                                                         data-type="verification">
+                                            
+                                                  <label for="verification__{{ group.code }}">{{ group.name }}</label><br>
+                                            
+                                                  <div id="verification__{{ group.code }}Fields" class="nested-fields" style="{% if group.code in selected_commodities %}display:block{% else %}display:none{% endif %}">
+                                                    <label>Total Weight ({{ group.name|title }})</label>
+                                                    <input type="number" name="verification_total_weight_{{ group.code }}" value="{{ weights|get_item:group.code }}" placeholder="Enter total weight">
+
+                                                    <label>Contamination Weight ({{ group.name|title }})</label>
+                                                    <input type="number" name="verification_contamination_weight_{{ group.code }}" value="{{ contamination_weights|get_item:group.code }}" placeholder="Enter contamination weight">
+
+                                                    <label>Upload Picture ({{ group.name|title }})</label>                                                    
+                                                    <input type="file" name="verification_audit_picture_{{ group.code }}">
+                                                  </div>
+                                                </div>
+                                                {% endfor %}
+                                              </fieldset>
+                    
+                                            <label>Compliance</label>
+                                            <input type="radio" name="compliance" value="yes" {% if compliance %}checked{% endif %}> Contamination Found
+                                            <input type="radio" name="compliance" value="no" {% if not compliance %}checked{% endif %}> No Contamination Found
+                                        </div>
+                    
+
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="error-box" class="callout alert" style="display:none;"></div>
+                                    <div id="success-box" class="callout success" style="display:none;"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/audit_form.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Clinet Commodity Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='client_commodity' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Client Commodity Dashboard" %}
+
+            <div class="dashboard-content">
+                <!-- Dashboard Full Table Begin-->
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Commodities
+                                                </p>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" id="client-commodity-search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack" id="client-commodity-table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="checkbox">
+                                                </th>
+                                                <th>Commodity ID</th>
+                                                <th>Commodity Name</th>
+                                                <th>Commodity Unit</th>
+                                                <th>Commodity Type</th>
+                                                <th>Active Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for client_commoditie in client_commodities %}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td><a href="{% url 'commodities:edit_client_commodity_view' client_commoditie.commoditie.id %}">{{ client_commoditie.commoditie.id }}</a></td>
+                                                <!-- <td><a href="" id="commodity-1">C-{{client_commoditie.commoditie.id}}</a>
+                                                </td> -->
+                                                <td>{{client_commoditie.commoditie.name}}</td>
+                                                <td>{{client_commoditie.commoditie.measuring_unit.name}}</td>
+                                                <td>{{client_commoditie.commoditie.group.name}}</td>
+                                                <td>{{client_commoditie.commoditie.get_status_display}}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="8" class="text-center">No records found</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dashboard Full Table End-->
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/client_commoditi/client_dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if commodity %}Edit{% else %}Add{% endif %} Commodity{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+  {% include 'includes/sidebar_router.html' with active_page='client_commodity' %}
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+      {% include 'partials/header_authenticated.html' with page_name='Commodities' %}
+
+      <div class="dashboard-content">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="cell large-7 grid-center">
+              <div class="callout">
+                <form id="commodity-form" method="POST">
+                  {% csrf_token %}
+                  {% if commodity %}
+                    <input type="hidden" name="id" value="{{ commodity.id }}">
+                  {% endif %}
+                
+                  <div class="grid-x grid-padding-x">
+                    <div class="cell">
+                      <label>Commodity Name</label>
+                      <input type="text" name="commodity_name" required value="{{ commodity.name|default_if_none:'' }}">
+                    </div>
+                
+                    <div class="cell">
+                      <label>Commodity Group</label>
+                      <select name="commodity_group" required>
+                        <option value="">Select Group</option>
+                        {% for group in groups %}
+                          <option value="{{ group.id }}" {% if group.id == commodity.group.id %}selected{% endif %}>
+                            {{ group.name|title }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                
+                    
+                    <div class="cell">
+                      <label>Commodity Unit</label>
+                      <select name="commodity_unit" required>
+                        <option value="">Select Unit</option>
+                        {% for unit in units %}
+                          <option value="{{ unit.id }}" {% if commodity.measuring_unit.id == unit.id %}selected{% endif %}>
+                            {{ unit.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                
+                    <!-- <div class="cell">
+                      <label>Active Status</label><br>
+                      <input type="checkbox" name="active_status" value="A" {% if commodity.status == 'A' %}checked{% endif %}>
+                      Active
+                    </div> -->
+                  </div>
+                
+                  <div class="grid-x">
+                    <div class="cell">
+                      <div class="button-group expanded">
+                        <button type="submit" class="button pill">
+                          {% if commodity %}Update{% else %}Submit{% endif %}
+                        </button>
+                      </div>
+                      <div id="success-box" class="callout success" style="display:none;">Commodity saved!</div>
+                      <div id="error-box" class="callout alert" style="display:none;"></div>
+                    </div>
+                  </div>
+                </form>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Keep modal as is -->
+<div class="reveal" id="commodityModal" data-reveal>
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell large-7 grid-center">
+        <form id="commodity-doc-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="grid-x">
+            <div class="cell">
+              <label>Upload Document</label>
+              <input type="file" name="supporting_document" id="supporting_document" required>
+            </div>
+            <div class="cell">
+              <a href="#" download id="download-link" style="display:none;">Download</a>
+            </div>
+          </div>
+
+          <div class="grid-x">
+            <div class="cell">
+              <div class="button-group expanded">
+                <button type="submit" class="button pill">Submit</button>
+              </div>
+              <div class="callout success" id="doc-success" style="display:none;">File uploaded!</div>
+              <div class="callout alert" id="doc-error" style="display:none;"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/edit_client_commodities.js' %}"></script>
+<script src="{% static 'js/upload_commodities.js' %}"></script>
+{% endblock %}

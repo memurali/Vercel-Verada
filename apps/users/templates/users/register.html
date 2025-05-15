@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Registration | Tracker{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'partials/header_unauthenticated.html' %}
+
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell large-7 grid-center">
+        <div class="callout">
+          <form id="register-form" onsubmit="return submitRegister(event)">
+            {% csrf_token %}
+            <div class="grid-x">
+              <div class="cell text-center">
+                <p class="h5">Registration</p>
+              </div>
+            </div>
+
+            <div class="grid-x">
+              <div class="cell">
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Enter your name" required>
+              </div>
+              <div class="cell">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <span id="emailError" class="form-error" style="display: none;">Invalid email format</span>
+              </div>
+              <div class="cell">
+                <label>Phone Number</label>
+                <input type="text" name="phone" placeholder="Enter your phone number" required>
+                <span id="phonenoError" class="form-error" style="display: none;">Invalid mobile number</span>
+              </div>
+            </div>
+
+            <div class="grid-x">
+              <div class="cell">
+                <div class="button-group expanded">
+                  <button type="submit" class="button pill">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <!-- AJAX messages -->
+          <div id="register-success" class="callout success" style="display: none;">
+            Account created! Please check your email to activate your account.
+          </div>
+          <div id="register-error" class="callout alert" style="display: none;"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

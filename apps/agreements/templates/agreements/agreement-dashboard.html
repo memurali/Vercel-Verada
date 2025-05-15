@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Agreement Dashboard{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+{% include 'includes/sidebar_router.html' with active_page='agreement_dashboard' %}
+<div class="grid-x">
+  <div class="cell large-10 large-offset-2">
+    {% include 'partials/header_authenticated.html' with page_name='Agreement Dashboard' %}
+
+    <div class="dashboard-content">
+      <div class="table-container">
+        <div class="callout">
+          <div class="dashboard-callout">
+            <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+              <div class="cell">
+                <span class="sub-title">Agreements</span>
+              </div>
+              <div class="cell">
+                <form method="get" id="agreement-search-form">
+                  <input type="search" name="q" id="agreement-search-input" placeholder="Search" class="pill"
+                    value="{{ request.GET.q|default_if_none:'' }}">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="table">
+            <table class="stack">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" class="checkbox"></th>
+                  <th>Generator ID</th>
+                  <th>Generator Name</th>
+                  <th>Collector Name</th>
+                  <th>Agreement</th>
+                  <th>Expiration Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% load tz %} {# loads timezone support #}
+                {% now "Y-m-d" as today %}
+
+
+                {% for agreement in agreements %}
+                <tr>
+                  <td><input type="checkbox" class="checkbox"></td>
+                  <td><a href="{% url 'agreements:edit_form' agreement.id %}">{{ agreement.generator_id }}</a></td>
+                  <td>{{ agreement.generator_name }}</td>
+                  <td>{{ agreement.collector_name }}</td>
+                  <td><a href="{{ agreement.agreement_file_url }}"
+                      target="_blank">{{ agreement.agreement_file_name }}</a></td>
+                  <td {% if agreement.agreement_expiry_date and agreement.agreement_expiry_date <= today %}
+                    style="color: red;" {% endif %}>
+                    {{ agreement.agreement_expiry_date }}
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="12" class="text-center">No agreement available.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("agreement-search-input");
+    const form = document.getElementById("agreement-search-form");
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        form.submit();
+      }
+    });
+  });
+</script>
+
+{% endblock %}

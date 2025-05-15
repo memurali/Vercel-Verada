@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard | Tracker{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='Dashboard' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Admin Dashboard' %}
+            <div class="dashboard-content">
+                <div class="grid-x flex">
+                    <div class="cell large-6">
+                        <div class="dashboard-callout">
+                            <span class="sub-title"
+                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Total
+                                Waste to Landfill</span>
+                            {% comment %} <p class="h1"><span id="" class="lbs"></span><span
+                                    class="label decrease percentage">3</span></p> {% endcomment %}
+                        </div>
+                    </div>
+                    <div class="cell large-6" style="align-self: flex-end;">
+                        <ul class="menu float-right">
+
+                            <li style="margin-top: 7px"><span id="">date range begin</span> - <span id="">date
+                                    range end</span></li>
+                            <li style="margin-right: 0px;"><input type="date"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="grid-x grid-margin-x grid-padding-y small-up-1 large-up-4" style="margin-top: 1rem;"
+                    data-equalizer data-equalize-on="medium" id="test-eq">
+                    {% for key, stat in stats.items %}
+                    <div class="cell">
+                        <div class="callout" data-equalizer-watch>
+                            <div class="dashboard-callout">
+                                <span class="sub-title"
+                                    style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">
+                                    {{ stat.title }}
+                                </span>
+                                <p class="lead">
+                                    <span class="lbs">{{ stat.total|floatformat:2 }}</span>
+                                </p>
+                                <small class="updated-date">{{ stat.last_updated }}</small>
+                                {% if stat.is_positive_growth %}
+                                <span class="label success percentage fixed">↑ {{ stat.growth_percentage }}</span>
+                                {% else %}
+                                <span class="label alert percentage fixed">↓ {{ stat.growth_percentage }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Dashboard Full Table Begin-->
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Waste
+                                                Compliance Overview <span class="button small pill secondary"
+                                                    style="margin-bottom: 0px; margin-left: 1rem;">Send
+                                                    Audit</span></p>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack">
+                                        <thead>
+                                            <tr>
+                                                <th width="30">
+                                                    <input id="" type="checkbox" class="checkbox"></label>
+                                                </th>
+                                                <th>Waste Location</th>
+                                                <th>Waste Volume</th>
+                                                <th>Collected Location</th>
+                                                <th>Waste Collected</th>
+                                                <th>Compliance Status</th>
+                                                <th>Audit Status</th>
+                                                <th>Audit Reports</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dashboard Full Table End-->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

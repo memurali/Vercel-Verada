@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Commodity Type{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-message {
+        display: none;
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='commodities' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Edit Commodity Type' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="callout">
+                                <form id="edit-commodity-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <div class="cell text-center">
+                                            <div id="error-message" class="error-message"></div>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" id="commodity_id" value="{{ commodity.id }}">
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <label>Commodity Type
+                                                <input type="text" name="commodity_name" id="commodity_name" value="{{ commodity.name }}" required>
+                                            </label>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Commodity Code
+                                                <input type="text" name="commodity_code" id="commodity_code" value="{{ commodity.code }}" required>
+                                            </label>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Active Status</label>
+                                            <input type="checkbox" name="active_status" id="active_status" {% if commodity.status == 'A' %}checked{% endif %}> Active
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill" id="submit-button">Update Commodity</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/edit_commodity_type.js' %}"></script>
+{% endblock %}

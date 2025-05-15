@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manage User Roles{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+    <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Roles' %}
+
+        <div class="dashboard-content">
+        <div class="table-container">
+            <div class="callout">
+            <div class="dashboard-callout">
+                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                <div class="cell"><span class="sub-title">Users</span></div>
+                <div class="cell">
+                  <form id="user-role-search-form" method="get">
+                    <input
+                      type="search"
+                      name="q"
+                      id="user-role-search-input"
+                      placeholder="Search"
+                      class="pill"
+                      style="float: right;"
+                    >
+                  </form>                  
+                </div>
+                </div>
+            </div>
+
+            <table class="stack" id="user-role-table">
+                <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ user.role.name|default:"None" }}</td>
+                    <td><button class="add-role-button" data-user-id="{{ user.id }}" data-open="userRoleModal">+</button></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal for Role Assignment -->
+<div class="reveal" id="userRoleModal" data-reveal>
+  <h4>Add User Role</h4>
+  <form id="role-assign-form">
+    {% csrf_token %}
+    <input type="hidden" name="user_id" id="selected-user-id">
+    <p id="selected-username" class="sub-title"></p>
+    <fieldset>
+      <legend>Roles</legend>
+      {% for role in roles %}
+        <input type="checkbox" id="role-{{ role.id }}" name="role_ids" value="{{ role.id }}">
+        <label for="role-{{ role.id }}">{{ role.name }}</label><br>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="button">Save</button>
+    <div id="role-error" class="callout alert" style="display:none;"></div>
+    <div id="role-success" class="callout success" style="display:none;">Role updated!</div>
+  </form>
+  <button class="close-button" data-close>&times;</button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/user_role_manage.js' %}"></script>
+{% endblock %}

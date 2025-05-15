@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Company Profile{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='profile' %}
+
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Company Profile' %}
+
+        <div class="dashboard-content">
+          <div class="grid-container">
+              <div class="grid-x">
+                  <div class="cell large-7 grid-center">
+                      <div class="callout">
+                        <form id="profile-form" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ user_obj.id }}">
+                              <div class="grid-x">
+                                  <div class="cell text-center">
+                                      <!-- <p class="h5">Unit Form</p> -->
+                                  </div>
+                              </div>
+                          
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>First Name</label>
+                                      <input type="text" name="first_name" id="first_name" value="{{ user_obj.first_name }}">
+                                      <span class="form-error" id="error_first_name" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Last Name</label>
+                                      <input type="text" name="last_name" id="last_name" value="{{ user_obj.last_name }}">
+                                      <span class="form-error" id="error_last_name" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Email</label>
+                                      <input type="text" name="email" id="email" value="{{ user_obj.email }}">
+                                      <span class="form-error" id="error_email" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Contact Number</label>
+                                      <input type="text" name="phone" id="phone" value="{{ user_obj.phone }}">
+                                      <span class="form-error" id="error_phone" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Company Name</label>
+                                      <input type="text" name="company_name" id="company_name" value="{{ user_obj.company_name }}">
+                                      <span class="form-error" id="error_company_name" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Address</label>
+                                      <input type="text" name="company_address" id="company_address" value="{{ client.company_address }}">
+                                      <span class="form-error" id="error_company_address" style="color:red; font-size: 12px;"></span>
+                                  </div>
+                              </div>
+
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <label>Upload Logo</label>
+                                      <input type="file" name="company_logo">
+                                  </div>
+                              </div>
+
+                          
+                              <div class="grid-x">
+                                  <div class="cell">
+                                      <div class="button-group expanded">
+                                          <button type="submit" class="button pill">Submit</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                          <div id="error-box" class="callout alert" style="display: none;"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile/profile_changer.js' %}"></script>
+{% endblock %}

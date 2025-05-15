@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Bulk Upload Commodity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/fieldsLinker.css' %}">
+<link rel="stylesheet" href="{% static 'css/commoditi_bulk_upload.css' %}">
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page="commodities" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Commodity Import' %}
+
+                <div class="dashboard-content">
+                    <div class="grid-container">
+                        <div class="grid-x">
+                            <div class="cell large-7 grid-center">
+                                <form id="uploadForm" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="file-upload-container">
+                                        <label for="upload_file" class="btn btn-sm btn-primary">Choose File</label>
+                                        <input type="file" id="upload_file" class="file-input">
+                                        <span class="file-name">No file chosen</span>
+                                    </div>
+                                </form>                                
+                                
+                                <div id="container">
+                                    <div class="bonds" id="original" style="display:block;">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn fieldLinkerSave btn-sm btn-primary">Import</button>
+                                <br /><br />
+                                <div id="input"></div>
+
+                                <div id="upload-errors" style="display: none; color: red; padding: 10px; border: 1px solid red; margin-top: 15px; border-radius: 4px; background: #fff3f3;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/fieldsLinker.js' %}"></script>
+<script src="{% static 'js/commoditi_import_bulk.js' %}"></script>
+{% endblock %}

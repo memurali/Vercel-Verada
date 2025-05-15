@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Clinet Commodity Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='client_commodity' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Client Commodity Mapping" %}
+            <div class="grid-x align-middle padding-3" style="margin-top: 3rem;">
+                {% csrf_token %}
+                <!-- Available Countries -->
+                <div class="cell medium-5 text-left">
+                    <div class="callout">
+                        <label for="country">Available Commodities
+                            <select id="country" name="country" multiple class="select" style="width: 100%;min-height: 150px;">
+                                {% for commoditie in commodities %}
+                                    <option value="{{commoditie.id}}">{{commoditie.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Arrows in a vertical stack -->
+                <div class="cell medium-1 text-center">
+                    <div class="flex-container flex-dir-column align-center-middle" style="height: 100%;">
+                        <button id="moveright" class="button small secondary margin-bottom-1">&gt;</button>
+                        <button id="moveleft" class="button small secondary">&lt;</button>
+                    </div>
+                </div>
+
+                <!-- Selected Countries -->
+                <div class="cell medium-5 text-left">
+                    <div class="callout">
+                        <label for="planets">Selected Countries
+                            <select id="planets" name="planets" multiple class="select" style="width: 100%;min-height: 150px;">
+                                <option disabled selected>-- Selected Commodities --</option>
+                                {% for existing_commoditie in existing %}
+                                    <option value="{{existing_commoditie.commoditie.id}}" selected>{{existing_commoditie.commoditie.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="cell large-12" style="margin-top: 2rem;">
+                    <button type="button" id="submit-commodities" class="button success pill">Submit</button>
+                </div>                
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/client_commoditi/client_commoditi_add.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manage Role Permissions{% endblock %}
+{% block extra_css %}
+
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+    <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Roles' %}
+
+        <div class="dashboard-content">
+        <div class="grid-container">
+            <div class="grid-x">
+            <div class="cell large-7 grid-center">
+                <div class="callout">
+                <form id="permission-form">
+                    {% csrf_token %}
+                    <div class="grid-x">
+                    <div class="cell">
+                        <label>Role</label>
+                        <select name="role_id" required>
+                        <option value="">Select Role</option>
+                        {% for role in roles %}
+                        <option value="{{ role.id }}">{{ role.name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div class="cell">
+                        <label>Modules</label>
+                        <fieldset>
+                        {% for module in modules %}
+                        <div class="module-container">
+                            <legend>
+                            <input type="checkbox" class="module-checkbox"> {{ module.name }}
+                            </legend>
+                            <div class="module-options" style="display: none;">
+                            <label><input type="checkbox" name="{{ module.code }}[]" value="read"> Read</label>
+                            <label><input type="checkbox" name="{{ module.code }}[]" value="write"> Write</label>
+                            <label><input type="checkbox" name="{{ module.code }}[]" value="delete"> Delete</label>
+                            <label><input type="checkbox" name="{{ module.code }}[]" value="no-access"> No Access</label>
+                            </div>
+                            <small class="error-text" style="color:red; display:none;">Select at least one permission.</small>
+                        </div>
+                        {% endfor %}
+                        </fieldset>
+                    </div>
+                    </div>
+                    <div class="grid-x">
+                    <div class="cell">
+                        <div class="button-group expanded">
+                        <button type="submit" class="button pill">Submit</button>
+                        </div>
+                        <div id="success-box" class="callout success" style="display:none;">Permissions saved!</div>
+                        <div id="error-box" class="callout alert" style="display:none;"></div>
+                    </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/role_permission.js' %}"></script>
+{% endblock %}

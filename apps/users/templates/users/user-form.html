@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add User{% endblock %}
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+    <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Add User' %}
+
+        <div class="dashboard-content">
+        <div class="grid-container">
+            <div class="grid-x">
+            <div class="cell large-7 grid-center">
+                <div class="callout">
+                <form id="user-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="grid-x">
+                    <div class="cell"><label>First Name</label><input type="text" name="first_name" required></div>
+                    <div class="cell"><label>Last Name</label><input type="text" name="last_name" required></div>
+                    <div class="cell">
+                        <label>Email</label>
+                        <input type="email" name="email" id="user-email" required>
+                        <span id="emailError" class="form-error" style="display: none;">Invalid email format</span>
+                    </div>
+                    <div class="cell">
+                        <label>Phone</label>
+                        <input type="text" name="phone" id="user-phoneno" required>
+                        <span id="phonenoError" class="form-error" style="display: none;">Invalid phone number</span>
+                    </div>
+                    <div class="cell">
+                        <label>Role</label>
+                        <select name="role" required>
+                            <option value="">Select Role</option>
+                            {% for role in roles %}
+                                <option value="{{role.id}}">{{role.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="cell">
+                        <label>Status</label>
+                        <select name="status" required>
+                        <option value="">Select Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="cell">
+                        <label>Profile Picture</label>
+                        <input type="file" name="profile_picture" accept="image/*">
+                    </div>
+                    </div>
+                    <div class="grid-x">
+                    <div class="cell">
+                        <div class="button-group expanded">
+                        <button type="submit" class="button pill">Submit</button>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+
+                <div id="success-message" class="callout success" style="display:none;">User created successfully!</div>
+                <div id="error-message" class="callout alert" style="display:none;"></div>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/add_user.js' %}"></script>
+{% endblock %}

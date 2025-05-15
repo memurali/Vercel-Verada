@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login | Tracker{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'partials/header_unauthenticated.html' %}
+    <div class="off-canvas-content" data-off-canvas-content>	
+        <div class="grid-container">
+            <div class="grid-x">
+                <div class="cell large-7 grid-center">
+                    <div class="callout">
+                        <form id="login-form" method="POST">
+                            {% csrf_token %}
+                            <div class="grid-x">
+                                <div class="cell text-center">
+                                    <p class="h5">Login</p>
+                                </div>
+                            </div>
+                            <div class="grid-x">
+                                <div class="cell">
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="login-email" placeholder="Enter your email" required>
+                                </div>
+                                <div class="cell">
+                                    <label>Password</label>
+                                    <input type="password" name="password" id="login-password" placeholder="Enter your password" required>
+                                </div>
+                            </div>
+                            <div class="grid-x">
+                                <div class="cell">
+                                    <div class="button-group expanded">
+                                        <button type="submit" class="button pill">Login</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell text-center" id="login-error" style="color: red;"></div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

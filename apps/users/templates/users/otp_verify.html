@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify OTP | WasteFlow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/otp.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'partials/header_unauthenticated.html' %}
+
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell large-7 grid-center">
+        <div class="callout">
+          <form id="otp-form" onsubmit="return submitOTP(event)">
+            {% csrf_token %}
+            <input type="hidden" name="session_token" id="session_token" value="{{ form.initial.session_token }}">
+            <div class="grid-x">
+              <div class="cell text-center">
+                <p class="h5">Enter OTP</p>
+              </div>
+            </div>
+            <div class="grid-x">
+              <div class="cell">
+                <label>OTP (valid for 5 minutes)</label>
+                <input type="text" name="otp" id="otp" placeholder="Enter your 6-digit OTP" required maxlength="6">
+              </div>
+              <div class="cell">
+                <small>OTP expires in: <span id="otp-timer">05:00</span></small>
+              </div>
+            </div>
+            <div class="grid-x">
+              <div class="cell">
+                <div class="button-group expanded">
+                  <button type="submit" class="button pill">Verify OTP</button>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <div id="otp-success" class="callout success" style="display:none;">OTP verified! Redirecting...</div>
+          <div id="otp-error" class="callout alert" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+function submitOTP(event) {
+  event.preventDefault();
+  const otp = document.getElementById("otp").value.trim();
+  const token = document.getElementById("session_token").value;
+  const errorBox = document.getElementById("otp-error");
+  const successBox = document.getElementById("otp-success");
+
+  fetch("{% url 'verify_otp' %}", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      session_token: token,
+      otp: otp
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      successBox.style.display = "block";
+      errorBox.style.display = "none";
+      setTimeout(() => {
+        window.location.href = "{% url 'dashboard:dashboard' %}";
+      }, 2000);
+    } else {
+      errorBox.innerText = data.message || "Invalid OTP.";
+      errorBox.style.display = "block";
+      successBox.style.display = "none";
+    }
+  })
+  .catch(() => {
+    errorBox.innerText = "Server error.";
+    errorBox.style.display = "block";
+  });
+
+  return false;
+}
+
+const otpExpiresAt = new Date("{{ expires_at|escapejs }}");  // make sure it's safe
+
+  function updateTimer() {
+    const now = new Date();
+    let diff = Math.floor((otpExpiresAt - now) / 1000);  // in seconds
+
+    if (diff <= 0) {
+      document.getElementById("otp-timer").innerText = "00:00";
+      document.getElementById("otp-error").innerText = "⛔ OTP expired. Please login again.";
+      document.getElementById("otp-error").style.display = "block";
+      document.querySelector("#otp-form button").disabled = true;
+      return;
+    }
+
+    let minutes = String(Math.floor(diff / 60)).padStart(2, '0');
+    let seconds = String(diff % 60).padStart(2, '0');
+    document.getElementById("otp-timer").innerText = `${minutes}:${seconds}`;
+
+    setTimeout(updateTimer, 1000);
+  }
+
+  updateTimer();
+
+</script>
+{% endblock %}
