@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Audit Scheduled</title>
+  <style>
+    body {
+      background-color: #f4f6f8;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .email-wrapper {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .email-header {
+      background: #6AB48C;
+      color: #ffffff;
+      padding: 20px 30px;
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .email-body {
+      padding: 30px;
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .email-body p {
+      margin-bottom: 15px;
+    }
+
+    .details-box {
+      background-color: #f0f4f8;
+      padding: 15px 20px;
+      border-left: 4px solid #6AB48C;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .details-box p {
+      margin: 8px 0;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 24px;
+      background-color: #6AB48C;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .email-footer {
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="email-wrapper">
+    <div class="email-header">
+      📋 Audit Scheduled
+    </div>
+
+    <div class="email-body">
+      <p>Hello <strong>{{ auditor_name }}</strong>,</p>
+
+      <p>You have been scheduled to conduct an audit with the following details:</p>
+
+      <div class="details-box">
+        <p><strong>Company:</strong> {{ company_name }}</p>
+        <p><strong>Location:</strong> {{ location_address }}</p>
+      </div>
+
+      <p>Please use the button below to begin your audit when the scheduled time arrives:</p>
+
+      <a href="{{ audit_link }}" class="cta-button" target="_blank">🔍 Start Audit</a>
+
+      <p>Thank you,</p>
+      <p><strong>{{ client_name }}</strong><br>{{ client_address }}</p>
+    </div>
+
+    <div class="email-footer">
+      This is an automated message from WasteFlow | Please do not reply directly.
+    </div>
+  </div>
+
+</body>
+</html>

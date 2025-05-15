@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tracker{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/water-bottle.png' %}" type="image/x-icon">
+
+    <!-- Global styles -->
+    <link rel="stylesheet" href="{% static 'vendors/fontawesome/css/all.min.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+    <link rel="stylesheet" href="{% static 'foundation-icons/foundation-icons.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="{% static 'vendors/sweetalert2/sweetalert2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/select2/select2.min.css' %}">
+
+    <!-- Page-specific CSS -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body id="{% block body_id %}{% endblock %}">
+    
+    <div class="off-canvas-wrapper">
+        <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+            <!-- Your menu or Off-canvas content goes here -->
+        </div>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/footer.html" %}
+
+    <!-- Global JS -->
+    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'js/vendor/foundation.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script src="{% static 'js/scrollfade-0.1.js' %}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="{% static 'vendors/sweetalert2/sweetalert2.js' %}"></script>
+    <script src="{% static 'vendors/select2/select2.min.js' %}"></script>
+    
+    <!-- Page-specific JS -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

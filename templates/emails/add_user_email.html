@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Tracker System</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
+    <div style="max-width: 600px; margin: auto; background-color: white; padding: 20px; border-radius: 8px;">
+        <h2 style="text-align: center; color: #333;">Welcome to Tracker System!</h2>
+        <p>Hello {{ user.first_name }} {{ user.last_name }},</p>
+        
+        <p>We are excited to have you on board. Here are your account details:</p>
+        
+        <ul>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+            <li><strong>Phone:</strong> {{ user.phone }}</li>
+            <li><strong>Role:</strong> {{ user_role }}</li>
+            <li><strong>Status:</strong> {% if user.is_active %} Active {% else %} Inactive {% endif %}</li>
+            <li><strong>Temporary Password:</strong> {{ password }}</li>
+        </ul>
+
+        <p>To activate and set your new password, please click the button below:</p>
+
+        <p style="text-align: center;">
+            <a href="{{ activation_url }}" style="background-color: #007BFF; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px;">Activate Account</a>
+        </p>
+
+        <p>If you already activated but want to change your password, use this link:</p>
+
+        <p style="text-align: center;">
+            <a href="{{ change_password_url }}" style="background-color: #28A745; color: white; padding: 10px 18px; text-decoration: none; border-radius: 5px;">Change Password</a>
+        </p>
+
+        <p>Thanks and welcome again!</p>
+
+        <p>Best Regards,<br>Tracker System Team</p>
+    </div>
+</body>
+</html>

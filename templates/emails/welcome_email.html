@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Tracker System</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2 style="color: #333;">Hello {{ user.first_name }},</h2>
+        <p>Welcome to the <strong>Tracker System</strong>! 👋</p>
+
+        <p><strong>Your temporary password:</strong> <code>{{ password }}</code></p>
+
+        <p>Please activate your account by clicking the link below:</p>
+        <p><a href="{{ activation_url }}" style="color: #007bff;">Activate My Account</a></p>
+
+        <p>After activation, you can change your password using this link:</p>
+        <p><a href="{{ change_password_url }}" style="color: #007bff;">Change My Password</a></p>
+
+        <p>If you didn’t register, you can safely ignore this email.</p>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        <p style="font-size: 14px; color: #999;">Thanks,<br>The Tracker System Team</p>
+    </div>
+</body>
+</html>

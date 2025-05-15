@@ -1,0 +1,41 @@
+<div class="top-bar">
+    <div class="top-bar-left">
+      <ul class="dropdown menu" data-dropdown-menu>
+        <li style="margin: 0px;"><p class="h6">{{page_name}}</p></li>
+        <li class="hide" style="margin: 0px;"><p class="h6">Downtown Center 1<small class="sub">Last Audit: <span>January 10, 2025</span></small></p></li>
+        <li class="hide"><a href="about.html" class="button pill small black" style="margin-top: 5px;">Send Audit</a></li>
+      </ul>
+    </div>
+    <div class="top-bar-right header-dropdown">
+      <ul class="dropdown menu float-right header-ul" data-dropdown-menu>
+         <li class="header-li">
+            <div class="profile"
+                style="background: url('{{ user.get_profile_photo_url }}') no-repeat center; background-size: cover;"
+                data-toggle="example-dropdown">
+            </div>
+
+            <div class="dropdown-pane custom-dropdown" id="example-dropdown" data-dropdown data-auto-focus="true">
+              <ul class="menu vertical sub-menu">
+                  <li>
+                      <a href="/logout" class="logout-link">
+                          <i class="fa-solid fa-right-from-bracket"></i> Logout
+                      </a>
+                  </li>
+              </ul>
+            </div>
+         </li>
+         <li class="header-li">
+            <span>
+              {% if user.first_name or user.last_name %}
+                  {{ user.first_name }} {{ user.last_name }}
+              {% else %}
+                  {{ user.email }}
+              {% endif %}
+            </span>
+         </li>
+         {% comment %} <li><button class="menu-icon" type="button" data-open="offCanvas" style="margin-top: 5px;"></button></li> {% endcomment %}
+      </ul>
+      <ul class="vertical medium-horizontal menu">
+     </ul>
+    </div>
+</div>

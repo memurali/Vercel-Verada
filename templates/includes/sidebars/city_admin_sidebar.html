@@ -1,0 +1,268 @@
+{% load static %}
+<div class="callout side-bar show-for-large">
+    <div class="side-nav">
+        <ul class="menu vertical">
+            <li class="logo-mark"><a href=""></a></li>
+            <li><a href="#" style="background: url(/static/images/iconmonstr-paper-plane-2.png) no-repeat center;"></a></li>
+            <li><a href="#" style="background: url(/static/images/iconmonstr-note-38.png) no-repeat center;"></a></li>
+            <li><a href="#" style="background: url(/static/images/iconmonstr-help-3.png) no-repeat center;"></a></li>
+        </ul>
+    </div>
+    <ul class="menu vertical">
+        <a href="{% url 'dashboard:dashboard' %}">
+            <li class="logo" style="background: url('{{ logo_url }}') no-repeat center;"></li>
+        </a>
+        {% if active_page == 'agreement_dashboard' %}
+			<li class="{% if request.path == '/agreements/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'agreements:dashboard' %}">Agreement Dashboard</a>
+            </li>		
+            <li class="{% if request.path == '/agreements/form/' %}selected{% endif %}">
+                <a href="{% url 'agreements:form' %}" style="background: url() no-repeat 1px center">Add Agreement</a>
+            </li>
+        {% elif active_page == 'Dashboard' %}
+            <li class="selected">
+                <a href="#">{{ active_page }}</a>
+            </li>
+            <li>
+                <a href="{% url 'company_profile_dashboard' %}" style="background: url('{% static "icons/compliance.png" %}') no-repeat 1px center">
+                    Settings/Profile
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'dashboard_usermanagement' %}" style="background: url('{% static "icons/user.png" %}') no-repeat 1px center">
+                    Manage User
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'commodities:client_commoditi_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Manage Commodity
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Manage Waste Group
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'generators:waste_generator_dashboard' %}" style="background: url('{% static "icons/generator.png" %}') no-repeat 1px center">
+                    Manage Waste Generator
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'collectors:waste_collector_dashboard' %}" style="background: url('{% static "icons/collector.png" %}') no-repeat 1px center">
+                    Manage Waste Collector
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'agreements:dashboard' %}" style="background: url('{% static "icons/agreement.png" %}') no-repeat 1px center">
+                    Manage Agreement
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'core:dashboard' %}" style="background: url('{% static "icons/commodity.png" %}') no-repeat 1px center">
+                    Master Commodity
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'generators:waste_pickup_dashboard' %}" style="background: url('{% static "icons/compliance.png" %}') no-repeat 1px center">
+                    Manage Pickups
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'audits:dashboard' %}" style="background: url('{% static "icons/audit.png" %}') no-repeat 1px center">Manage Audit</a>
+            </li>
+        {% elif active_page == 'profile' %}
+            <li class="{% if request.path == '/profile/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'company_profile_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Profile Dashboard
+                </a>
+            </li>
+            {% comment %} <li class="{% if request.path == '/profile/add/' %}selected{% endif %}">
+                <a href="{% url 'profile_add_form' %}" style="background: url() no-repeat 1px center">
+                    Add Profile
+                </a>
+            </li> {% endcomment %}
+        {% elif active_page == 'user_dashboard' %}
+            <li class="{% if request.path == '/dashboard/usermanagement/' %}selected{% endif %}">
+                <a href="{% url 'dashboard_usermanagement' %}" style="background: url() no-repeat 1px center">
+                    User Dashboard
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/roles/form/' %}selected{% endif %}">
+                <a href="{% url 'role_form' %}" style="background: url() no-repeat 1px center">
+                    Add Roles
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/user/add/form/' %}selected{% endif %}">
+                <a href="{% url 'user_add_form' %}" style="background: url() no-repeat 1px center">
+                    Add User
+                </a>
+            </li>
+            
+            <li class="{% if request.path == '/user-roles/' %}selected{% endif %}">
+                <a href="{% url 'dashboard_userroles' %}" style="background: url() no-repeat 1px center">
+                    Manage Roles
+                </a>
+            </li>
+            <li class="{% if request.path == '/permissions/form/' %}selected{% endif %}">
+                <a href="{%url 'permission_form' %}" style="background: url() no-repeat 1px center">
+                    Manage Permission
+                </a>
+            </li>
+        {% elif active_page == 'commodities' %}    
+            <li class="{% if request.path == '/commodities/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'core:dashboard' %}" style="background: url() no-repeat 1px center">
+                    Commodity dashboard
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/commodities/add/type/' %}selected{% endif %}">
+                <a href="{% url 'core:add_commodities_type' %}" style="background: url() no-repeat 1px center">
+                    Add Commodity Type
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/commodities/type/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'core:commodities_type_dashboard' %}">
+                    Commodity Type Dashboard
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/commodities/unit/form/' %}selected{% endif %}">
+                <a href="{% url 'core:unit_form' %}" style="background: url() no-repeat 1px center">Unit</a>
+            </li>
+
+            <li class="{% if request.path == '/commodities/add/' %}selected{% endif %}">
+                <a href="{% url 'core:commondity_form' %}" style="background: url() no-repeat 1px center">
+                    Add Commodity
+                </a>
+            </li>
+    
+            
+            <li class="{% if request.path == '/commodities/commodity/bulk-import/' %}selected{% endif %}">
+                <a href="{% url 'core:commodity_bulk_import_view' %}">Upload</a>
+            </li>
+        
+            
+        {% elif active_page == 'waste_generator_dashboard' %}
+            <li class="{% if request.path == '/generators/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'generators:waste_generator_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Waste Generator Dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/generators/add/' %}selected{% endif %}">
+                <a href="{% url 'generators:add_generator' %}" style="background: url() no-repeat 1px center">
+                    Add Waste Generator
+                </a>
+            </li>
+        {% elif active_page == 'waste_collector' %}
+            <li class="{% if request.path == '/collectors/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'collectors:waste_collector_dashboard' %}">
+                    Waste Collector 
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/collectors/collector_type_form_add/' %}selected{% endif %}">
+                <a href="{% url 'collectors:collector_type_form_add' %}" style="background: url() no-repeat 1px center">
+                    Add Collector Type
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/collectors/add/' %}selected{% endif %}">
+                <a href="{% url 'collectors:add' %}" style="background: url() no-repeat 1px center">
+                    Add Waste Collector
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/collectors/waste_collector_download_template/' %}selected{% endif %}">
+                <a href="{% url 'collectors:waste_collector_download_template' %}" style="background: url() no-repeat 1px center">
+                    Download Template
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/collectors/waste_collector_import/' %}selected{% endif %}">
+                <a href="{% url 'collectors:waste_collector_import' %}" style="background: url() no-repeat 1px center">
+                    Waste Collector Import
+                </a>
+            </li>
+            
+        {% elif active_page == 'audit' %}
+            <li class="{% if request.path == '/audits/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'audits:dashboard' %}" style="background: url() no-repeat 1px center">
+                    Dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/audits/audit/schedule/' %}selected{% endif %}">
+                <a href="{% url 'audits:audit_schedule_form' %}" style="background: url() no-repeat 1px center">
+                    Schedule Audit
+                </a>
+            </li>
+        {% elif active_page == 'client_commodity' %}
+            <li class="{% if request.path == '/client/commodities/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'commodities:client_commoditi_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Client Commodity dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/client/commodities/commoditi/add/' %}selected{% endif %}">
+                <a href="{% url 'commodities:add_client_commoditi' %}" style="background: url() no-repeat 1px center">
+                    Add Client Commodity
+                </a>
+            </li>
+        {% elif active_page == 'waste_source' %}
+            <li class="{% if request.path == '/waste/group/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Waste Group Master Dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/waste/group/form/' %}selected{% endif %}">
+                <a href="{% url 'waste_source_group:waste_group_master_form' %}" style="background: url() no-repeat 1px center">
+                    Add Waste Group Master
+                </a>
+            </li>
+            <li class="{% if request.path == '/waste/source/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'waste_source_group:waste_source_master_dashboard' %}" style="background: url() no-repeat 1px center">
+                    Organic Generator Master Dashboard Dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/waste/source/form/' %}selected{% endif %}">
+                <a href="{% url 'waste_source_group:waste_source_master_form' %}" style="background: url() no-repeat 1px center">
+                    Add Organic Generator Master Dashboard
+                </a>
+            </li>
+        {% elif active_page == 'waste_pickup' %}
+            <li class="{% if request.path == '/generators/pickup/dashboard/' %}selected{% endif %}">
+                <a href="{% url 'generators:waste_pickup_dashboard' %}"
+                        style="background: url() no-repeat 1px center">
+                        Waste Pickup Dashboard
+                </a>
+            </li>
+            <li class="{% if request.path == '/generators/pickup/form/' %}selected{% endif %}">
+                <a href="{% url 'generators:waste_pickup_form' %}" style="background: url() no-repeat 1px center">
+                    Add Waste Pickup
+                </a>
+            </li>
+
+            <li class="{% if request.path == '/generators/waste_Pickups_download_template/' %}selected{% endif %}">
+                <a href="{% url 'generators:waste_Pickups_download_template' %}" style="background: url() no-repeat 1px center">
+                    Download Template
+                </a>
+            </li>
+            
+            <li class="{% if request.path == '/generators/waste_Pickups_import/' %}selected{% endif %}">
+                <a href="{% url 'generators:waste_Pickups_import' %}" style="background: url() no-repeat 1px center">
+                    Waste Pickup Import
+                </a>
+            </li>
+            
+        {% endif %}
+
+     </ul>
+     <div class="notes" style="display:none">
+        <ul class="menu vertical">
+            <li><a href="#" style="background: url(/static/images/makefg.png) no-repeat 0px center">Updates</a></li>
+         </ul>
+         <small>Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</small>
+     </div>
+</div>
