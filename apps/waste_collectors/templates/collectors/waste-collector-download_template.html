@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Download Template{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='waste_collector' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Download Template' %}
+            <div class="dashboard-content">
+                <!-- Dashboard Full Table Begin-->
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <div class="grid-x align-middle padding-3">
+                                    <div class="cell medium-up-4">
+                                        <div class="callout">
+                                            <label>Collector Type</label>
+                                            <select name="collector_type" id="collector_type" required>
+                                                <option value="">Select Collector Type</option>
+                                                {% for type in collector_types %}
+                                                    <option value="{{ type.name }}">{{ type.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    
+                                    <div class="cell medium-up-1">
+                                        <a type="" class="btn download_template">Dowload Template</a>
+                                    </div>
+
+                                    <div id="container">
+                                        <div class="bonds" id="original" style="display:block;">
+                                        </div>
+                                    </div>
+
+                                    <span id="output"></span>
+                                    <br /><br />
+                                    <div id="input"></div>
+
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- <script src="{% static 'js/dashboard.js' %}"></script> -->
+<script src="{% static 'js/collector_add.js' %}"></script>
+
+{% endblock %}

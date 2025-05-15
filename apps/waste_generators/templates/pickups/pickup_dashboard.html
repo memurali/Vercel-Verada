@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pickup Dashboard{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='waste_pickup' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Waste Pickup Dashboard' %}
+            <div class="dashboard-content">
+                <!-- Dashboard Full Table Begin-->
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(/static/images/iconmonstr-chart-22.png) no-repeat 0px center">Waste
+                                                Pickups</p>
+                                        </div>
+                                        <div class="cell">
+                                            <form method="get" style="float: right;">
+                                                <input type="search" name="q" value="{{ search_query }}" placeholder="Search" class="pill"
+                                                       style="width: 50%; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack">
+                                        <thead>
+                                            <tr>
+                                                <th width="30">
+                                                    <input type="checkbox" class="checkbox">
+                                                </th>
+                                                <th>ID</th>
+                                                <th>Pickup Date</th>
+                                                <th>Generator Name</th>
+                                                <th>Address</th>
+                                                <th>Waste Type</th>
+                                                <th>Food Type</th>
+                                                <th>Total Weight</th>
+                                                <th>Destination</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for pickup in pickups %}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>
+                                                    <a href="{% url 'generators:edit_pickup_view' pickup.id %}" id="{{ pickup.id }}">
+                                                        {{ pickup.id }}
+                                                    </a>
+                                                </td>
+
+                                                <!-- <td><a href="#" id="waste-gen-1">{{ pickup.id }}</a></td> -->
+                                                <td>{{pickup.pickup_date}}</td>
+                                                <td>{{pickup.waste_source.waste_source.name}}</td>
+                                                <td>{{pickup.address}}</td>
+                                                <td>{{pickup.waste_source.waste_type}}</td>
+                                                <td>{{pickup.waste_source.food_type}}</td>
+                                                <td>{{pickup.waste_source.waste_weight}}</td>
+                                                <td>{{pickup.destination.name}}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="12" class="text-center"> No pickups available.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

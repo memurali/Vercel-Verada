@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Waste Collector{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+  {% include "includes/sidebar_router.html" with active_page="waste_collector" %}
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+      {% include 'partials/header_authenticated.html' with page_name='Edit Collector' %}
+
+      <div class="dashboard-content">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="cell large-7 grid-center">
+              <div class="callout">
+                <form id="collector-form" data-id="{{ collector.id }}">
+                  {% csrf_token %}
+
+                  <div class="grid-x">
+                    <div class="cell text-center">
+                      <p class="h5">Edit Waste Collector</p>
+                    </div>
+                  </div>
+
+                  <div class="grid-x">
+                    <div class="cell">
+                      <label>Collector Type</label>
+                      <select name="collector_type" required>
+                        <option value="">Select Type</option>
+                        {% for type in collector_types %}
+                          <option value="{{ type.id }}" {% if collector.collector_type.id == type.id %}selected{% endif %}>
+                            {{ type.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="cell">
+                      <label>Collector Name</label>
+                      <input type="text" name="collector_name" value="{{ collector.name }}" required>
+                    </div>
+
+                    <div class="cell">
+                        <label>Collector Address</label>
+                        <div class="grid-x grid-margin-x">
+                            <div class="cell small-6">
+                                <input type="text" name="address_one" placeholder="Address 1" value="{{ collector.address.address_line_1 }}" required>
+                            </div>
+                            <div class="cell small-6">
+                                <input type="text" name="address_two" placeholder="Address 2" value="{{ collector.address.address_line_2 }}">
+                            </div>
+                            <div class="cell small-6">
+                                <input type="text" name="city" placeholder="City" value="{{ collector.address.city }}" required>
+                            </div>
+                            <div class="cell small-6">
+                                <input type="text" name="state" placeholder="State" value="{{ collector.address.state }}"  required>
+                            </div>
+                            <div class="cell small-6">
+                                <input type="text" name="zipcode" placeholder="Zipcode" value="{{ collector.address.pin_code }}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cell">
+                      <label>Collector Tax id</label>
+                      <input type="text" name="collector_taxid" value="{{ collector.tax_id|default:'' }}" required>
+                    </div>
+
+                    <div class="cell">
+                      <label>Created Date</label>
+                      <input type="date" name="created_date" value="{{ collector.collector_create_date|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <div class="cell">
+                      <label>Waste Generator Status</label>
+                      <input type="checkbox" name="status" {% if collector.is_active %}checked{% endif %}> Active
+                    </div>
+                  </div>
+
+                  <div class="grid-x">
+                    <div class="cell">
+                      <div class="button-group expanded">
+                        <button type="submit" class="button pill">Update</button>
+                      </div>
+                      <div id="collector-success" class="callout success" style="display:none;">Collector updated!</div>
+                      <div id="collector-error" class="callout alert" style="display:none;"></div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/collector_edit_form.js' %}"></script>
+{% endblock %}

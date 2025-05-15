@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Pickup Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/fieldsLinker.css' %}">
+<style>
+    .fieldsLinker li{
+        width: 23rem;
+    }
+    
+    /* Disabled state */
+    .import-btn:disabled {
+        background: #cccccc;
+        color: #666666;
+        cursor: not-allowed;
+        border: 1px solid #bbbbbb;
+    }
+
+    #spinner {
+        border: 3px solid white;
+        border-top: 3px solid transparent;
+        border-radius: 100%;
+        width: 17.4px;
+        height: 17.4px;
+        position: relative;
+        top: 4px;
+        left: 5px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='waste_pickup' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Waste Pickup Import' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <div class="grid-x">
+                                    <div class="cell large-6">
+                                        <label for="upload_file" class="custom-file-upload">
+                                            Upload File
+                                        </label>
+                                        <input id="upload_file" type="file" style="display: none;">
+
+                                    </div>
+
+                                    <div class="cell large-6">
+                                        <button type="button" class="btn fieldLinkerSave import-btn"><span>Import
+                                            </span><span id="spinner" style="display: none;"></span></button>
+                                    </div>
+                    
+
+                                    <div id="container">
+                                        <div class="bonds" id="original" style="display:block;">
+                                        </div>
+                                    </div>
+
+                                    <span id="output"></span>
+                                    <br /><br />
+                                    <div id="input"></div>
+
+
+                                </div>
+
+                            </form>
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/fieldsLinker.js' %}"></script>
+<script src="{% static 'js/pickups/waste_pickup_import.js' %}"></script>
+
+
+<!-- <script src="{% static 'js/dashboard.js' %}"></script> -->
+{% endblock %}

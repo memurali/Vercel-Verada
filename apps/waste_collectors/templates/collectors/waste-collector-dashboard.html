@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Waste Collector Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_collector" %}
+    
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Waste Collector Dashboard' %}
+
+            <div class="dashboard-content">
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title">Waste Collectors</span>
+                                        </div>
+                                        <div class="cell">
+                                            <form method="get">
+                                                <input type="search" id="collector-search" name="q" placeholder="Search" value="{{ request.GET.q|default_if_none:'' }}" class="pill" style="width: 50%; float: right;">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack" id="collector-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>User ID</th>
+                                                <th>Collector Type</th>
+                                                <th>Collector Name</th>
+                                                <th>Collector Address</th>
+                                                <th>Collector Tax-id</th>
+                                                <th>Created Date</th>
+                                                <th>Waste Generator Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for collector in collectors %}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>
+                                                    <a href="{% url 'collectors:edit' collector.id %}" id="user-{{ collector.id }}">
+                                                        {{ collector.user.id }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ collector.collector_type.name }}</td>
+                                                <td>{{ collector.name }}</td>
+                                                <td>{{collector.address|default:'-'}}</td>
+                                                <td>{{ collector.tax_id|default:'-' }}</td>
+                                                <td>{{ collector.collector_create_date|date:"d/m/Y" }}</td>
+                                                <td>{{ collector.is_active|yesno:"Active,Inactive" }}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="8" class="text-center">No records found</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/collector/waste_collector_dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Organic Generator Master Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_source" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Organic Generator Master Dashboard" %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="cell">
+                                <label>Source Master</label>
+                                <input type="radio" name="source_master_cat" value="yes"> New 
+                                <input type="radio" name="source_master_cat" value="no"> Existing
+                            </div>
+                            <div class="callout">
+                                <form>
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <div class="cell text-center">
+                                            <!-- <p class="h5">Waste Generator Form</p> -->
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-x" id="master_exist">
+
+                                        <div class="cell">
+                                            <label>Waste group Master</label>
+                                            <select name="waste_group_master" required>
+                                                <option value="">Select Group</option>
+                                                {% for waste_group_generator in waste_group_generators %}
+                                                    <option value="{{waste_group_generator.id}}">{{waste_group_generator.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Source Name</label>
+                                            <select name="existing_source_id" required>
+                                                <option value="">Select Group</option>
+                                                {% for source in sources %}
+                                                    <option value="{{source.id}}">{{source.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Location</label>
+                                            <div class="grid-x grid-margin-x">
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_one" placeholder="Address 1" required required value="{{ generator.address_line_1|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_two" placeholder="Address 2" value="{{ generator.address_line_2|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="city" placeholder="City" required value="{{ generator.city|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="state" placeholder="State" required value="{{ generator.state|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="zipcode" placeholder="Zipcode" required value="{{ generator.pin_code|default:'' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Name</label>
+                                            <input type="text" name="contact_name" required >
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Phone No</label>
+                                            <input type="tel" name="contact_phone" required pattern="^\d{10}$">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Email</label>
+                                            <input type="email" name="contact_email" required>
+                                        </div>
+                                        
+                                        <div class="cell">
+                                            <label>Staus</label>
+                                            <input type="checkbox" name="Staus" value="yes"> active
+                                            <input type="checkbox" name="Staus" value="no"> inactive
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Desciption</label>
+                                            <input type="text" name="Desciption" required>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grid-x" id="master_new">
+
+                                        <div class="cell">
+                                            <label>Waste group Master</label>
+                                            <select name="waste_group_master" required>
+                                                <option value="">Select Group</option>
+                                                {% for waste_group_generator in waste_group_generators %}
+                                                    <option value="{{waste_group_generator.id}}">{{waste_group_generator.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Source Name</label>
+                                            <input type="text" name="new_source_name">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Location</label>
+                                            <div class="grid-x grid-margin-x">
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_one" placeholder="Address 1" required>
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_two" placeholder="Address 2">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="city" placeholder="City">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="state" placeholder="State">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="zipcode" placeholder="Zipcode">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Name</label>
+                                            <input type="text" name="contact_name" required>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Phone No</label>
+                                            <input type="tel" name="contact_phone" required pattern="^\d{10}$">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Email</label>
+                                            <input type="email" name="contact_email" required>
+                                        </div>
+                                        
+                                        <div class="cell">
+                                            <label>Staus</label>
+                                            <input type="checkbox" name="Staus" value="yes"> active
+                                            <input type="checkbox" name="Staus" value="no"> inactive
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Desciption</label>
+                                            <input type="text" name="Desciption" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/waste_group_source/waste_source_master_form.js' %}"></script>
+{% endblock %}

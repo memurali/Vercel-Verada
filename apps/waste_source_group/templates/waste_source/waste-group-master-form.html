@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Waste Group Master{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_source" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Waste Group Master" %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+            
+                            <div class="callout">
+                                <form id="waste-group-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <div class="cell text-center"></div>
+                                    </div>
+
+                                    <div class="cell">
+                                        <label>Group Master</label>
+                                        <input type="radio" name="source_master_cat" value="yes"> New 
+                                        <input type="radio" name="source_master_cat" value="no"> Existing
+                                    </div>
+            
+                                    <!-- Existing Waste Group -->
+                                    <div class="grid-x" id="master_exist" style="display:none;">
+                                        <div class="cell">
+                                            <label>Waste Group</label>
+                                            <select name="waste_group_id" required>
+                                                <option value="">Select Group</option>
+                                                {% for waste_group_generator in waste_group_generators %}
+                                                    <option value="{{ waste_group_generator.id }}">{{ waste_group_generator.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Description</label>
+                                            <input type="text" name="description_exist" required>
+                                        </div>
+                                    </div>
+            
+                                    <!-- New Waste Group -->
+                                    <div class="grid-x" id="master_new" style="display:none;">
+                                        <div class="cell">
+                                            <label>Waste Group Name</label>
+                                            <input type="text" name="new_waste_group_name" required>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Description</label>
+                                            <input type="text" name="description_new" required>
+                                        </div>
+                                    </div>
+            
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/waste_group_source/waste_group_master_form.js' %}"></script>
+{% endblock %}

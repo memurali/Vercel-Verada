@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if commodity %}Edit{% else %}Add{% endif %} Commodity{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+  {% include 'includes/sidebar_router.html' with active_page='waste_source' %}
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+      {% include 'partials/header_authenticated.html' with page_name='Waste Source Master' %}
+
+      <div class="dashboard-content">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="cell large-7 grid-center">
+              <div class="callout">
+                <form id="source_master-form" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="id" value="{{ source_master.id }}">
+
+                  <label>Waste Group</label>
+                  <select name="waste_group_master" required>
+                    <option value="">Select Group</option>
+                    {% for group in waste_groups %}
+                    <option value="{{ group.id }}" {% if group.id == source_master.id %}selected{% endif %}>
+                      {{ group.name|title }}
+                    </option>
+                    {% endfor %}
+                  </select>
+
+                  <label>Source Name</label>
+                  <select name="generator_id" required>
+                    <option value="">Select Source</option>
+                    {% for gen in source_name %}
+                    <option value="{{ gen.id }}" {% if gen.id == source_master.id %}selected{% endif %}>
+                      {{ gen.name }}
+                    </option>
+                    {% endfor %}
+                  </select>
+
+                  <label>Address</label>
+                  <select name="address" required>
+                    {% for ad in address_list %}
+                    <option
+                      value="{{ad.id}}"
+                      {% if ad.id == source_master.id %}selected{% endif %}>
+                      {{ ad.address_line_1 }}{% if ad.address_line_2 %}, {{ ad.address_line_2 }}{% endif %},
+                      {{ ad.city }}, {{ ad.state }}, {{ ad.pin_code }}
+                    </option>
+                    {% endfor %}
+
+                  </select>
+
+                  <label>Active</label>
+                  <input type="checkbox" name="active_status" {% if source_master.status == 'A' %}checked{% endif %}>
+                  Active
+
+                  <div class="grid-x">
+                    <div class="cell">
+                      <div class="button-group expanded">
+                        <button type="submit" class="button pill">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="success-box" style="display: none; color: green;"></div>
+                  <div id="error-box" style="display: none; color: red;"></div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Keep modal as is -->
+<div class="reveal" id="commodityModal" data-reveal>
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell large-7 grid-center">
+        <form id="commodity-doc-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="grid-x">
+            <div class="cell">
+              <label>Upload Document</label>
+              <input type="file" name="supporting_document" id="supporting_document" required>
+            </div>
+            <div class="cell">
+              <a href="#" download id="download-link" style="display:none;">Download</a>
+            </div>
+          </div>
+
+          <div class="grid-x">
+            <div class="cell">
+              <div class="button-group expanded">
+                <button type="submit" class="button pill">Submit</button>
+              </div>
+              <div class="callout success" id="doc-success" style="display:none;">File uploaded!</div>
+              <div class="callout alert" id="doc-error" style="display:none;"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/edit_source_master.js' %}"></script>
+<!-- <script src="{% static 'js/upload_commodities.js' %}"></script> -->
+{% endblock %}

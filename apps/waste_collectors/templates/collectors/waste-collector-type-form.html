@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Collector Type{% endblock %}
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_collector" %}
+    <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        {% include 'partials/header_authenticated.html' with page_name='Add Collector Type' %}
+
+        <div class="dashboard-content">
+            <div class="grid-container">
+                <div class="grid-x">
+                    <div class="cell large-7 grid-center">
+                        <div class="callout">
+                            <form id="collector_type_form">
+                                {% csrf_token %}
+                                <div class="grid-x">
+                                    <div class="cell text-center">
+                                        <p class="h5"></p>
+                                    </div>
+                                </div>
+                                <div class="grid-x">
+                                    <div class="cell">
+                                        <label>Collector Type Name
+                                            <input type="text" name="collector_type" required> 
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                                <div class="grid-x">
+                                    <div class="cell">
+                                        <div class="button-group expanded">
+                                            <button type="submit" class="button pill">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div id="success-message" class="callout success" style="display:none;">Role assigned successfully!</div>
+-                           <div id="error-message" class="callout alert" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/collector_type.js' %}"></script>
+
+{% endblock %}
