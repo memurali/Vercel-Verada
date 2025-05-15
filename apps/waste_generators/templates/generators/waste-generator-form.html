@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Waste Generator{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_generator_dashboard" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Add Waste Generator' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="callout">
+                                <form id="generator-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <input type="hidden" name="id" value="{{ generator.id|default:'' }}">
+
+                                        <div class="cell">
+                                            <label>Waste Generator Name</label>
+                                            <input type="text" name="waste_generator_name" required value="{{ generator.name|default:'' }}">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Generator Address</label>
+                                            <div class="grid-x grid-margin-x">
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_one" placeholder="Address 1" required required value="{{ generator.address_line_1|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="address_two" placeholder="Address 2" value="{{ generator.address_line_2|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="city" placeholder="City" required value="{{ generator.city|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="state" placeholder="State" required value="{{ generator.state|default:'' }}">
+                                                </div>
+                                                <div class="cell small-6">
+                                                    <input type="text" name="zipcode" placeholder="Zipcode" required value="{{ generator.pin_code|default:'' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Generator Group</label>
+                                            <select name="waste_group" required>
+                                                <option value="">Select Group</option>
+                                                {% for waste_group in waste_groups %}
+                                                    <option value="{{waste_group.id}}" {% if generator.Waste_generator_group.id == waste_group.id %}selected{% endif %}>{{waste_group.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Name</label>
+                                            <input type="text" name="contact_name" required value="{{ generator.contact_name|default:'' }}">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Phone No</label>
+                                            <input type="tel" name="contact_phone" required pattern="^\d{10}$" value="{{ generator.contact_phone|default:'' }}">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Contact Email</label>
+                                            <input type="email" name="contact_email" required value="{{ generator.contact_email|default:'' }}">
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Generator Status</label>
+                                            <input type="checkbox" name="waste_generator_status" {% if generator.is_active %}checked{% endif %}> Active
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="error-box" class="callout alert" style="display:none;"></div>
+                                    <div id="success-box" class="callout success" style="display:none;"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById("generator-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const generatorId = form.getAttribute('data-id');
+    const url = "{% url 'generators:save_generator' %}";
+    const data = new FormData(form);
+    const successBox = document.getElementById("success-box");
+    const errorBox = document.getElementById("error-box");
+
+    fetch(url, {
+        method: "POST",
+        headers: { "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value },
+        body: data,
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            successBox.innerText = "Generator added successfully!";
+            successBox.style.display = "block";
+            errorBox.style.display = "none";
+            form.reset();
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Added waste generator successfully.',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,     // Prevent click outside
+                allowEscapeKey: false,        // Prevent ESC key
+                allowEnterKey: true           // Optional: allow Enter to confirm
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/generators/dashboard/';
+                }
+            });
+        } else {
+            errorBox.innerText = data.message || "Something went wrong!";
+            errorBox.style.display = "block";
+            successBox.style.display = "none";
+        }
+    })
+    .catch(() => {
+        errorBox.innerText = "Server error.";
+        errorBox.style.display = "block";
+    });
+});
+</script>
+{% endblock %}

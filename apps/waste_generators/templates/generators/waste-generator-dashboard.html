@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Waste Generator Dashboard{% endblock %}
+{% block extra_css %}{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include "includes/sidebar_router.html" with active_page="waste_generator_dashboard" %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name="Waste Generator Dashboard" %}
+            <div class="dashboard-content">
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title">Waste Generators</span>
+                                        </div>
+                                        <div class="cell">
+                                            <form method="get">
+                                                <input type="search" name="q" value="{{ request.GET.q }}" placeholder="Search" class="pill float-right" style="width: 50%; padding: 0.5rem;">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Waste Generator Name</th>
+                                                <th>Waste Generator Address</th>
+                                                <th>Waste Generator Group</th>
+                                                <th>Contact Name</th>
+                                                <th>Contact Phone</th>
+                                                <th>Contact Email</th>
+                                                <th>Waste Generator Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for generator in generators %}
+                                            <tr>
+                                                <td><a href="{% url 'generators:edit_generator' generator.id %}">{{ generator.id }}</a></td>
+                                                <td>{{ generator.name }}</td>
+                                                <td>{% if generator.address_line_1 %} {{ generator.address_line_1 }}, {{generator.city}}, {{generator.pin_code}} {% else %}-{% endif %}</td>
+                                                <td>{{generator.Waste_generator_group.name}}</td>
+                                                <td>{% if generator.contact_name %} {{ generator.contact_name }} {% else %}-{% endif %}</td>
+                                                <td>{% if generator.contact_phone %} {{ generator.contact_phone }} {% else %}-{% endif %}</td>
+                                                <td>{% if generator.contact_email %} {{ generator.contact_email }} {% else %}-{% endif %}</td>
+                                                <td>{% if generator.is_active %} Active {% else %} Inactive {% endif %}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="9" class="text-center">No generators found.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

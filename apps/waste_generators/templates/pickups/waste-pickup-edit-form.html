@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Waste Pickup{% endblock %}
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+  {% include 'includes/sidebar_router.html' with active_page='waste_pickup' %}
+  <div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+      {% include 'partials/header_authenticated.html' with page_name='Waste Pickup' %}
+
+      <div class="dashboard-content">
+        <div class="grid-container">
+          <div class="grid-x">
+            <div class="cell large-7 grid-center">
+              <div class="callout">
+                <form id="waste-pickup-form" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" name="pickup_id" value="{{ pickup.id }}">
+
+                  <label>Pickup Date</label>
+                  <input type="date" name="pickup_date" value="{{ pickup.pickup_date|date:'Y-m-d' }}" required>
+
+                  <label>Waste Type</label>
+                  <select name="waste_type" required>
+                    {% for wt in waste_type_list %}
+                    <option value="{{ wt.id }}" {% if pickup.waste_source.waste_type.id == wt.id %}selected{% endif %}>
+                      {{ wt.name }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <label>Generator</label>
+                  <select name="generator_name" required>
+                    {% for ws in waste_source_list %}
+                    <option value="{{ ws.id }}"
+                      {% if pickup.waste_source.waste_source.id == ws.id %}selected{% endif %}>{{ ws.name }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <label>Address</label>
+                  <select name="address" required>
+                    {% for ad in address_list %}
+                    <option value="{{ ad.address_line_1 }}{% if ad.address_line_2 %}, {{ ad.address_line_2 }}{% endif %}, {{ ad.city }}, {{ ad.state }}, {{ ad.pin_code }}" {% if generators.address.id == ad.id %}selected{% endif %}>
+                        {{ ad.address_line_1 }}{% if ad.address_line_2 %}, {{ ad.address_line_2 }}{% endif %}, {{ ad.city }}, {{ ad.state }}, {{ ad.pin_code }}
+                    </option>
+                    {% endfor %}
+
+                  </select>
+
+                  <label>Food Type</label>
+                  <select name="food_type" required>
+                    {% for ft in food_type_list %}
+                    <option value="{{ ft.id }}" {% if pickup.waste_source.food_type.id == ft.id %}selected{% endif %}>
+                      {{ ft.name }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <label>Waste Weight</label>
+                  <input type="text" name="waste_weight" value="{{ pickup.waste_source.waste_weight }}" required>
+
+                  <label>Upload Image</label>
+                  <input type="file" name="upload_file">
+
+                  <label>Destination</label>
+                  <select name="destination" required>
+                    {% for dest in destination_list %}
+                    <option value="{{ dest.id }}" {% if pickup.destination.id == dest.id %}selected{% endif %}>
+                      {{ dest.name }}</option>
+                    {% endfor %}
+                  </select>
+
+                  <div class="grid-x">
+                    <div class="cell">
+                      <div class="button-group expanded">
+                        <button type="submit" class="button pill">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="success-box" style="display: none; color: green;"></div>
+                  <div id="error-box" style="display: none; color: red;"></div>
+
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Keep modal as is -->
+<div class="reveal" id="commodityModal" data-reveal>
+  <div class="grid-container">
+    <div class="grid-x">
+      <div class="cell large-7 grid-center">
+        <form id="commodity-doc-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="grid-x">
+            <div class="cell">
+              <label>Upload Document</label>
+              <input type="file" name="supporting_document" id="supporting_document" required>
+            </div>
+            <div class="cell">
+              <a href="#" download id="download-link" style="display:none;">Download</a>
+            </div>
+          </div>
+
+          <div class="grid-x">
+            <div class="cell">
+              <div class="button-group expanded">
+                <button type="submit" class="button pill">Submit</button>
+              </div>
+              <div class="callout success" id="doc-success" style="display:none;">File uploaded!</div>
+              <div class="callout alert" id="doc-error" style="display:none;"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <button class="close-button" data-close aria-label="Close modal" type="button">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pickups/edit_pickup.js' %}"></script>
+<!-- <script src="{% static 'js/waste_pickup_form.js' %}"></script> -->
+{% endblock %}

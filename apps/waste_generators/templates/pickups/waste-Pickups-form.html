@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Waste Pickup{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='waste_pickup' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Waste Pickup' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="callout">
+                                <form id="waste-pickup-form" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+
+                                        <div class="cell">
+                                            <label>Pickup Date</label>
+                                            <input type="date" name="pikcup_date" id="pikcup_date" required>
+                                        </div>
+                                        <div class="cell">
+                                            <label>Waste Type</label>
+                                            <select name="waste_type" id="waste_type" required>
+                                                <option value="">Select Waste Type</option>
+                                                {% for wt in waste_types %}
+                                                <option value="{{ wt.id }}">{{ wt.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Generator</label>
+                                            <select name="generator"  id="generator" required>
+                                                <option value="">Select Generator</option>
+                                                {% for source in sources %}
+                                                <option value="{{ source.id }}">{{ source.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Address</label>
+                                            <select name="address" id="address" required>
+                                                <option value="">Select Address</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Food Type</label>
+                                            <select name="food_type" id="food_type" required>
+                                                <option value="">Select Food Type</option>
+                                                {% for food in food_type %}
+                                                <option value="{{ food.id }}">{{ food.name }}</option>
+                                                {% endfor %}
+                                            </select>                                            
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Waste Weight</label>
+                                            <input type="text" name="waste_weight" required>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Upload Image</label>
+                                            <input type="file" name="upload_file" required>
+                                        </div>
+
+                                        <div class="cell">
+                                            <label>Destination</label>
+                                            <select name="destination" required>
+                                                <option value="">Select Destination</option>
+                                                {% for dest in destinations %}
+                                                <option value="{{ dest.id }}">{{ dest.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill">Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("pikcup_date").value = today;
+    });
+</script>
+<script src="{% static 'js/pickups/waste_pickup_form.js' %}"></script>
+{% endblock %}
