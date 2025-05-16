@@ -1,19 +1,10 @@
 {
   "builds": [
-    {
-      "src": "verada/wsgi.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
-    }
+    { "src": "manage.py", "use": "@vercel/python" }
   ],
   "routes": [
-     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "verada/wsgi.py"
-    }
+    { "src": "/static/(.*)", "dest": "staticfiles/$1" },
+    { "src": "/media/(.*)", "dest": "media/$1" },
+    { "src": "/(.*)", "dest": "manage.py" }
   ]
 }
