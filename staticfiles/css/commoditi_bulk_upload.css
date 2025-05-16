@@ -1,0 +1,98 @@
+/* Base button styling */
+.btn {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Styling for 'btn-sm' size */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+}
+
+/* Styling for 'btn-primary' color */
+.btn-primary {
+  color: #fff;
+  background-color: #6AB48C; /* Bootstrap primary blue */
+  border-color: #6AB48C;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  border-color: #004085;
+}
+
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); /* Focus shadow */
+}
+
+/* Styling for 'fieldLinkerSave' specific button (optional) */
+.fieldLinkerSave {
+  font-size: 1rem; /* Ensures readability */
+  font-weight: 600; /* Slightly bolder text */
+  text-transform: uppercase; /* Uppercase letters */
+  letter-spacing: 1px; /* Adds spacing between characters */
+}
+
+/* Optional: Add some padding and margin for spacing */
+.fieldLinkerSave {
+  margin: 5px;
+  padding: 1rem 2rem;
+}
+
+/* Style for the file input container */
+.file-upload-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 5%;
+}
+
+/* Hide the default file input */
+.file-input {
+    display: none;
+}
+
+/* Custom label styling */
+.file-upload-container label {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    background-color: #6AB48C;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Hover effect for label */
+.file-upload-container label:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+/* File name display area */
+.file-name {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #333;
+    vertical-align: middle;
+    font-style: italic;
+}
+
+/* Styling the file input when a file is selected */
+.file-input:focus + .file-name {
+    color: #6AB48C;  /* Change text color to blue when focused */
+}

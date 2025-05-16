@@ -1,0 +1,271 @@
+.full-width { width: 100%; }
+.flex { display: flex; }
+.menu li { margin: 0px 1.5rem; }
+.menu.vertical li { margin: 0px; }
+.pill { border-radius: 50rem; }
+.button.black { background: black; }
+.grid-center { margin: 0px auto !important; }
+.reveal { background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); border: 5px solid white;  }
+.reveal p.h5 { font-weight: bold !important; }
+.lbs:after { content: "Total Weights"; margin-left: 3px; }
+.percentage:after { content: "%"; margin-left: 3px; }
+
+#landing .main { padding: 5rem; }
+#landing .right { padding: 5rem; height: 100vh; overflow-y: scroll; }
+
+#dashboard { background: #F9F9F9; }
+#dashboard .top-bar ul { background: none; }
+#dashboard .top-bar .h6 { font-weight: bold; margin-bottom: 0px; }
+#dashboard .top-bar-left .sub { display: block; color: black; font-size: 11px; font-weight: 500; margin-top: 10px; }
+#dashboard .top-bar-right .profile { background-size: cover !important; width: 2rem; height: 2rem; border-radius: 50%; }
+#dashboard .top-bar-right .sub-menu { background: none; }
+#dashboard .top-bar-right .sub-menu li { background: none; margin-left: 0px; }
+#dashboard .top-bar-right .dropdown-pane { width: 150px !important; }
+#dashboard .callout.side-bar { position: fixed; padding: 0px 1rem 1rem 3.5rem; width: 15.5%; height: 100vh; }
+#dashboard .callout.side-bar .side-nav { position: absolute; width: 35px; left: 0px; height: 100vh; border-right: 1px solid #ddd; }
+#dashboard .callout.side-bar .side-nav a { display: inline-block; background-size: 20px !important; padding: 0px; width: -webkit-fill-available; height: 35px; }
+#dashboard .callout.side-bar .side-nav .logo-mark { margin-bottom: 5rem; }
+#dashboard .callout.side-bar .logo { background-size: 50% !important; padding: 2.5rem 1rem; margin-bottom: 3rem; }
+#dashboard .callout.side-bar a { background-size: 17px !important; color: black; font-size: 11px; font-weight: 500; padding: 1rem 1rem 1rem 27px; }
+#dashboard .callout.side-bar li.selected { background: rgb(124,202,109); background: linear-gradient(90deg, rgba(124,202,109,1) 0%, rgba(98,170,154,1) 100%); }
+#dashboard .callout.side-bar li.selected a { color: white; }
+#dashboard .notes { position: absolute; margin: 10px 20px 10px 10px; border-top: 1px solid #666;  bottom: 1.5rem; }
+#dashboard .notes small { display: block; line-height: 15px; }
+
+#dashboard .off-canvas-content { max-width: 2100px; margin: 0px auto; }
+#dashboard .dashboard-content { margin-right: 1rem;}
+#dashboard .dashboard-callout { position: relative; margin-right: 1rem; }
+#dashboard .dashboard-callout .sub-title { display: block; background-size: 20px !important; font-weight: 500; padding-left: 2.5rem; margin-bottom: 1rem; }
+#dashboard .dashboard-callout p.h1 { font-weight: bold; margin-top: -1rem; margin-bottom: 0px; }
+#dashboard .dashboard-callout p.h1 .lbs { background: rgb(124,202,109); background: linear-gradient(90deg, rgba(124,202,109,1) 0%, rgba(98,170,154,1) 100%); color: transparent; -webkit-background-clip: text; }
+#dashboard .dashboard-callout .label { position: absolute; background: rgb(124,202,109); background: linear-gradient(90deg, rgba(124,202,109,1) 0%, rgba(98,170,154,1) 100%); font-size: 1rem; padding-left: 2rem; margin-left: 1rem; top: 50%; }
+#dashboard .dashboard-callout .label.increase:before { content: "\2197"; position: absolute; margin-top: 0px; margin-right: 3px; left: 7px; }
+#dashboard .dashboard-callout .label.decrease:before { content: "\2198"; position: absolute; margin-top: -0px; margin-right: 3px; left: 7px; }
+#dashboard .dashboard-callout .label.fixed { display: block; right: 0px; top: auto; bottom: 7%; }
+#dashboard .dashboard-callout p.lead { font-weight: bold; margin-bottom: 0px; }
+#dashboard .dashboard-callout .updated-date:before { content: "Last Updated: "}
+
+#dashboard table th { font-size: 11px; }
+#dashboard table td { font-size: 11px; }
+#dashboard table .checkbox { margin: 7px 0 0 7px; }
+#dashboard table span.sub { display: block; font-size: 10px; }
+#dashboard table td.status { background-size: 17px !important; padding-left: 1.78rem; }
+#dashboard table td.status.not-compliant { background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.2.0/png/iconmonstr-x-mark-circle-filled.png&r=255&g=0&b=0) no-repeat 3px 15px; }
+#dashboard table td.status.not-compliant:after { content: "Not Compliant"; }
+#dashboard table td.status.compliant { background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/7.2.0/png/iconmonstr-check-mark-circle-filled.png&r=106&g=180&b=140) no-repeat 3px 15px; }
+#dashboard table td.status.compliant:after { content: "Compliant"; }
+#dashboard table td a.link-icon:after { content: ""; position: absolute; display: inline-block; background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2017/png/iconmonstr-share-11.png&r=106&g=180&b=140) no-repeat center; background-size: 13px; width: 20px; height: 20px; margin-left: 3px; margin-top: -3px; }
+
+#topbarLOGO { display: block; background: url(https://placehold.co/150x50) no-repeat center; background-size: cover; width: 150px; }
+
+.hero { background: #ddd; padding: 10rem 0 7rem; }
+section { padding: 125px 0; }
+.callout-footer {background: #eee;  padding: 62.5px 0; }
+footer .footer { background: #666; padding: 7rem 0 0; }
+footer .footer h6 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.1px; }
+footer .secondary { 	background: #eee; padding: 10px; margin-top: 10rem; }
+
+/* Large and up */
+@media screen and (min-width: 64em) {
+	.top-bar { padding-left: 0px; }
+
+	.hero.primary { height: 78vh; }
+	#landing .main { height: 100vh; }
+}
+
+/* Medium down */
+@media screen and (max-width: 63.9375em) {
+	#dashboard .dashboard-content { margin: 1rem; }
+}
+
+
+.add-role-button {
+	background: none;
+	border: none;
+	color: inherit;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.module-options {
+	display: flex;
+	gap: 15px;
+	margin-left: 20px;
+	align-items: center;
+}
+.module-options label {
+	display: inline-block;
+}
+
+/*super admin css*/
+.side-nav {
+    position: fixed;
+    background: white;
+    top: 0%;
+    width: 3.5rem;
+    height: 100%;
+    border-right: 1px solid #eee;
+    z-index: 1;
+}
+
+
+.side-info {
+    position: fixed;
+    background: white;
+    padding: 1rem 0rem;
+    margin-left: 3.5rem;
+    height: 100%;
+    width: 14rem;
+}
+
+.grid-container.outer {
+    max-width: 100%;
+    padding-right: 0px;
+    margin: 0px auto 0px 17.5rem;
+}
+.top-bar {
+    background: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.top-bar div ul {
+    background: none !important;
+}
+.menu.vertical li {
+    margin: 0px;
+}
+
+.side-info .accordion-menu {
+    height: 100vh;
+}
+
+.side-info .accordion-menu a {
+    font-size: 13px;
+}
+.side-info .accordion-menu .is-accordion-submenu-parent {
+    border-bottom: 1px solid #eee;
+}
+
+.side-info .accordion-menu .help {
+    position: absolute;
+    padding: 1rem;
+    bottom: 5.5rem;
+}
+
+.side-info .accordion-menu .help .callout {
+    background: #5FCF5E url(../assets/bg-topography-small.png) no-repeat center;
+    background-size: cover;
+    padding: 1rem;
+}
+.side-info .accordion-menu .help .callout a {
+    padding: 0px;
+}
+.callout {
+    border: none;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.callout .h5 {
+    color: #5FCF5E;
+    font-weight: bold;
+    margin-bottom: 0px;
+    font-size: 1.5rem;
+}
+
+.side-info .accordion-menu .help .callout p {
+    color: white;
+    font-weight: bold;
+}
+.callout.dashboard-filter {
+    background: none;
+    padding: 0px;
+    box-shadow: none;
+}
+.super-admin-body{
+  position: relative;
+    background: #eee;
+    margin: 0px auto;
+    max-width: 1500px;
+    height: 100vh;
+}
+
+.side-info .accordion-menu .help .callout i {
+    color: white;
+    font-size: 11px;
+    padding: 5px 7px 4px 8px;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+.fi-arrow-right:before {
+    content: "\f10b";
+}
+
+.side-nav .active {
+    position: relative;
+    background: rgb(75, 142, 197);
+    background: linear-gradient(90deg, rgba(75, 142, 197, 1) 0%, rgba(124, 202, 109, 1) 100%);
+    width: -webkit-fill-available;
+}
+
+.side-nav a {
+    height: 3em;
+   
+}
+.side-nav .gearthinc {
+    background: url(../assets/logo-mark.png) no-repeat center;
+    background-size: 2rem;
+    margin-bottom: 7rem;
+    height: 3rem;
+}
+
+.side-nav a span {
+    color: #767676;
+    font-size: 1.5rem;
+    margin-left: 4px;
+}
+
+.side-nav .active span {
+    color: white;
+}
+.callout.dashboard-filter .grid-x .cell:first-child .menu li span {
+    display: block;
+    font-size: 13px;
+    margin-top: 13px;
+}
+.callout.dashboard-filter h4 {
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.custom-file-upload {
+    background-color: #62aa9a
+    ; /* Green */
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .custom-file-upload:hover,
+  .import-btn:hover {
+    background-color:#7cca6d;
+  }
+
+  .import-btn{
+    border: 1px solid transparent;
+    padding: 1rem 2rem;
+    background: #62aa9a;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+
+
+  }

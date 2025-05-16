@@ -1,0 +1,10 @@
+#audit-location-wrapper {
+  margin-bottom: 1rem;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search__field {
+  margin-top: 2px;
+}
+#audit-schedule-form .cell .select2-container{
+  margin-bottom: 10px;
+}

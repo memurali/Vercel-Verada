@@ -1,0 +1,223 @@
+#database .reveal .thumbnail {
+    margin-bottom: 0px;
+}
+
+#database table {
+    font-size: 13px;
+}
+
+td.photos .menu li {
+    margin-right: 5px;
+}
+
+td.photos .menu li a {
+    padding: 0px;
+}
+
+.percentage:after {
+    content: "%";
+}
+
+.diversion-percentage .label {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 1rem;
+    bottom: 1rem;
+    border-radius: 5px;
+}
+
+.increase {
+    background: #D7F1ED;
+    color: #408F82 !important;
+}
+
+.decrease {
+    background: #F4D7DB;
+    color: #C3253C !important;
+}
+
+.top-bar .top-bar-right .menu li {
+    margin-left: 1rem;
+}
+
+.top-bar .top-bar-right .menu li select {
+    font-size: 12px;
+    padding-top: 0px;
+    height: 36px;
+}
+
+.top-bar a {
+    font-size: 13px;
+}
+
+.grid-container.fixed {
+    width: 1140px;
+    min-width: 1140px;
+}
+
+.grid-container .header {
+    margin-top: 3rem;
+}
+
+.grid-container .header img {
+    width: 17rem;
+}
+
+.company-info {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.company-info span:not(.company_info) {
+    margin-left: 1rem;
+}
+
+.diversion-percentage h3 {
+    margin-bottom: 0px;
+}
+
+.diversion-percentage h2 {
+    position: relative;
+    font-weight: bold;
+    margin-bottom: -3px
+}
+
+.diversion-percentage .lead {
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0px;
+}
+
+.commodity-is {
+    position: relative;
+    padding-left: 1.3rem;
+}
+
+.commodity-is:before {
+    position: absolute;
+    background-size: 10px;
+    margin-top: 3px;
+    padding-left: 1rem;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+}
+
+.commodity-is.compost:before {
+    content: "";
+    display: inline-block;
+    background: url(../assets/icons/compost.png) no-repeat center;
+    background-size: 10px;
+    padding-left: 1rem;
+    width: 10px;
+    height: 10px;
+}
+
+.commodity-is.donated:before {
+    content: "";
+    display: inline-block;
+    background: url(../assets/icons/donated.png) no-repeat center;
+    background-size: 10px;
+    padding-left: 1rem;
+    width: 10px;
+    height: 10px;
+}
+
+.commodity-is.recycle:before {
+    content: "";
+    display: inline-block;
+    background: url(../assets/icons/recycle.png) no-repeat center;
+    background-size: 10px;
+    padding-left: 1rem;
+    width: 10px;
+    height: 10px;
+}
+
+.commodity-is.landfill:before {
+    content: "";
+    display: inline-block;
+    background: url(../assets/icons/landfill.png) no-repeat center;
+    background-size: 10px;
+    padding-left: 1rem;
+    width: 10px;
+    height: 10px;
+}
+
+.year-to-date-data {
+    margin-bottom: 5rem;
+}
+
+.year-to-date-data table .current {
+    border-right: 1px solid black;
+}
+
+.year-to-date-data table th {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.year-to-date-data table th:first-child {
+    text-align: left;
+}
+
+.year-to-date-data table td {
+    font-size: 11px;
+    padding-bottom: 0.5rem;
+    text-align: center;
+}
+
+.year-to-date-data table th:last-child {
+    font-weight: bold;
+    text-align: right;
+}
+
+.year-to-date-data table td:first-child {
+    text-align: left;
+}
+
+.year-to-date-data table td:last-child {
+    text-align: right;
+}
+
+.year-to-date-data table .total {
+    border-top: 1px solid black;
+}
+
+.year-to-date-data table .diversion-percentage td {
+    font-weight: bold;
+}
+
+.year-to-date-data table .diversion-percentage td:first-child:after {
+    content: "";
+}
+
+/* .year-to-date-data table .diversion-percentage td:after {
+    content: "%";
+} */
+
+.year-to-date-data table .diversion-percentage .eighty-up {
+    color: #7dcc6c;
+}
+
+.year-to-date-data table .diversion-percentage .sixty-up {
+    color: #F77600;
+}
+
+.year-to-date-data table .diversion-percentage .zero-up {
+    color: #F60004;
+}
+
+.graphs .callout {
+    border: none;
+}
+
+.graphs .callout .h5 {
+    font-weight: bold;
+}
