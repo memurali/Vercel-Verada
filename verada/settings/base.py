@@ -98,8 +98,8 @@ DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'verada',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_GBjnT2WqOhY3',
         'HOST': 'ep-purple-meadow-a4no1r5c.us-east-1.aws.neon.tech',
         'PORT': '5432',
     },
