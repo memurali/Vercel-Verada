@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'verada.wsgi.application'
 DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'verada',
+        'NAME': 'neondb',
         'USER': 'neondb_owner',
         'PASSWORD': 'npg_GBjnT2WqOhY3',
         'HOST': 'ep-purple-meadow-a4no1r5c.us-east-1.aws.neon.tech',
