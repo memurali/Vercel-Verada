@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'verada',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': 'vercel.app',
+        'HOST': 'ep-purple-meadow-a4no1r5c',
         'PORT': '5432',
     },
     'sqlite': {
