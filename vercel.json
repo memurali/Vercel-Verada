@@ -3,7 +3,7 @@
     { "src": "verada/wsgi.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/staticfiles/(.*)", "dest": "staticfiles/$1" },
+    { "src": "/static/(.*)", "dest": "staticfiles/$1" },
     { "src": "/media/(.*)", "dest": "media/$1" },
     { "src": "/(.*)", "dest": "verada/wsgi.py" }
   ]
