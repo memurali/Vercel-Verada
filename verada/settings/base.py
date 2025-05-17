@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'verada',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': 'ep-purple-meadow-a4no1r5c.us-esat-1.aws.neon.tech',
+        'HOST': 'ep-purple-meadow-a4no1r5c.us-east-1.aws.neon.tech',
         'PORT': '5432',
     },
     'sqlite': {
