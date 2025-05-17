@@ -10,7 +10,7 @@ env = environ.Env(
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-print(BASE_DIR,"base dir")
+
 # Load environment from .env file
 environ.Env.read_env(BASE_DIR / '.env')
 
@@ -150,10 +150,10 @@ USE_TZ = True
 #STATIC_URL = '/static/'
 #STATICFILES_DIRS = [BASE_DIR / 'static']
 
-STATIC_URL = '../../staticfiles/admin'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 #STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/admin')    # Where collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # Where collectstatic
 
 
 # Media files
