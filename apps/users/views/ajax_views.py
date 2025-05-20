@@ -33,7 +33,8 @@ class AjaxLoginView(View):
                 'success': True,
                 'mfa': True,
                 'redirect_url': '/auth/verify-otp/',
-                'session_token': str(session_token)
+                'session_token': str(session_token),
+                'Userss':user
             })
 
         except Exception as e:
