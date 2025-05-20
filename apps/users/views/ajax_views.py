@@ -15,6 +15,13 @@ class AjaxLoginView(View):
 
             # Check if user exists
             user = User.objects.filter(email=email).first()
+             return JsonResponse({
+                'success': True,
+                'mfa': True,
+                'redirect_url': '/auth/verify-otp/',
+                'session_token': str(session_token),
+                 'user':user
+            })
             
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
