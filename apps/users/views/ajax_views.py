@@ -16,6 +16,8 @@ class AjaxLoginView(View):
 
             # Check if user exists
             user = User.objects.filter(email=email).first()
+            print("Hello>>>>>>>>")
+            return
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
 
