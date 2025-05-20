@@ -17,6 +17,7 @@ class AjaxLoginView(View):
             # Check if user exists
             user = User.objects.filter(email=email).first()
             print(user,".................")
+            print(">>>>>>>>>>>>")
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
 
@@ -36,8 +37,7 @@ class AjaxLoginView(View):
                 'success': True,
                 'mfa': True,
                 'redirect_url': '/auth/verify-otp/',
-                'session_token': str(session_token),
-                'Userss':user
+                'session_token': str(session_token)
             })
 
         except Exception as e:
