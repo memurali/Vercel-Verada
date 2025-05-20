@@ -17,9 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({ email, password })
         })
-        .then(response => response.json())
-            console.log(response,".")
-                
+        .then(response => response.json())                
         .then(data => {
             console.log(response,data, "response")
         
