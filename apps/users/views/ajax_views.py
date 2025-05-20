@@ -4,13 +4,11 @@ import json
 from django.contrib.auth import get_user_model
 from apps.users.services.mfa_service import MFAService
 import traceback
-from django.views.decorators.csrf import csrf_exempt
 
 
 
 User = get_user_model()
 
-@csrf_exempt
 class AjaxLoginView(View):
     def post(self, request):
         try:
