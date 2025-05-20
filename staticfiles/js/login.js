@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
             consolse.log(response,response.json(),".")
-                return
+                
         .then(data => {
             console.log(response,data, "response")
-        return
+        
             if (data.success && data.mfa) {
                 sessionStorage.setItem("mfa_session_token", data.session_token);
                 window.location.href = data.redirect_url;
