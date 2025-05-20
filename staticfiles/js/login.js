@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())                
         .then(data => {
-            console.log(response,data, "response")
+            console.log(data, "response")
         
             if (data.success && data.mfa) {
                 sessionStorage.setItem("mfa_session_token", data.session_token);
