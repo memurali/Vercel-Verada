@@ -14,10 +14,15 @@ class AjaxLoginView(View):
             email = data.get("email")
             password = data.get("password")
 
+            print("Hello>>>>>>>>")
+            return JsonResponse({'success': True})
+
             # Check if user exists
             user = User.objects.filter(email=email).first()
+
             print("Hello>>>>>>>>")
-           return JsonResponse({'success': True})
+            return JsonResponse({'success': True})
+            
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
 
