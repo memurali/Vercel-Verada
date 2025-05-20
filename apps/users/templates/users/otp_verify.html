@@ -99,6 +99,8 @@ const otpExpiresAt = new Date("{{ expires_at|escapejs }}");  // make sure it's s
     const now = new Date();
     let diff = Math.floor((otpExpiresAt - now) / 200);  // in seconds
 
+    console.log(diff,">>>>>>>>"
+
     if (diff <= 0) {
       document.getElementById("otp-timer").innerText = "00:00";
       document.getElementById("otp-error").innerText = "⛔ OTP expired. Please login again.";
