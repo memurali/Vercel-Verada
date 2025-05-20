@@ -4,9 +4,14 @@ import json
 from django.contrib.auth import get_user_model
 from apps.users.services.mfa_service import MFAService
 import traceback
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 
 
 User = get_user_model()
+
+@method_decorator(csrf_exempt, name='dispatch')
 class AjaxLoginView(View):
     def post(self, request):
         try:
