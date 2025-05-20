@@ -40,7 +40,7 @@ class AjaxLoginView(View):
             })
 
         except Exception as e:
-                print("Exception:", e)
-                print("Traceback:", traceback.format_exc())  # <--- add this
+            print("Exception:", e)
+            print("Traceback:", traceback.format_exc())  # <--- add this
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
