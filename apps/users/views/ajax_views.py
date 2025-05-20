@@ -14,9 +14,6 @@ class AjaxLoginView(View):
             email = data.get("email")
             password = data.get("password")
 
-            print("Hello>>>>>>>>")
-            return JsonResponse({'success': True})
-
             # Check if user exists
             user = User.objects.filter(email=email).first()
 
