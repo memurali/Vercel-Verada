@@ -39,6 +39,7 @@ class AjaxLoginView(View):
             request.session['mfa_user_id'] = user.id
 
             return JsonResponse({
+                'user':user,
                 'success': True,
                 'mfa': True,
                 'redirect_url': '/auth/verify-otp/',
