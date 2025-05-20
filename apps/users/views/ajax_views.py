@@ -3,8 +3,6 @@ from django.http import JsonResponse
 import json
 from django.contrib.auth import get_user_model
 from apps.users.services.mfa_service import MFAService
-import traceback
-
 
 
 User = get_user_model()
@@ -42,6 +40,5 @@ class AjaxLoginView(View):
 
         except Exception as e:
             print("Exception:", e)
-            print("Traceback:", traceback.format_exc())  # <--- add this
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
 
