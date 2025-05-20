@@ -38,4 +38,5 @@ class AjaxLoginView(View):
             })
 
         except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)},"error line#: ",e.__traceback__.tb_lineno, status=500)
+             traceback.print_exc()
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
