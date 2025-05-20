@@ -5,13 +5,12 @@ from django.contrib.auth import get_user_model
 from apps.users.services.mfa_service import MFAService
 import traceback
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 
 
 
 User = get_user_model()
 
-@method_decorator(csrf_exempt, name='dispatch')
+@csrf_exempt
 class AjaxLoginView(View):
     def post(self, request):
         try:
@@ -21,8 +20,6 @@ class AjaxLoginView(View):
 
             # Check if user exists
             user = User.objects.filter(email=email).first()
-            print(user,".................")
-            print(">>>>>>>>>>>>")
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
 
