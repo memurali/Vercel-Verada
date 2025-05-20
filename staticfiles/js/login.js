@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const email = document.getElementById("login-email").value;
         const password = document.getElementById("login-password").value;
-
+        console.log(email,password,getCSRFToken(),".")
         fetch("/api/auth/ajax-login/", {
             method: "POST",
             headers: {
@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(response,data, "response")
             if (data.success && data.mfa) {
                 sessionStorage.setItem("mfa_session_token", data.session_token);
                 window.location.href = data.redirect_url;
