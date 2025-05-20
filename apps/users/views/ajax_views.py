@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 from apps.users.services.mfa_service import MFAService
 
 User = get_user_model()
-
 class AjaxLoginView(View):
     def post(self, request):
         try:
@@ -15,14 +14,6 @@ class AjaxLoginView(View):
 
             # Check if user exists
             user = User.objects.filter(email=email).first()
-             return JsonResponse({
-                'success': True,
-                'mfa': True,
-                'redirect_url': '/auth/verify-otp/',
-                'session_token': str(session_token),
-                 'user':user
-            })
-            
             if not user:
                 return JsonResponse({'success': False, 'message': 'Invalid email or password'}, status=400)
 
@@ -39,7 +30,6 @@ class AjaxLoginView(View):
             request.session['mfa_user_id'] = user.id
 
             return JsonResponse({
-                'user':user,
                 'success': True,
                 'mfa': True,
                 'redirect_url': '/auth/verify-otp/',
@@ -48,3 +38,4 @@ class AjaxLoginView(View):
 
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=500)
+
