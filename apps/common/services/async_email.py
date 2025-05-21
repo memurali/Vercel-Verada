@@ -12,20 +12,20 @@ class AsyncEmailSender(threading.Thread):
         self.context = context
         threading.Thread.__init__(self)
 
-    # def run(self):
-    #     EmailService.send_email(
-    #         subject=self.subject,
-    #         to_email=self.to_email,
-    #         template_name=self.template_name,
-    #         context=self.context
-    #     )
-
     def run(self):
-        message = render_to_string(self.template_name, self.context)
-        email = EmailMessage(
+        EmailService.send_email(
             subject=self.subject,
-            to=[self.to_email],
-            body=message,
+            to_email=self.to_email,
+            template_name=self.template_name,
+            context=self.context
         )
-        email.content_subtype = 'html'
-        email.send()
+
+    # def run(self):
+    #     message = render_to_string(self.template_name, self.context)
+    #     email = EmailMessage(
+    #         subject=self.subject,
+    #         to=[self.to_email],
+    #         body=message,
+    #     )
+    #     email.content_subtype = 'html'
+    #     email.send()
