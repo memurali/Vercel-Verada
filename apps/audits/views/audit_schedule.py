@@ -6,6 +6,7 @@ from apps.audits.models import Audit
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from apps.audits.models import Official
+from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
 from apps.waste_source_group.models import MasterSource
 from apps.waste_generators.models import WasteSourceMaster
