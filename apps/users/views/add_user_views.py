@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.db import transaction
 from apps.audits.models import Official
+from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
 
 @login_required(login_url='login') 
@@ -86,12 +87,19 @@ def ajax_create_user(request):
             "user_role": role.name
         }
 
-        AsyncEmailSender(
-            subject="Welcome to Tracker System",
+        EmailService.send_email(
+            subject='Welcome to Tracker System',
             to_email=user.email,
-            template_name="emails/add_user_email.html",
-            context=context,
-        ).start()
+            template_name='emails/add_user_email.html',
+            context=context
+        )
+
+        # AsyncEmailSender(
+        #     subject="Welcome to Tracker System",
+        #     to_email=user.email,
+        #     template_name="emails/add_user_email.html",
+        #     context=context,
+        # ).start()
         return JsonResponse({"success": True})
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)}, status=500)
