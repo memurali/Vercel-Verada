@@ -17,20 +17,20 @@ def send_welcome_email(user, password, activation_url, change_password_url):
         "change_password_url": change_password_url
     }
 
-    EmailService.send_email(
-        subject='Welcome to Tracker System',
-        to_email='lakshmi.m@progressive-solution.com',
-        template_name='emails/welcome_email.html',
-        context=context
-        )
-
-
-    # AsyncEmailSender(
-    #     subject="Welcome to Tracker System",
-    #     to_email=user.email,
-    #     template_name="emails/welcome_email.html",
+    # EmailService.send_email(
+    #     subject='Welcome to Tracker System',
+    #     to_email='lakshmi.m@progressive-solution.com',
+    #     template_name='emails/welcome_email.html',
     #     context=context
-    # ).start()
+    #     )
+
+
+    AsyncEmailSender(
+        subject="Welcome to Tracker System",
+        to_email=user.email,
+        template_name="emails/welcome_email.html",
+        context=context
+    ).start()
 
 
 class RegistrationService:
