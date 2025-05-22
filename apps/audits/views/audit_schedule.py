@@ -42,13 +42,20 @@ def send_audit_schedule_email(auditor, location_address, audit_link, company_nam
         "client_address": client_address,
     }
 
-    # Use async thread
-    AsyncEmailSender(
+    EmailService.send_email(
         subject=subject,
-        template_name="emails/audit_schedule_email.html",
-        context=context,
-        to_email=to_email
-    ).start()
+        to_email=to_email,
+        template_name='emails/audit_schedule_email.html',
+        context=context
+        )
+
+    # Use async thread
+    # AsyncEmailSender(
+    #     subject=subject,
+    #     template_name="emails/audit_schedule_email.html",
+    #     context=context,
+    #     to_email=to_email
+    # ).start()
 
 @require_POST
 @login_required
