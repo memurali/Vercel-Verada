@@ -2,6 +2,7 @@ import random
 from django.core.mail import send_mail
 from .auth_service import AuthService
 from apps.users.models import OTPRequest
+from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
 
 def send_otp_email(user, otp_code):
@@ -10,12 +11,19 @@ def send_otp_email(user, otp_code):
         "otp": otp_code
     }
 
-    AsyncEmailSender(
-        subject="Your OTP Code - WasteFlow",
+    EmailService.send_email(
+        subject='Your OTP Code - WasteFlow',
         to_email=user.email,
-        template_name="emails/otp_email.html",
+        template_name='emails/otp_email.html',
         context=context
-    ).start()
+        )
+
+    # AsyncEmailSender(
+    #     subject="Your OTP Code - WasteFlow",
+    #     to_email=user.email,
+    #     template_name="emails/otp_email.html",
+    #     context=context
+    # ).start()
 
 class MFAService:
 
