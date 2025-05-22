@@ -2,6 +2,7 @@ import secrets
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 from django.urls import reverse
+from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
 from apps.users.models import Role, UserRole
 from django.db import transaction
@@ -16,12 +17,20 @@ def send_welcome_email(user, password, activation_url, change_password_url):
         "change_password_url": change_password_url
     }
 
-    AsyncEmailSender(
-        subject="Welcome to Tracker System",
+    EmailService.send_email(
+        subject='Welcome to Tracker System',
         to_email=user.email,
-        template_name="emails/welcome_email.html",
+        template_name='emails/welcome_email.html',
         context=context
-    ).start()
+        )
+
+
+    # AsyncEmailSender(
+    #     subject="Welcome to Tracker System",
+    #     to_email=user.email,
+    #     template_name="emails/welcome_email.html",
+    #     context=context
+    # ).start()
 
 
 class RegistrationService:
