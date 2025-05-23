@@ -21,3 +21,8 @@ __pycache__/
 
 # Django/Middleware-specific
 db.sqlite3
+<<<<<<< HEAD
+=======
+#media/
+#staticfiles/
+>>>>>>> 541900a0 (WIP: save changes before rebase)
