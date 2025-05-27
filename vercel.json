@@ -1,6 +1,10 @@
 {
   "builds": [
-    { "src": "verada/wsgi.py", "use": "@vercel/python" }
+    { "src": "verada/wsgi.py", "use": "@vercel/python" },
+    {
+            "src": "media/**",
+            "use": "@vercel/static"
+        }
   ],
   "routes": [
     { "src": "/static/(.*)", "dest": "staticfiles/$1" },
