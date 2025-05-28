@@ -97,7 +97,7 @@ class User(AbstractUser, TimeStampedModel):
     def get_profile_photo_url(self):
         if self.profile_photo and hasattr(self.profile_photo, 'url'):
             return self.profile_photo.url
-        return static("images/2754646-min.jpg")
+        return static("images/default-profile.png")
     
     @property
     def get_roles(self):
