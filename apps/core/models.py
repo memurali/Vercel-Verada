@@ -4,7 +4,7 @@ from apps.users.models import User
 
 class MeasuringUnitMaster(TimeStampedModel):
     name = models.CharField(max_length=100)
-    symbol = models.ImageField(upload_to='measuring_unit')
+    symbol = models.ImageField(upload_to='measuring_unit', , max_length=255)
     STATUS_CHOICES = [
         ('A', 'Active'),
         ('I', 'Inactive'),
