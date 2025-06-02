@@ -167,7 +167,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # Where collectstatic
 
 # Media files
 #MEDIA_URL = '/media/'
-MEDIA_URL = 'https://django-011.s3.us-east-1.amazonaws.com/'
+MEDIA_URL = f"https://django-011.s3.us-east-1.amazonaws.com/"
 # MEDIA_ROOT = BASE_DIR / 'media'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
