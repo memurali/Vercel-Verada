@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.audits',
     'apps.waste_source_group',
     'apps.commodities',
+    'storages',
 ]
 
 MIDDLEWARE = [
