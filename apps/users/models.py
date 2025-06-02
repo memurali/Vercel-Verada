@@ -82,7 +82,7 @@ class User(AbstractUser, TimeStampedModel):
         verbose_name='user permissions'
     )
     activation_token = models.CharField(max_length=128, blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='profile_photo', max_length=255, blank=True)
+    profile_photo = models.ImageField(upload_to='profile_photo', blank=True)
 
     USERNAME_FIELD = 'username'
     objects = UserManager()
