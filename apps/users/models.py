@@ -94,14 +94,14 @@ class User(AbstractUser, TimeStampedModel):
         return self.user_role.filter(query).exists()
 
     @property
-    #def get_profile_photo_url(self):
-        #if self.profile_photo and hasattr(self.profile_photo, 'url'):
-            #return self.profile_photo.url
-        #return static("images/default-profile.png")
-    def profile_photo_url(self):
-        if self.profile_photo:
+    def get_profile_photo_url(self):
+        if self.profile_photo and hasattr(self.profile_photo, 'url'):
             return self.profile_photo.url
-        return 'https://your-bucket.s3.amazonaws.com/'
+        return static("images/default-profile.png")
+    #def profile_photo_url(self):
+     #   if self.profile_photo:
+      #      return self.profile_photo.url
+       # return 'https://your-bucket.s3.amazonaws.com/'
     
     @property
     def get_roles(self):
