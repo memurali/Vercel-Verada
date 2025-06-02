@@ -73,7 +73,7 @@ class WastePickUp(TimeStampedModel):
     pickup_date = models.DateField()
     waste_source = models.ForeignKey(WasteSource, on_delete=models.CASCADE)
     address = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='waste_pickup', blank=True, null=True)
+    image = models.ImageField(upload_to='waste_pickup', max_length=255, blank=True, null=True)
     destination = models.ForeignKey(Collector, on_delete=models.CASCADE)
 
     def __str__(self):
