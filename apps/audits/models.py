@@ -70,7 +70,7 @@ class AuditCommoditi(TimeStampedModel):
     commodity_group = models.ForeignKey(CommodityGroup, on_delete=models.CASCADE)
     weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True)
     contamination_weight = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    image = models.ImageField(upload_to='audit_item_images', blank=True, null=True)
+    image = models.ImageField(upload_to='audit_item_images', blank=True, , max_length=255, null=True)
     contaminant_found = models.BooleanField(default=False)
 
     def __str__(self):
