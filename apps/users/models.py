@@ -43,7 +43,7 @@ class TimeStampedModel(models.Model):
 class Client(TimeStampedModel):
     company_name = models.CharField(max_length=255)
     company_phone = models.CharField(max_length=20)
-    company_logo = models.ImageField(upload_to='company_logo', blank=True)
+    company_logo = models.ImageField(upload_to='company_logo', , max_length=255, blank=True)
     company_address = models.TextField()
     company_email = models.EmailField()
     company_website = models.URLField(blank=True, null=True)
@@ -82,7 +82,7 @@ class User(AbstractUser, TimeStampedModel):
         verbose_name='user permissions'
     )
     activation_token = models.CharField(max_length=128, blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='profile_photo', blank=True)
+    profile_photo = models.ImageField(upload_to='profile_photo', , max_length=255, blank=True)
 
     USERNAME_FIELD = 'username'
     objects = UserManager()
