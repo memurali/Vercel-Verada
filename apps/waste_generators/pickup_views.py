@@ -98,8 +98,8 @@ def submit_waste_pickup(request):
         image = request.FILES.get("upload_file")
 
         # Upload file to S3 and get the URL
-        s3_key = f"waste_pickups/{image.name}"
-        s3_url = upload_file_to_s3_fileobj(image, s3_key)
+        # s3_key = f"waste_pickups/{image.name}"
+        # s3_url = upload_file_to_s3_fileobj(image, s3_key)
 
         waste_source = WasteSource.objects.create(
             waste_source=source,
@@ -112,7 +112,7 @@ def submit_waste_pickup(request):
             pickup_date=pickup_date,
             waste_source=waste_source,
             address=address.address,
-            image=s3_url,
+            image=image,
             destination=destination
         )
 
