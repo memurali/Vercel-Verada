@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     const formData = new FormData(form);
+    console.log($('#upload_file').attr('src'),".........")
 
     fetch("/generators/pickup/submit/", {
         method: "POST",
