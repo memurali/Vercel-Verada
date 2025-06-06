@@ -10,20 +10,19 @@ document.addEventListener("DOMContentLoaded", function () {
             "[name=csrfmiddlewaretoken]"
         ).value;
 
-        fetch('/api/upload_api')
-            .then(async res => {
-                const contentType = res.headers.get("content-type");
-                const text = await res.text();
-                if (!res.ok) throw new Error(`Server error: ${res.status}`);
-                if (!contentType.includes("application/json")) {
-                    console.error("Not JSON:", text);
-                    throw new Error("Expected JSON, got something else.");
-                }
-                return JSON.parse(text);
+        fetch("/api/upload_api/", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                },
+                body: formData,
             })
-            .then(data => console.log(data))
-            .catch(err => console.error(err));
+            .then((res) => res.json())
+            .then((data) => {
 
+                console.log(data,">>>>>>>>>")
+
+            })
     })
 
 
