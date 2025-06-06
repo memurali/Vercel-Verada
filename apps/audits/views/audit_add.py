@@ -7,6 +7,8 @@ from apps.core.models import CommodityGroup
 from decimal import Decimal
 from apps.waste_source_group.models import MasterSource
 from django.db import transaction
+from s3 import upload_file_to_s3_fileobj
+
 
 @login_required(login_url='login')
 def audit_form_view(request, audit_id):
@@ -89,6 +91,7 @@ def audit_form_submit(request):
                 weight = Decimal(weight_val) if weight_val else Decimal("0.00")
                 contamination_weight = Decimal(contamination_weight_val) if contamination_weight_val else Decimal("0.00")
                 image = request.FILES.get(image_field)
+                image = upload_file_to_s3_fileobj(image, 'Audits')
 
                 if weight > 0 or image:
                     AuditCommoditi.objects.create(
