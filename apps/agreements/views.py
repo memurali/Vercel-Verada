@@ -32,7 +32,7 @@ def agreement_dashboard_view(request):
     results = []
     for agreement in agreements:
         file_name = agreement.agreement_paper.name.split('/')[-1] if agreement.agreement_paper else ''
-        file_url = agreement.agreement_paper.url if agreement.agreement_paper else ''
+        file_url = agreement.agreement_paper if agreement.agreement_paper else ''
 
         results.append({
             "id": agreement.id,
