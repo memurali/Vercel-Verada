@@ -8,9 +8,7 @@ from apps.users.views.auth_views import (
     register_view, 
     login_view, 
     otp_verify_view,
-    logout_view,
-    upload_btn,
-    upload_api
+    logout_view
 )
 from apps.users.views.ajax_views import AjaxLoginView
 from apps.users.views.usermanagement_views import dashboard_usermanagement_view
@@ -37,9 +35,6 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path('login/verify/', otp_verify_view, name='otp_verify'),
     path("api/auth/ajax-login/", AjaxLoginView.as_view(), name="ajax_login"),
-
-    path("upload/", upload_btn, name="upload_btn"),
-    path("api/upload_api/", upload_api, name="upload_api"),
 
 
     #USER MANAGEEMT
