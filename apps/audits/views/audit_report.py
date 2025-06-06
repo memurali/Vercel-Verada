@@ -31,7 +31,7 @@ def audit_report_view(request, audit_id):
         weight = int(item['total_weight'])
         contamination_weight = int(item['toal_contamination_weight'])
         percent = round(((weight - contamination_weight) / int(total_weight)) * 100, 2)
-        images = f"{base_url}media/{item.get('image')}"
+        images = f"{item.get('image')}"
         total_percent += percent
 
         print(f"percent: {percent}")
