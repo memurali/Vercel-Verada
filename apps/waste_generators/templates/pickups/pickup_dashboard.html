@@ -50,6 +50,7 @@
                                                 <th>Food Type</th>
                                                 <th>Total Weight</th>
                                                 <th>Destination</th>
+                                                <th> Images</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,6 +71,7 @@
                                                 <td>{{pickup.waste_source.food_type}}</td>
                                                 <td>{{pickup.waste_source.waste_weight}}</td>
                                                 <td>{{pickup.destination.name}}</td>
+                                                <td><img src="{{pickup.image}}" width="60"></td>
                                             </tr>
                                             {% empty %}
                                             <tr>
