@@ -11,6 +11,8 @@ from dateutil.relativedelta import relativedelta  # make sure python-dateutil is
 from apps.agreements.models import Agreement
 from apps.waste_collectors.models import Collector
 from apps.waste_generators.models import WasteSourceMaster
+from s3 import upload_file_to_s3_fileobj
+
 
 @login_required(login_url='login') 
 def agreement_dashboard_view(request):
@@ -69,7 +71,8 @@ def agreement_ajax_submit(request):
 
         if not (gen_id and col_id and file):
             return JsonResponse({"success": False, "message": "All fields are required."})
-        
+            
+        file = upload_file_to_s3_fileobj(file, 'agreements')
         start_date = date(2025, 4, 1)
         end_date = start_date + relativedelta(years=99)
 
@@ -113,9 +116,13 @@ def agreement_ajax_update(request):
         gen_id = request.POST.get("waste_generator")
         col_id = request.POST.get("waste_collector")
         file = request.FILES.get("agreement_file")
+        file = upload_file_to_s3_fileobj(file, 'agreements')
+
 
         if not agreement_id:
             return JsonResponse({"success": False, "message": "Agreement ID is required."})
+
+    
 
         if not (gen_id and col_id):
             return JsonResponse({"success": False, "message": "Generator and Collector are required."})
