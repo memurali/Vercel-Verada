@@ -39,7 +39,7 @@ urlpatterns = [
     path("api/auth/ajax-login/", AjaxLoginView.as_view(), name="ajax_login"),
 
     path("upload/", upload_btn, name="upload_btn"),
-    path("upload_api/", upload_api, name="upload_api"),
+    path("api/upload_api/", upload_api, name="upload_api"),
 
 
     #USER MANAGEEMT
