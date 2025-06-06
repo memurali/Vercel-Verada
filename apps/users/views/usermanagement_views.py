@@ -6,7 +6,7 @@ from apps.users.models import UserRole, Role, User
 from django.db.models.functions import Concat
 from django.conf import settings
 
-from django.db.models import Q
+from django.db.models import Q, F
 
 @login_required(login_url='login') 
 def dashboard_usermanagement_view(request):
@@ -26,12 +26,17 @@ def dashboard_usermanagement_view(request):
             default=Value("Inactive"),
             output_field=CharField()
         ),
+        # profile_photo_url=Case(
+        #     When(profile_photo__isnull=False, profile_photo__gt='', then=Concat(
+        #         Value(settings.MEDIA_URL),
+        #         'profile_photo',
+        #         output_field=CharField()
+        #     )),
+        #     default=Value(''),
+        #     output_field=CharField()
+        # )
         profile_photo_url=Case(
-            When(profile_photo__isnull=False, profile_photo__gt='', then=Concat(
-                Value(settings.MEDIA_URL),
-                'profile_photo',
-                output_field=CharField()
-            )),
+            When(profile_photo__isnull=False, profile_photo__gt='', then=F('profile_photo')),
             default=Value(''),
             output_field=CharField()
         )
