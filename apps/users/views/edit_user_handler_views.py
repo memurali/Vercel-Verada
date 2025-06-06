@@ -5,6 +5,8 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from apps.users.models import UserRole, Role
 from datetime import datetime
+from s3 import upload_file_to_s3_fileobj
+
 
 User = get_user_model()
 
@@ -33,8 +35,12 @@ def update_user_ajax(request):
             defaults={'role': role}
         )
 
-        if request.FILES.get("profile_pic"):
-            user.profile_photo = request.FILES["profile_pic"]
+        # if request.FILES.get("profile_pic"):
+        #     user.profile_photo = request.FILES["profile_pic"]
+        profile_pic = request.FILES.get("profile_pic")
+        if profile_pic:
+            user.profile_photo = profile_pic
+            user.profile_photo = upload_file_to_s3_fileobj(profile_pic, 'profile')
 
         user.save()
         return JsonResponse({"success": True})
