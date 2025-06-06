@@ -57,15 +57,23 @@ def upload_getting_model_names():
         for model in model_classes
     }
 
-    model_names_list = [
-        all_fields.get('Collector', {}).get('name'),
-        all_fields.get('CollectorType', {}).get('name'),
-        all_fields.get('Collector', {}).get('collector_create_date'),
-        all_fields.get('Address', {}).get('address_line_1'),
-        all_fields.get('Collector', {}).get('tax_id'),
-    ]
+    field_mapping = {
+        'Collector Name': ('Collector', 'name'),
+        'Colector Type': ('CollectorType', 'name'),
+        'Created Date': ('Collector', 'collector_create_date'),
+        'Tax ID': ('Collector', 'tax_id'),
+        'Address': ('Address', 'address_line_1')
+    }
 
-    return model_names_list
+    result = []
+    for key, (model_name, field_name) in field_mapping.items():
+        value = all_fields.get(model_name, {}).get(field_name)
+        result.append({
+            "key": key,
+            "value": value
+        })
+
+    return result
 
 
 @csrf_exempt
@@ -78,6 +86,13 @@ def upload_excel(request):
         file_columns = list(df.columns)
 
         model_fields = upload_getting_model_names()
+
+        # Step 3: Separate keys and key->value mapping
+        field_keys = [item['key'] for item in model_fields]
+        field_map = {item['key']: item['value'] for item in model_fields}
+
+        # Step 4: Convert DataFrame rows to a list of dicts
+        data_rows = [{"list": row.to_dict()} for _, row in df.iterrows()]
 
         # Convert DataFrame rows to a list of dicts
         data_rows = []
@@ -103,7 +118,8 @@ def upload_excel(request):
                 },
                 {
                     "name": "Available Fields",
-                    "list": model_fields,
+                    "list": field_keys,   # ✅ Only 'key' values shown to UI
+                    "map": field_map      # ✅ Key → backend value mapping
                     # "mandatories": mandatory_fields
                 }
             ],
@@ -366,9 +382,7 @@ def save_mapped_data(request):
             if len(existing_record) != 0:
                 # return JsonResponse({'status': 'error', 'message': 'Address already exists'})
                 address_id = existing_record[0][0]
-                print(address_id,">>>>>>>>>>>")
                 collector_address = Address.objects.get(id=address_id)
-                print(collector_address,"LLLLLLLLLLL")
 
             else:
                 collector_address, _ = Address.objects.get_or_create(
@@ -378,8 +392,6 @@ def save_mapped_data(request):
                 state=state,
                 pin_code=pin_code,
             )
-
-            print(collector_address,"...............")
            
             Collector.objects.get_or_create(
                 user_id=1,
