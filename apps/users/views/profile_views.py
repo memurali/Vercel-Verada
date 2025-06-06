@@ -5,6 +5,8 @@ from apps.users.models import Client, User
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from s3 import upload_file_to_s3_fileobj
+
 
 
 @login_required(login_url='login')
@@ -74,6 +76,8 @@ def submit_profile_data(request):
         client.company_phone = phone
 
         logo = request.FILES.get("company_logo")
+        logo = upload_file_to_s3_fileobj(logo, 'Company_profile')
+
         if logo:
             client.company_logo = logo
 
