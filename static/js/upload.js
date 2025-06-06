@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "[name=csrfmiddlewaretoken]"
         ).value;
 
-        fetch('/api/data')
+        fetch('/api/upload_api')
             .then(async res => {
                 const contentType = res.headers.get("content-type");
                 const text = await res.text();
