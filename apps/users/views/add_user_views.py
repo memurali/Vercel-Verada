@@ -15,6 +15,8 @@ from django.db import transaction
 from apps.audits.models import Official
 from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
+from s3 import upload_file_to_s3_fileobj
+
 
 @login_required(login_url='login') 
 def user_form_view(request):
@@ -35,6 +37,8 @@ def ajax_create_user(request):
     try:
         data = request.POST
         file = request.FILES.get("profile_picture")
+        file = upload_file_to_s3_fileobj(file, 'profile')
+
 
         email = data.get("email").strip().lower()
         phone = data.get("phone").strip()
