@@ -1,11 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "verada/wsgi.py", "use": "@vercel/python" }
+    { "src": "Verda/wsgi.py", "use": "@vercel/python" }
   ],
   "routes": [
     { "src": "/static/(.*)", "dest": "staticfiles/$1" },
    
-    { "src": "/(.*)", "dest": "verada/wsgi.py" }
+    { "src": "/(.*)", "dest": "Verda/wsgi.py" }
   ]
 }
