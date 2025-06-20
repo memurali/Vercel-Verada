@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'neondb',
         'USER': 'neondb_owner',
         'PASSWORD': 'npg_fGV2H6LvAgcw',
-        'HOST': 'winter-forest-a4hdc2ne-pooler.us-east-1.aws.neon.tech',
+        'HOST': 'ep-winter-forest-a4hdc2ne-pooler.us-east-1.aws.neon.tech',
         'PORT': '5432',
     },
     'sqlite': {
