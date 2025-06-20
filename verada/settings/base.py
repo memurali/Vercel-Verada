@@ -101,8 +101,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
-        'PASSWORD': 'npg_I6HzjUAwnDF8',
-        'HOST': 'ep-falling-voice-a4hv2l3s-pooler.us-east-1.aws.neon.tech',
+        'PASSWORD': 'npg_fGV2H6LvAgcw',
+        'HOST': 'winter-forest-a4hdc2ne-pooler.us-east-1.aws.neon.tech',
         'PORT': '5432',
     },
     'sqlite': {
