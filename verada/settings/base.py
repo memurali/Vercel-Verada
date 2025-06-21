@@ -101,8 +101,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
-        'PASSWORD': 'npg_fGV2H6LvAgcw',
-        'HOST': 'ep-winter-forest-a4hdc2ne-pooler.us-east-1.aws.neon.tech',
+        'PASSWORD': 'npg_kcCO62GIQEJU',
+        'HOST': 'ep-little-sun-a43rzm8e-pooler.us-east-1.aws.neon.tech',
         'PORT': '5432',
     },
     'sqlite': {
