@@ -16,8 +16,9 @@ from django.http import JsonResponse, HttpResponse
 from apps.waste_collectors.models import Collector
 from datetime import datetime, timedelta
 from django.apps import apps
-from django.conf import settings
+from apps.waste_source_group.views import delete_with_related
 from s3 import upload_file_to_s3_fileobj
+
 
 
 @login_required(login_url='login')
@@ -36,7 +37,7 @@ def waste_pickup_dashboard(request):
             Q(waste_source__waste_source__name__icontains=search_query) |
             Q(waste_source__food_type__name__icontains=search_query) |
             Q(waste_source__waste_type__name__icontains=search_query) |
-            Q(destination__name__icontains=search_query)
+            Q(destination__name__icontains=search_query) 
         )
 
     pickups = pickups.order_by('-id')
@@ -50,8 +51,7 @@ def waste_pickup_dashboard(request):
 @login_required(login_url='login')
 def waste_pickup_form_view(request):
     context = {
-        # "sources": MasterSource.objects.all(),
-        "sources": MasterSource.objects.distinct(),
+        "sources": MasterSource.objects.all().distinct(),
         "waste_types": CommodityGroup.objects.all(),
         "destinations": Collector.objects.all(),
         "food_type": CommodityMater.objects.all()
@@ -76,6 +76,9 @@ def submit_waste_pickup(request):
         pickup_date = request.POST.get("pikcup_date")
         address =  WasteSourceMaster.objects.get(id=request.POST.get("address"))
         image = request.FILES.get("upload_file")
+
+        # Upload file to S3 and get the URL
+        # s3_key = f"waste_pickups/{image.name}"
         image = upload_file_to_s3_fileobj(image, 'Pickup')
 
         waste_source = WasteSource.objects.create(
@@ -167,12 +170,10 @@ def waste_Pickups_import(request):
 
 def waste_Pickups_download_template(request):
     context = {
-        "sources": MasterSource.objects.all(),
+        "sources": MasterSource.objects.distinct(),
     }
     return render(request, "pickups/waste-pickup-download_template.html", context)
 
-
-# Import 
 
 # Import 
 def get_common_model_classes():
@@ -507,7 +508,6 @@ def remove_new_items(temp_models, model_map):
 
 
 @csrf_exempt
-@csrf_exempt
 def save_mapped_data(request):
     if request.method != 'POST':
         return JsonResponse({"error": "Invalid request"}, status=400)
@@ -662,61 +662,6 @@ def save_mapped_data(request):
 
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
-
-
-def datatype_field_value(field, value):
-    """Parse the value according to the model field type."""
-
-
-    if isinstance(field, models.DateTimeField):
-        if isinstance(value, (int, float)):
-            return datetime(1899, 12, 30) + timedelta(days=int(value))
-        elif isinstance(value, str):
-            try:
-                return datetime.fromisoformat(value)
-            except ValueError:
-                return None
-        return None
-
-    elif isinstance(field, models.DateField):
-        if value in [None, "", "NA"]:
-            return None
-        if isinstance(value, (int, float)):
-            return (datetime(1899, 12, 30) + timedelta(days=int(value))).date()
-        elif isinstance(value, str):
-            try:
-                return datetime.strptime(value, "%Y-%m-%d").date()
-            except ValueError:
-                return None
-        return None
-
-    elif isinstance(field, models.IntegerField):
-        try:
-            return int(value) if value not in [None, "", "NA"] else None
-        except (ValueError, TypeError):
-            return None
-
-    elif isinstance(field, models.FloatField):
-        try:
-            return float(value) if value not in [None, "", "NA"] else None
-        except (ValueError, TypeError):
-            return None
-
-    elif isinstance(field, models.CharField):
-        return value if value not in [None, ""] else "NA"
-
-    elif isinstance(field, models.BooleanField):
-        return str(value).lower() in ["true", "1"]
-
-    elif isinstance(field, models.ForeignKey):
-        related_model = field.related_model
-        if isinstance(value, int) or (isinstance(value, str) and value.isdigit()):
-            fk_id = int(value)
-            try:
-                return related_model.objects.get(id=fk_id)
-            except related_model.DoesNotExist:
-                return None
-        return None
 
 
 def datatype_field_value(field, value):
