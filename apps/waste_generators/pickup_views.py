@@ -16,8 +16,9 @@ from django.http import JsonResponse, HttpResponse
 from apps.waste_collectors.models import Collector
 from datetime import datetime, timedelta
 from django.apps import apps
-from django.conf import settings
+from apps.waste_source_group.views import delete_with_related
 from s3 import upload_file_to_s3_fileobj
+
 
 
 @login_required(login_url='login')
@@ -36,7 +37,7 @@ def waste_pickup_dashboard(request):
             Q(waste_source__waste_source__name__icontains=search_query) |
             Q(waste_source__food_type__name__icontains=search_query) |
             Q(waste_source__waste_type__name__icontains=search_query) |
-            Q(destination__name__icontains=search_query)
+            Q(destination__name__icontains=search_query) 
         )
 
     pickups = pickups.order_by('-id')
@@ -50,7 +51,7 @@ def waste_pickup_dashboard(request):
 @login_required(login_url='login')
 def waste_pickup_form_view(request):
     context = {
-        "sources": MasterSource.objects.all(),
+        "sources": MasterSource.objects.all().distinct(),
         "waste_types": CommodityGroup.objects.all(),
         "destinations": Collector.objects.all(),
         "food_type": CommodityMater.objects.all()
@@ -75,6 +76,9 @@ def submit_waste_pickup(request):
         pickup_date = request.POST.get("pikcup_date")
         address =  WasteSourceMaster.objects.get(id=request.POST.get("address"))
         image = request.FILES.get("upload_file")
+
+        # Upload file to S3 and get the URL
+        # s3_key = f"waste_pickups/{image.name}"
         image = upload_file_to_s3_fileobj(image, 'Pickup')
 
         waste_source = WasteSource.objects.create(
@@ -166,7 +170,7 @@ def waste_Pickups_import(request):
 
 def waste_Pickups_download_template(request):
     context = {
-        "sources": MasterSource.objects.all(),
+        "sources": MasterSource.objects.distinct(),
     }
     return render(request, "pickups/waste-pickup-download_template.html", context)
 
@@ -196,25 +200,53 @@ def upload_get_model_columns(model):
     return prefix_column_name
   
 
+# def upload_getting_model_names():
+#     model_classes = get_common_model_classes()
+
+#     all_fields = {
+#         model.__name__: upload_get_model_columns(model)
+#         for model in model_classes
+#     }
+
+#     model_names_list = [
+#         all_fields.get('WastePickUp', {}).get('pickup_date'),
+#         all_fields.get('MasterSource', {}).get('name'),
+#         all_fields.get('Address', {}).get('address_line_1'),
+#         all_fields.get('CommodityGroup', {}).get('name'),
+#         all_fields.get('CommodityMater', {}).get('name'),
+#         all_fields.get('WasteSource', {}).get('waste_weight'),
+#         all_fields.get('Collector', {}).get('name')
+#     ]
+
+#     return model_names_list
+
 def upload_getting_model_names():
     model_classes = get_common_model_classes()
-
     all_fields = {
         model.__name__: upload_get_model_columns(model)
         for model in model_classes
     }
 
-    model_names_list = [
-        all_fields.get('WastePickUp', {}).get('pickup_date'),
-        all_fields.get('MasterSource', {}).get('name'),
-        all_fields.get('Address', {}).get('address_line_1'),
-        all_fields.get('CommodityGroup', {}).get('name'),
-        all_fields.get('CommodityMater', {}).get('name'),
-        all_fields.get('WasteSource', {}).get('waste_weight'),
-        all_fields.get('Collector', {}).get('name')
-    ]
+    field_mapping = {
+        'Pickup date': ('WastePickUp', 'pickup_date'),
+        'Address': ('Address', 'address_line_1'),
+        'Source/Generator Name': ('MasterSource', 'name'),
+        'Commodity Name': ('CommodityMater', 'name'),
+        'Waste Type': ('CommodityGroup', 'name'),
+        'Waste Weight': ('WasteSource', 'waste_weight'),
+        'Destination/Collector Name': ('Collector', 'name')
+    }
 
-    return model_names_list
+    result = []
+    for key, (model_name, field_name) in field_mapping.items():
+        value = all_fields.get(model_name, {}).get(field_name)
+        result.append({
+            "key": key,
+            "value": value
+        })
+
+    return result
+
 
 
 @csrf_exempt
@@ -227,6 +259,13 @@ def upload_excel(request):
         file_columns = list(df.columns)
 
         model_fields = upload_getting_model_names()
+
+        # Step 3: Separate keys and key->value mapping
+        field_keys = [item['key'] for item in model_fields]
+        field_map = {item['key']: item['value'] for item in model_fields}
+
+        # Step 4: Convert DataFrame rows to a list of dicts
+        data_rows = [{"list": row.to_dict()} for _, row in df.iterrows()]
 
         # Convert DataFrame rows to a list of dicts
         data_rows = []
@@ -252,7 +291,8 @@ def upload_excel(request):
                 },
                 {
                     "name": "Available Fields",
-                    "list": model_fields,
+                    "list": field_keys,   # ✅ Only 'key' values shown to UI
+                    "map": field_map      # ✅ Key → backend value mapping
                     # "mandatories": mandatory_fields
                 }
             ],
@@ -325,6 +365,89 @@ def update_record_with_unique_ids(temp_models, model_map):
 
 
 
+@require_POST
+def delete_pickups(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        ids = [int(i) for i in data.get("pickups_ids", [])]
+
+        Pickups = WastePickUp.objects.filter(id__in=ids)
+
+        for wg in Pickups:
+            delete_with_related(wg)
+
+        return JsonResponse({"success": True, "message": f"{Pickups.count()} Pickups and related data deleted."})
+
+    except Exception as e:
+        return JsonResponse({"success": False, "message": f"Error: {str(e)}"})
+
+
+
+# def remove_new_items(temp_models, model_map):
+#     fk_required_keys = {
+#         ('common', 'address'),
+#         ('core', 'commoditygroup'),
+#         ('core', 'commoditymater'),
+#     }
+
+#     total_records = len(next(iter(temp_models.values())))
+#     valid_indexes = set(range(total_records))
+
+#     for key in fk_required_keys:
+#         model_class = model_map.get(key)
+#         # print(f"\n--- Checking model: {key} -> {model_class.__name__ if model_class else 'Not Found'}")
+
+#         if not model_class:
+#             # print(f"Model class not found for {key}, skipping all rows.")
+#             valid_indexes = set()
+#             break
+
+#         current_valid_indexes = set()
+#         records = temp_models.get(key, [])
+
+#         for i, record in enumerate(records):
+#             # print(f"\nRow {i} Record: {record}")
+#             is_valid = True
+
+#             for field, value in record.items():
+#                 try:
+#                     # Special case for address lookup
+#                     if key == ('common', 'address') and field == 'address_line_1':
+#                         original = value
+#                         value = value.split(',')[0].strip()
+#                         # print(f"Trying lookup: {model_class.__name__}.{field} = '{value}' (from '{original}')")
+#                         obj = model_class.objects.get(**{field: value})
+#                     elif isinstance(value, int):
+#                         # print(f"Trying lookup: {model_class.__name__}.id = {value}")
+#                         obj = model_class.objects.get(id=value)
+#                     elif isinstance(value, str):  # Case-insensitive string lookup
+#                         # Use `iexact` for exact case-insensitive match, or `icontains` for partial match
+#                         # print(f"Trying lookup: {model_class.__name__}.{field} = {value.lower()}")
+#                         obj = model_class.objects.get(**{f"{field}__iexact": value.lower()})
+#                     else:
+#                         # print(f"Trying lookup: {model_class.__name__}.{field} = {value}")
+#                         obj = model_class.objects.get(**{field: value})
+#                 except model_class.DoesNotExist:
+#                     # print(f"❌ FK error: {model_class.__name__}.{field} = {value} (row {i}) not found.")
+#                     is_valid = False
+#                     break
+
+#             if is_valid:
+#                 # print(f"✅ Row {i} is valid.")
+#                 current_valid_indexes.add(i)
+
+#         valid_indexes &= current_valid_indexes
+
+#     print(f"\n>>> Final valid row indexes: {sorted(valid_indexes)}")
+
+#     cleaned_models = {}
+#     for key, records in temp_models.items():
+#         # print(records,">>>>>>>>>>>>>")
+#         cleaned_models[key] = [records[i] for i in sorted(valid_indexes)]
+
+#     # print(f"\n>>> Cleaned models result: {cleaned_models}")
+#     return cleaned_models
+
 def remove_new_items(temp_models, model_map):
     fk_required_keys = {
         ('common', 'address'),
@@ -332,63 +455,55 @@ def remove_new_items(temp_models, model_map):
         ('core', 'commoditymater'),
     }
 
-    total_records = len(next(iter(temp_models.values())))
-    valid_indexes = set(range(total_records))
+    model_validity = {}
 
     for key in fk_required_keys:
         model_class = model_map.get(key)
-        # print(f"\n--- Checking model: {key} -> {model_class.__name__ if model_class else 'Not Found'}")
-
         if not model_class:
-            # print(f"Model class not found for {key}, skipping all rows.")
-            valid_indexes = set()
-            break
+            continue
 
         current_valid_indexes = set()
         records = temp_models.get(key, [])
 
         for i, record in enumerate(records):
-            # print(f"\nRow {i} Record: {record}")
             is_valid = True
-
             for field, value in record.items():
                 try:
-                    # Special case for address lookup
                     if key == ('common', 'address') and field == 'address_line_1':
-                        original = value
                         value = value.split(',')[0].strip()
-                        # print(f"Trying lookup: {model_class.__name__}.{field} = '{value}' (from '{original}')")
-                        obj = model_class.objects.get(**{field: value})
+                        model_class.objects.get(**{field: value})
                     elif isinstance(value, int):
-                        # print(f"Trying lookup: {model_class.__name__}.id = {value}")
-                        obj = model_class.objects.get(id=value)
-                    elif isinstance(value, str):  # Case-insensitive string lookup
-                        # Use `iexact` for exact case-insensitive match, or `icontains` for partial match
-                        # print(f"Trying lookup: {model_class.__name__}.{field} = {value.lower()}")
-                        obj = model_class.objects.get(**{f"{field}__iexact": value.lower()})
+                        model_class.objects.get(id=value)
+                    elif isinstance(value, str):
+                        model_class.objects.get(**{f"{field}__iexact": value.strip().lower()})
                     else:
-                        # print(f"Trying lookup: {model_class.__name__}.{field} = {value}")
-                        obj = model_class.objects.get(**{field: value})
+                        model_class.objects.get(**{field: value})
                 except model_class.DoesNotExist:
-                    # print(f"❌ FK error: {model_class.__name__}.{field} = {value} (row {i}) not found.")
                     is_valid = False
                     break
 
             if is_valid:
-                # print(f"✅ Row {i} is valid.")
                 current_valid_indexes.add(i)
 
-        valid_indexes &= current_valid_indexes
+        if current_valid_indexes:
+            model_validity[key] = current_valid_indexes
+        else:
+            print(f"⚠️ No valid rows for model {key}.")
 
-    # print(f"\n>>> Final valid row indexes: {sorted(valid_indexes)}")
+    # Use strict intersection
+    if model_validity:
+        valid_indexes = set.intersection(*model_validity.values())
+    else:
+        valid_indexes = set()
 
-    cleaned_models = {}
-    for key, records in temp_models.items():
-        cleaned_models[key] = [records[i] for i in sorted(valid_indexes)]
+    print(f"\n✅ Final valid row indexes: {sorted(valid_indexes)}")
 
-    # print(f"\n>>> Cleaned models result: {cleaned_models}")
+    cleaned_models = {
+        key: [records[i] for i in sorted(valid_indexes)]
+        for key, records in temp_models.items()
+    }
+
     return cleaned_models
-
 
 
 
@@ -457,6 +572,7 @@ def save_mapped_data(request):
         # Example Usage:
         model_map = get_specific_model_map()
         removed_new_items = remove_new_items(model_data_map, model_map)
+        # print(removed_new_items,"............")
         updated_records = update_record_with_unique_ids(removed_new_items, model_map)
         
         # Get raw data lists
@@ -487,7 +603,6 @@ def save_mapped_data(request):
 
                 # values = [record.get('name') for record in records if 'name' in record]
                 # collected_values[key] = {'name': values}
-
         # Extract values
         waste_source_names = collected_values.get('mastersource', {}).get('name', [])
         food_type_names = collected_values.get('commoditymater', {}).get('name', [])
@@ -497,10 +612,8 @@ def save_mapped_data(request):
         pickup_dates = collected_values.get('wastepickup', {}).get('pickup_date', [])
         address_names = collected_values.get('address', {}).get('name', [])
 
-        # print(food_type_names,".>>>>>>>>>>>>>>")
         valid_food_types = set(CommodityMater.objects.values_list('name', flat=True))  # Assumes name is unique
 
-        # print(valid_food_types,">>>>>>>>>>")
 
         # Create WasteSource and WastePickUp objects
         new_data_added = False
@@ -523,7 +636,6 @@ def save_mapped_data(request):
                 # return JsonResponse({'message': 'There is No Unique Data'})
                 continue
 
-            # print(destination_id,"............")
             waste_source, created = WasteSource.objects.get_or_create(
                 waste_source_id=master_source_name,
                 food_type_id=food_type_name,
@@ -690,3 +802,4 @@ def download_template(request):
     response["Content-Disposition"] = f'attachment; filename="{filename}'
     wb.save(response)
     return response
+
