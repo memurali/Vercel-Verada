@@ -25,7 +25,7 @@ def waste_collector_import(request):
     return render(request, "collectors/waste-collector-import-form.html")
 
 def waste_collector_download_template(request):
-    collector_types = CollectorType.objects.distinct()
+    collector_types = CollectorType.objects.all()
     return render(request, "collectors/waste-collector-download_template.html", {
         "collector_types": collector_types
     })
@@ -256,7 +256,6 @@ def save_mapped_data(request):
         mappings = data.get("mappings", {})
         rows = data.get("data", [])
 
-
         # label lookup: column name -> (app, model, field)
         model_fields = map_getting_model_fields_names()
 
@@ -298,7 +297,7 @@ def save_mapped_data(request):
                             break  # match found, skip further loop
             
             # Parse the values for each field dynamically
-            print(temp_models,">>>>>>>>>>>")
+            # print(temp_models,">>>>>>>>>>>")
             for model_key, field_data in temp_models.items():
                 app_label, model_name = model_key
                 model_class = apps.get_model(app_label, model_name)
@@ -312,10 +311,10 @@ def save_mapped_data(request):
 
         # Example Usage:
         model_map = get_specific_model_map()
-        # print(model_data_map,model_map,"..........>>>>>>>>>......")
-        # removed_new_items = remove_new_items(model_data_map, model_map)
+        # print(model_data_map,model_map,"................")
+        removed_new_items = remove_new_items(model_data_map, model_map)
         # print(removed_new_items,"..............")
-        updated_records = update_record_with_unique_ids(model_data_map, model_map)
+        updated_records = update_record_with_unique_ids(removed_new_items, model_map)
         
         # Get raw data lists
         # Loop through each index
@@ -338,7 +337,7 @@ def save_mapped_data(request):
                         collected_values[key][field] = field_values
 
         # Extract values
-        # print(collected_values,"...........>>>>>....")
+        # print(collected_values,"...............")
         collectorname = collected_values.get('collector', {}).get('name', [])
         collector_type_id = collected_values.get('collectortype', {}).get('name', [])
         tax_ids = collected_values.get('collector', {}).get('tax_id', [])
@@ -350,6 +349,7 @@ def save_mapped_data(request):
         
         # Create WasteSource and WastePickUp objects
         new_data_added = False  # Track if we create any new records
+
 
         for i in range(record_count):
             # Get values for this iteration
@@ -372,11 +372,11 @@ def save_mapped_data(request):
             address_line_1 = address_parts[0].strip()
             city = address_parts[1].strip()
             state = address_parts[2].strip()
-            pin_code = address_parts[3].split(' ')[1]
-
+            pin_code = address_parts[3].strip()
           
             cursor.execute(f"SELECT id, address_line_1 FROM common_address where address_line_1 in ('{address_line_1}') ")
             existing_record = cursor.fetchall()
+
 
 
             if len(existing_record) != 0:
@@ -392,7 +392,6 @@ def save_mapped_data(request):
                 state=state,
                 pin_code=pin_code,
             )
-                
            
             Collector.objects.get_or_create(
                 user_id=1,
