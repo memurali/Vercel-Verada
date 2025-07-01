@@ -507,6 +507,7 @@ def remove_new_items(temp_models, model_map):
 
 
 @csrf_exempt
+@csrf_exempt
 def save_mapped_data(request):
     if request.method != 'POST':
         return JsonResponse({"error": "Invalid request"}, status=400)
@@ -571,7 +572,7 @@ def save_mapped_data(request):
         # Example Usage:
         model_map = get_specific_model_map()
         removed_new_items = remove_new_items(model_data_map, model_map)
-        print(removed_new_items,"............")
+        # print(removed_new_items,"............")
         updated_records = update_record_with_unique_ids(removed_new_items, model_map)
         
         # Get raw data lists
