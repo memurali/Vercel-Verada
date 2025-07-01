@@ -16,9 +16,8 @@ from django.http import JsonResponse, HttpResponse
 from apps.waste_collectors.models import Collector
 from datetime import datetime, timedelta
 from django.apps import apps
-from apps.waste_source_group.views import delete_with_related
+from django.conf import settings
 from s3 import upload_file_to_s3_fileobj
-
 
 
 @login_required(login_url='login')
@@ -37,7 +36,7 @@ def waste_pickup_dashboard(request):
             Q(waste_source__waste_source__name__icontains=search_query) |
             Q(waste_source__food_type__name__icontains=search_query) |
             Q(waste_source__waste_type__name__icontains=search_query) |
-            Q(destination__name__icontains=search_query) 
+            Q(destination__name__icontains=search_query)
         )
 
     pickups = pickups.order_by('-id')
@@ -51,7 +50,7 @@ def waste_pickup_dashboard(request):
 @login_required(login_url='login')
 def waste_pickup_form_view(request):
     context = {
-        "sources": MasterSource.objects.all().distinct(),
+        "sources": MasterSource.objects.distinct(),
         "waste_types": CommodityGroup.objects.all(),
         "destinations": Collector.objects.all(),
         "food_type": CommodityMater.objects.all()
@@ -76,9 +75,6 @@ def submit_waste_pickup(request):
         pickup_date = request.POST.get("pikcup_date")
         address =  WasteSourceMaster.objects.get(id=request.POST.get("address"))
         image = request.FILES.get("upload_file")
-
-        # Upload file to S3 and get the URL
-        # s3_key = f"waste_pickups/{image.name}"
         image = upload_file_to_s3_fileobj(image, 'Pickup')
 
         waste_source = WasteSource.objects.create(
@@ -802,4 +798,5 @@ def download_template(request):
     response["Content-Disposition"] = f'attachment; filename="{filename}'
     wb.save(response)
     return response
+
 
