@@ -50,7 +50,8 @@ def waste_pickup_dashboard(request):
 @login_required(login_url='login')
 def waste_pickup_form_view(request):
     context = {
-        "sources": MasterSource.objects.all(),
+        # "sources": MasterSource.objects.all(),
+        "sources": MasterSource.objects.distinct(),
         "waste_types": CommodityGroup.objects.all(),
         "destinations": Collector.objects.all(),
         "food_type": CommodityMater.objects.all()
