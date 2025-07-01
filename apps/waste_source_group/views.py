@@ -87,7 +87,12 @@ def submit_waste_group_master(request):
 
 @login_required
 def waste_source_master_dashboard(request):
-    waste_source_masters = WasteSourceMaster.objects.select_related('waste_source', 'waste_group').all()
+    # waste_source_masters = WasteSourceMaster.objects.select_related('waste_source', 'waste_group').all()
+    waste_source_masters = (
+        WasteSourceMaster.objects
+        .select_related('waste_source', 'waste_group')
+        .distinct('waste_source__name')         # DISTINCT ON waste_source.name
+    )
     context = {
         "waste_source_masters":waste_source_masters
     }
