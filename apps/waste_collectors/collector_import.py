@@ -372,11 +372,11 @@ def save_mapped_data(request):
             address_line_1 = address_parts[0].strip()
             city = address_parts[1].strip()
             state = address_parts[2].strip()
-            pin_code = address_parts[3].strip()
+            pin_code = address_parts[3].split(' ')[1]
+
           
             cursor.execute(f"SELECT id, address_line_1 FROM common_address where address_line_1 in ('{address_line_1}') ")
             existing_record = cursor.fetchall()
-
 
 
             if len(existing_record) != 0:
@@ -392,6 +392,7 @@ def save_mapped_data(request):
                 state=state,
                 pin_code=pin_code,
             )
+                
            
             Collector.objects.get_or_create(
                 user_id=1,
@@ -410,7 +411,6 @@ def save_mapped_data(request):
             return JsonResponse({'message': 'There is No Unique Data'})
 
         return JsonResponse({"status": "success"})
-
 
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=400)
