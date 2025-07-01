@@ -51,7 +51,9 @@ def agreement_dashboard_view(request):
 
 @login_required(login_url='login') 
 def agreement_form_view(request):
-    generators= WasteSourceMaster.objects.all().select_related('waste_source', 'address')
+    # generators= WasteSourceMaster.objects.all().select_related('waste_source', 'address')
+    generators= WasteSourceMaster.objects.all().select_related('waste_source').distinct()
+
     collectors = Collector.objects.all().only('id', 'name')
 
     context = {
