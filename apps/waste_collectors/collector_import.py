@@ -18,6 +18,9 @@ from apps.waste_collectors.models import Collector
 from datetime import datetime, timedelta, date
 from django.apps import apps
 
+import traceback
+import sys
+import pandas as pd
 
 # Import 
 @login_required(login_url='login')
@@ -415,7 +418,15 @@ def save_mapped_data(request):
 
 
     except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)}, status=400)
+        # return JsonResponse({"status": "error", "message": str(e)}, status=400)
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        tb_list = traceback.extract_tb(exc_traceback)
+        # The last element in tb_list corresponds to the line where the exception occurred
+        filename, line_number, function_name, text = tb_list[-1]
+        result = filename, line_number, function_name, text
+        print(f"Exception occurring on line: {line_number} in file: {filename}")
+        df = pd.DataFrame(tb_list[-1])
+        df.to_csv('log.txt', sep='\t', index=False)
 
 
 
