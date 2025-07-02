@@ -302,7 +302,7 @@ def save_mapped_data(request):
                             break  # match found, skip further loop
             
             # Parse the values for each field dynamically
-            print(temp_models,">>>>>>>>>>>")
+            # print(temp_models,">>>>>>>>>>>")
             for model_key, field_data in temp_models.items():
                 app_label, model_name = model_key
                 model_class = apps.get_model(app_label, model_name)
@@ -419,6 +419,7 @@ def save_mapped_data(request):
 
     except Exception as e:
         # return JsonResponse({"status": "error", "message": str(e)}, status=400)
+         # return JsonResponse({"status": "error", "message": str(e)}, status=400)
         exc_type, exc_value, exc_traceback = sys.exc_info()
         tb_list = traceback.extract_tb(exc_traceback)
         # The last element in tb_list corresponds to the line where the exception occurred
@@ -427,6 +428,7 @@ def save_mapped_data(request):
         print(f"Exception occurring on line: {line_number} in file: {filename}")
         df = pd.DataFrame(tb_list[-1])
         df.to_csv('log.txt', sep='\t', index=False)
+        return JsonResponse({'message': 'There is No Unique Data'})
 
 
 
