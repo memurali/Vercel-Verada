@@ -17,6 +17,8 @@ from django.http import JsonResponse, HttpResponse
 from apps.waste_collectors.models import Collector
 from datetime import datetime, timedelta, date
 from django.apps import apps
+from apps.common.models import tbl_ErrorLog as ErrorLog  # replace 'your_app' with your actual app name
+
 
 import traceback
 import sys
@@ -418,17 +420,25 @@ def save_mapped_data(request):
 
 
     except Exception as e:
-        # return JsonResponse({"status": "error", "message": str(e)}, status=400)
-         # return JsonResponse({"status": "error", "message": str(e)}, status=400)
         exc_type, exc_value, exc_traceback = sys.exc_info()
         tb_list = traceback.extract_tb(exc_traceback)
-        # The last element in tb_list corresponds to the line where the exception occurred
+        
+        # Get the last traceback item (where the exception occurred)
         filename, line_number, function_name, text = tb_list[-1]
-        result = filename, line_number, function_name, text
-        print(f"Exception occurring on line: {line_number} in file: {filename}")
-        df = pd.DataFrame(tb_list[-1])
-        df.to_csv('log.txt', sep='\t', index=False)
-        return JsonResponse({'message': 'There is No Unique Data'})
+        
+        # Log to database
+        ErrorLog.objects.create(
+            error_message=str(e),
+            file_name=filename,
+            line_number=line_number,
+            function_name=function_name,
+            error_line=text
+        )
+        
+        # Optionally print or log elsewhere
+        print(f"Exception on line {line_number} in {filename}: {e}")
+
+        return JsonResponse({'message': 'There is No Unique Data'}, status=400)
 
 
 
