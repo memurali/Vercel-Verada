@@ -79,3 +79,15 @@ class Address(models.Model):
             self.pin_code,
         ]
         return ', '.join([p for p in parts if p])
+
+
+class tbl_ErrorLog(models.Model):
+    error_message = models.TextField()
+    file_name = models.CharField(max_length=255)
+    line_number = models.IntegerField()
+    function_name = models.CharField(max_length=255)
+    error_line = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.file_name} - Line {self.line_number}"
