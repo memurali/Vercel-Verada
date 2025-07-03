@@ -19,18 +19,15 @@ from datetime import datetime, timedelta, date
 from django.apps import apps
 from apps.common.models import tbl_ErrorLog as ErrorLog  # replace 'your_app' with your actual app name
 
-
 import traceback
 import sys
-import pandas as pd
-
 # Import 
 @login_required(login_url='login')
 def waste_collector_import(request):
     return render(request, "collectors/waste-collector-import-form.html")
 
 def waste_collector_download_template(request):
-    collector_types = CollectorType.objects.all()
+    collector_types = CollectorType.objects.distinct()
     return render(request, "collectors/waste-collector-download_template.html", {
         "collector_types": collector_types
     })
@@ -252,7 +249,6 @@ def remove_new_items(temp_models, model_map):
 
 
 @csrf_exempt
-@csrf_exempt
 def save_mapped_data(request):
     if request.method != 'POST':
         return JsonResponse({"error": "Invalid request"}, status=400)
@@ -439,7 +435,6 @@ def save_mapped_data(request):
         print(f"Exception on line {line_number} in {filename}: {e}")
 
         return JsonResponse({'message': 'There is No Unique Data'}, status=400)
-
 
 
 
