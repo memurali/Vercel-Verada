@@ -36,41 +36,47 @@ $('#upload_file').on('change', function (e) {
                 // $('.import-btn').prop('disabled', true);
                 var results = fieldLinks.fieldsLinker("getLinks");
                 // $("#output").html("output => " + JSON.stringify(results));
-            
+
                 // Convert the list of links into a mapping object: { "Excel Column": "Model Field" }
+                var fieldMap = inputOri.Lists[1].map;
+
                 var mappings = {};
                 results['links'].forEach(function (link) {
-                    mappings[link.from] = link.to;
+                    var backendValue = fieldMap[link.to]; // convert key to real value
+                    if (backendValue) {
+                        mappings[link.from] = backendValue;
+                    }
                 });
-            
+
+
                 // Make sure the backend gave us the full original Excel data
                 var excelData = inputOri.Lists; // assuming backend includes full row data here
-            
+
                 if (!excelData || excelData.length === 0) {
                     alert("No data rows found.");
                     return;
                 }
-            
+
                 var payload = {
                     mappings: mappings,
-                    data: inputOri.data  
+                    data: inputOri.data
                 };
-            
+
                 // Save mapped data
                 $.ajax({
-                    url: '/generators/save_mapped_data',  // Your new API to insert into the DB
+                    url: '/generators/save_mapped_data', // Your new API to insert into the DB
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(payload),
                     success: function (response) {
-                        if (response['status'] == 'success'){
+                        if (response['status'] == 'success') {
                             alert("Data saved successfully");
                             $("#spinner").css({
                                 'display': 'none'
                             })
                             $('.import-btn').prop('disabled', false);
-                        }
-                        else{
+                            location.reload();
+                        } else {
                             alert("No Unique Data available")
                             $("#spinner").css({
                                 'display': 'none'
@@ -92,5 +98,3 @@ $('#upload_file').on('change', function (e) {
 
     });
 });
-
-
