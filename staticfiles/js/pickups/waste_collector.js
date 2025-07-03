@@ -38,9 +38,14 @@ $('#upload_file').on('change', function (e) {
                 // $("#output").html("output => " + JSON.stringify(results));
 
                 // Convert the list of links into a mapping object: { "Excel Column": "Model Field" }
+                var fieldMap = inputOri.Lists[1].map;
+
                 var mappings = {};
                 results['links'].forEach(function (link) {
-                    mappings[link.from] = link.to;
+                    var backendValue = fieldMap[link.to]; // convert key to real value
+                    if (backendValue) {
+                        mappings[link.from] = backendValue;
+                    }
                 });
 
                 // Make sure the backend gave us the full original Excel data
@@ -70,7 +75,7 @@ $('#upload_file').on('change', function (e) {
                                 'display': 'none'
                             })
                             $('.import-btn').prop('disabled', false);
-                            location.reload();
+                            // location.reload();
 
                         } else {
                             alert("No Unique Data available")
