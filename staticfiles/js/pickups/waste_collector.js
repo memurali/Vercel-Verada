@@ -75,7 +75,7 @@ $('#upload_file').on('change', function (e) {
                                 'display': 'none'
                             })
                             $('.import-btn').prop('disabled', false);
-                            // location.reload();
+                            location.reload();
 
                         } else {
                             alert("No Unique Data available")
