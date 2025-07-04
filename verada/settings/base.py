@@ -20,6 +20,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['.vercel.app']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -96,13 +97,15 @@ WSGI_APPLICATION = 'verada.wsgi.application'
    #     'NAME': BASE_DIR / 'db.sqlite3',
     #}
 #}
+
+# Vercel 
 DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'neondb',
-        'USER': 'neondb_owner',
-        'PASSWORD': 'npg_kcCO62GIQEJU',
-        'HOST': 'ep-little-sun-a43rzm8e-pooler.us-east-1.aws.neon.tech',
+        'NAME': env('DB_Name'),
+        'USER': env('DB_user'),
+        'PASSWORD': env('DB_password'),
+        'HOST': env('DB_host'),
         'PORT': '5432',
     },
     'sqlite': {
@@ -110,6 +113,23 @@ DATABASES = {
         'NAME': str(BASE_DIR / "db.sqlite3"),
     },
 }
+
+# Local 
+# DATABASES = {
+#     'postgres': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'verada1',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+#     'sqlite': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(BASE_DIR / "db.sqlite3"),
+#     },
+# }
+
  
 DATABASES['default'] = DATABASES['postgres']
 
@@ -149,8 +169,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 # Static files
-#STATIC_URL = '/static/'
-#STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+
 
 STATIC_URL = '/staticfiles/'
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
