@@ -170,13 +170,14 @@ def update_waste_group(request):
         return JsonResponse({"success": False, "message": str(e)})
 
 
+
 @login_required(login_url='login')
 def edit_group_master_view(request, id):
     source_master = get_object_or_404(WasteSourceMaster, id=id)
 
     return render(request, "waste_source/waste-source-master-edit-form.html", {
         "source_master": source_master,
-        "waste_groups": WasteGeneratorGroup.objects.all(),  # 🔁 list of groups
+        "waste_groups": WasteGeneratorGroup.objects.values("id", "name"),  # ✅ includes ID + name
         "source_name": MasterSource.objects.all(),
         "address_list": Address.objects.all(),
         "status": WasteSourceMaster.objects.filter(status='A'),
@@ -191,9 +192,19 @@ def update_waste_group_master(request):
         # Fetching POST data
         source_id = data.get("id")
         group_id = data.get("waste_group_master")
-        generator_id = data.get("generator_id")
-        address_id = data.get("address")
+        generator_name = data.get("generator_name")
+        contact_name = data.get("contact_name")
+        contact_phone = data.get("contact_phone")
+        contact_email = data.get("contact_email")
+        description = data.get("description")
+        address_line_1 = data.get("address_line_1")
+        address_line_2 = data.get("address_line_2")
+        city = data.get("city")
+        state = data.get("state")
+        pin_code = data.get("pin_code")
         is_active = data.get("active_status")
+
+        print(generator_name,"........")
 
         if not source_id:
             return JsonResponse({"success": False, "message": "Source ID is missing."})
@@ -202,25 +213,78 @@ def update_waste_group_master(request):
         source = get_object_or_404(WasteSourceMaster, id=source_id)
 
         with transaction.atomic():
-            # Update group
-            if group_id:
-                source.waste_group = get_object_or_404(WasteGeneratorGroup, id=group_id)
+            # Check required values
+            if not group_id:
+                return JsonResponse({"success": False, "message": "Generator Type (waste_group) is required."}, status=400)
 
-            # Update generator
-            if generator_id:
-                source.waste_source = get_object_or_404(MasterSource, id=generator_id)
+            if not generator_name:
+                return JsonResponse({"success": False, "message": "Generator name is required."}, status=400)
 
-            # Update address
-            if address_id:
-                source.address = get_object_or_404(Address, id=address_id)
+            # Assign generator type (waste_group)
+            source.waste_group = get_object_or_404(WasteGeneratorGroup, id=group_id)
 
-            # Update status
+            # Get or create generator
+            generator = MasterSource.objects.filter(name__iexact=generator_name).first()
+            if not generator:
+                generator = MasterSource.objects.create(name=generator_name)
+            source.waste_source = generator
+
+            # Assign contact name
+            if contact_name:
+                source.contact_name = contact_name
+
+            # Assign contact phone
+            if contact_phone:
+                source.contact_phone = contact_phone
+
+            # Assign email
+            if contact_email:
+                source.contact_email = contact_email
+
+            # Assign description
+            if description:
+                source.description = description
+
+            # Get or create address
+            if address_line_1:
+                address_obj = Address.objects.filter(address_line_1__iexact=address_line_1).first()
+                if not address_obj:
+                    address_obj = Address.objects.create(
+                        address_line_1=address_line_1,
+                        address_line_2=address_line_2,
+                        city=city,
+                        state=state,
+                        pin_code=pin_code,
+                    )
+                else:
+                    address_obj.address_line_2 = address_line_2
+                    address_obj.city = city
+                    address_obj.state = state
+                    address_obj.pin_code = pin_code
+                    address_obj.save()
+
+                source.address = address_obj
+
+            # Set status
             source.status = 'A' if is_active == 'on' else 'I'
 
-            # Save the changes
+            # Save the source object
             source.save()
 
-        return JsonResponse({"success": True, "message": "Source Master updated successfully."})
+            return JsonResponse({
+                "success": True,
+                "message": "Source Master updated successfully.",
+                "data": {
+                    "source_id": source.id,
+                    "generator": source.waste_source.name if source.waste_source else "",
+                    "address": str(source.address) if source.address else "",
+                    "status": source.status,
+                    "contact_name": source.contact_name,
+                    "contact_number": source.contact_phone,
+                    "contact_email": source.contact_email,
+                    "desc": source.description,
+                }
+            })
 
     except WasteSourceMaster.DoesNotExist:
         return JsonResponse({"success": False, "message": "Source Master not found."})

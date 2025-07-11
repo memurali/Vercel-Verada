@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db import transaction
+from apps.audits.models import Official
+
 
 @login_required(login_url='login') 
 def user_roles_dashboard(request):
@@ -52,6 +54,15 @@ def update_user_role_ajax(request):
         for role_id in role_ids:
             role = Role.objects.get(id=role_id)
             UserRole.objects.create(user=user, role=role)
+            
+            if role.name == "Auditor":
+                Official.objects.create(
+                    user=user,
+                    name=request.POST.get("first_name"),
+                    designation=role.name,
+                    created_user=request.user
+                )
+            
         return JsonResponse({"success": True})
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)})

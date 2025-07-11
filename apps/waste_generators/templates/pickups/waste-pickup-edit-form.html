@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Edit Waste Pickup{% endblock %}
+{% block title %}Edit Edible food Pickup{% endblock %}
 {% block body_id %}dashboard{% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
   {% include 'includes/sidebar_router.html' with active_page='waste_pickup' %}
   <div class="grid-x">
     <div class="cell large-10 large-offset-2">
-      {% include 'partials/header_authenticated.html' with page_name='Waste Pickup' %}
+      {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup' %}
 
       <div class="dashboard-content">
         <div class="grid-container">
@@ -23,7 +23,7 @@
                   <label>Pickup Date</label>
                   <input type="date" name="pickup_date" value="{{ pickup.pickup_date|date:'Y-m-d' }}" required>
 
-                  <label>Waste Type</label>
+                  <label>Edible food Pickup Type</label>
                   <select name="waste_type" required>
                     {% for wt in waste_type_list %}
                     <option value="{{ wt.id }}" {% if pickup.waste_source.waste_type.id == wt.id %}selected{% endif %}>
@@ -57,7 +57,7 @@
                     {% endfor %}
                   </select>
 
-                  <label>Waste Weight</label>
+                  <label>Edible food Pickup Weight</label>
                   <input type="text" name="waste_weight" value="{{ pickup.waste_source.waste_weight }}" required>
 
                   <label>Upload Image</label>

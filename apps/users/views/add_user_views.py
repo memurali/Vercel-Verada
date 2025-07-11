@@ -37,7 +37,8 @@ def ajax_create_user(request):
     try:
         data = request.POST
         file = request.FILES.get("profile_picture")
-        file = upload_file_to_s3_fileobj(file, 'profile')
+        if file:
+            file = upload_file_to_s3_fileobj(file, 'profile')
 
 
         email = data.get("email").strip().lower()

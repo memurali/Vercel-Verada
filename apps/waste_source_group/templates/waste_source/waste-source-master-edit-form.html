@@ -9,7 +9,7 @@
   {% include 'includes/sidebar_router.html' with active_page='waste_source' %}
   <div class="grid-x">
     <div class="cell large-10 large-offset-2">
-      {% include 'partials/header_authenticated.html' with page_name='Waste Source Master' %}
+      {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup Source Master' %}
 
       <div class="dashboard-content">
         <div class="grid-container">
@@ -20,38 +20,48 @@
                   {% csrf_token %}
                   <input type="hidden" name="id" value="{{ source_master.id }}">
 
-                  <label>Waste Group</label>
+                  <label>Edible food Pickup Group</label>
                   <select name="waste_group_master" required>
                     <option value="">Select Group</option>
                     {% for group in waste_groups %}
-                    <option value="{{ group.id }}" {% if group.id == source_master.id %}selected{% endif %}>
+                    <option value="{{ group.id }}" {% if group.id == source_master.waste_group.id %}selected{% endif %}>
                       {{ group.name|title }}
                     </option>
                     {% endfor %}
                   </select>
 
+                  <!-- Generator Name Dropdown -->
                   <label>Source Name</label>
-                  <select name="generator_id" required>
-                    <option value="">Select Source</option>
-                    {% for gen in source_name %}
-                    <option value="{{ gen.id }}" {% if gen.id == source_master.id %}selected{% endif %}>
-                      {{ gen.name }}
-                    </option>
-                    {% endfor %}
-                  </select>
+                  <input type="text" name="generator_name" value="{{ source_master.waste_source.name }}">
 
-                  <label>Address</label>
-                  <select name="address" required>
-                    {% for ad in address_list %}
-                    <option
-                      value="{{ad.id}}"
-                      {% if ad.id == source_master.id %}selected{% endif %}>
-                      {{ ad.address_line_1 }}{% if ad.address_line_2 %}, {{ ad.address_line_2 }}{% endif %},
-                      {{ ad.city }}, {{ ad.state }}, {{ ad.pin_code }}
-                    </option>
-                    {% endfor %}
+                  <!-- Address Fields -->
+                  <label>Address Line 1</label>
+                  <input type="text" name="address_line_1" value="{{ source_master.address.address_line_1 }}">
 
-                  </select>
+                  <label>Address Line 2</label>
+                  <input type="text" name="address_line_2" value="{{ source_master.address.address_line_2 }}">
+
+                  <label>City</label>
+                  <input type="text" name="city" value="{{ source_master.address.city }}">
+
+                  <label>State</label>
+                  <input type="text" name="state" value="{{ source_master.address.state }}">
+
+                  <label>Pin Code</label>
+                  <input type="text" name="pin_code" value="{{ source_master.address.pin_code }}">
+
+                  <label>Contact Name</label>
+                  <input type="text" name="contact_name" value="{{ source_master.contact_name }}">
+
+                  <label>Contact Number</label>
+                  <input type="text" name="contact_phone" value="{{ source_master.contact_phone }}">
+
+                  <label>Contact Email</label>
+                  <input type="email" name="contact_email" value="{{ source_master.contact_email }}">
+
+                  <label>Description</label>
+                  <input type="text" name="desciption" value="{{ source_master.desciption }}">
+
 
                   <label>Active</label>
                   <input type="checkbox" name="active_status" {% if source_master.status == 'A' %}checked{% endif %}>

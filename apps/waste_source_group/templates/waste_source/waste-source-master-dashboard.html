@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Organic Generator Master Dashboard Dashboard{% endblock %}
+{% block title %}Organic Generator Master Dashboard{% endblock %}
 {% block body_id %}dashboard{% endblock %}
 
 {% block extra_css %}
@@ -21,7 +21,7 @@
     {% include "includes/sidebar_router.html" with active_page="waste_source" %}
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name="Organic Generator Master Dashboard Dashboard" %}
+            {% include 'partials/header_authenticated.html' with page_name="Organic Generator Master Dashboard" %}
             <div class="dashboard-content">
 
                 <!-- Dashboard Full Table Begin-->
@@ -51,8 +51,8 @@
                                                     <input type="checkbox" class="checkbox" id="select-all">
                                                 </th>
                                                 <th>ID</th>
-                                                <th>Waste Group Name</th>
-                                                <th>Waste Source Name</th>
+                                                <th>Edible food Pickup Group Name</th>
+                                                <th>Edible food Pickup Source Name</th>
                                                 <th>Location</th>
                                                 <th>Status</th>
                                                 <!-- <a href="#" id="delete_btn">Delete</a> -->
@@ -76,7 +76,7 @@
                                             </tr>
                                             {% empty %}
                                             <tr>
-                                                <td colspan="12" class="text-center">No waste group available.</td>
+                                                <td colspan="12" class="text-center">No Edible food Pickup group available.</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

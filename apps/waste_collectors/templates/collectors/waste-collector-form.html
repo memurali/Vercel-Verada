@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Add Waste Collector{% endblock %}
+{% block title %}Add Edible food Pickup Collector{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
@@ -13,7 +13,7 @@
     {% include "includes/sidebar_router.html" with active_page="waste_collector" %}
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name='Waste Collector' %}
+            {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup Collector' %}
             <div class="dashboard-content">
                 <div class="grid-container">
                     <div class="grid-x">
@@ -23,7 +23,7 @@
                                     {% csrf_token %}
                                     <div class="grid-x">
                                         <div class="cell text-center">
-                                            <p class="h5">Add Waste Collector</p>
+                                            <p class="h5">Add Edible food Pickup Collector</p>
                                         </div>
                                     </div>
                                     <div class="grid-x">
@@ -74,7 +74,7 @@
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Generator Status</label>
+                                            <label>Edible food Pickup Generator Status</label>
                                             <input type="checkbox" name="status"> Active
                                         </div>
                                     </div>

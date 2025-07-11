@@ -54,7 +54,7 @@
                 {% if perms.read %}
                 <li>
                     <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
-                        Manage Waste Group
+                        Manage Edible food Pickup Group
                     </a>
                 </li>
                 {% endif %}
@@ -63,7 +63,7 @@
                 {% if perms.read %}
                 <li>
                     <a href="{% url 'collectors:waste_collector_dashboard' %}" style="background: url('{% static "icons/collector.png" %}') no-repeat 1px center">
-                        Manage Waste Collector
+                        Manage Edible food Pickup Collector
                     </a>
                 </li>
                 {% endif %}
@@ -178,18 +178,18 @@
         {% elif active_page == 'waste_generator_dashboard' %}
             <li class="{% if request.path == '/generators/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'generators:waste_generator_dashboard' %}" style="background: url() no-repeat 1px center">
-                    Waste Generator Dashboard
+                    Edible food Pickup Generator Dashboard
                 </a>
             </li>
             <li class="{% if request.path == '/generators/add/' %}selected{% endif %}">
                 <a href="{% url 'generators:add_generator' %}" style="background: url() no-repeat 1px center">
-                    Add Waste Generator
+                    Add Edible food Pickup Generator
                 </a>
             </li>
         {% elif active_page == 'waste_collector' %}
             <li class="{% if request.path == '/collectors/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'collectors:waste_collector_dashboard' %}">
-                    Waste Collector 
+                    Edible food Pickup Collector 
                 </a>
             </li>
 
@@ -201,7 +201,7 @@
 
             <li class="{% if request.path == '/collectors/add/' %}selected{% endif %}">
                 <a href="{% url 'collectors:add' %}" style="background: url() no-repeat 1px center">
-                    Add Waste Collector
+                    Add Edible food Pickup Collector
                 </a>
             </li>
 
@@ -213,7 +213,7 @@
 
             <li class="{% if request.path == '/collectors/waste_collector_import/' %}selected{% endif %}">
                 <a href="{% url 'collectors:waste_collector_import' %}" style="background: url() no-repeat 1px center">
-                    Waste Collector Import
+                    Edible food Pickup Collector Import
                 </a>
             </li>
         {% elif active_page == 'audit' %}
@@ -241,17 +241,17 @@
         {% elif active_page == 'waste_source' %}
             <li class="{% if request.path == '/waste/group/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
-                    Waste Group Master Dashboard
+                    Edible food Pickup Group Master Dashboard
                 </a>
             </li>
             <li class="{% if request.path == '/waste/group/form/' %}selected{% endif %}">
                 <a href="{% url 'waste_source_group:waste_group_master_form' %}" style="background: url() no-repeat 1px center">
-                    Add Waste Group Master
+                    Add Edible food Pickup Group Master
                 </a>
             </li>
             <li class="{% if request.path == '/waste/source/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'waste_source_group:waste_source_master_dashboard' %}" style="background: url() no-repeat 1px center">
-                    Organic Generator Master Dashboard Dashboard
+                    Organic Generator Master Dashboard
                 </a>
             </li>
             <li class="{% if request.path == '/waste/source/form/' %}selected{% endif %}">
@@ -263,12 +263,12 @@
             <li class="{% if request.path == '/generators/pickup/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'generators:waste_pickup_dashboard' %}"
                         style="background: url() no-repeat 1px center">
-                        Waste Pickup Dashboard
+                        Edible food Pickup Dashboard
                 </a>
             </li>
             <li class="{% if request.path == '/generators/pickup/form/' %}selected{% endif %}">
                 <a href="{% url 'generators:waste_pickup_form' %}" style="background: url() no-repeat 1px center">
-                    Add Waste Pickup
+                    Add Edible food Pickup
                 </a>
             </li>
             <li class="{% if request.path == '/generators/waste_Pickups_download_template/' %}selected{% endif %}">
@@ -279,7 +279,7 @@
             
             <li class="{% if request.path == '/generators/waste_Pickups_import/' %}selected{% endif %}">
                 <a href="{% url 'generators:waste_Pickups_import' %}" style="background: url() no-repeat 1px center">
-                    Waste Pickup Import
+                    Edible food Pickup Import
                 </a>
             </li>
         {% endif %}

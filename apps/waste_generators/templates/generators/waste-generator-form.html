@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Add Waste Generator{% endblock %}
+{% block title %}Add Edible food Pickup Generator{% endblock %}
 {% block body_id %}dashboard{% endblock %}
 {% block content %}
 <div class="off-canvas-content" data-off-canvas-content>
     {% include "includes/sidebar_router.html" with active_page="waste_generator_dashboard" %}
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name='Add Waste Generator' %}
+            {% include 'partials/header_authenticated.html' with page_name='Add Edible food Pickup Generator' %}
             <div class="dashboard-content">
                 <div class="grid-container">
                     <div class="grid-x">
@@ -20,12 +20,12 @@
                                         <input type="hidden" name="id" value="{{ generator.id|default:'' }}">
 
                                         <div class="cell">
-                                            <label>Waste Generator Name</label>
+                                            <label>Edible food Pickup Generator Name</label>
                                             <input type="text" name="waste_generator_name" required value="{{ generator.name|default:'' }}">
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Generator Address</label>
+                                            <label>Edible food Pickup Generator Address</label>
                                             <div class="grid-x grid-margin-x">
                                                 <div class="cell small-6">
                                                     <input type="text" name="address_one" placeholder="Address 1" required required value="{{ generator.address_line_1|default:'' }}">
@@ -46,7 +46,7 @@
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Generator Group</label>
+                                            <label>Edible food Pickup Generator Group</label>
                                             <select name="waste_group" required>
                                                 <option value="">Select Group</option>
                                                 {% for waste_group in waste_groups %}
@@ -71,7 +71,7 @@
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Generator Status</label>
+                                            <label>Edible food Pickup Generator Status</label>
                                             <input type="checkbox" name="waste_generator_status" {% if generator.is_active %}checked{% endif %}> Active
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@ document.getElementById("generator-form").addEventListener("submit", function (e
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
-                text: 'Added waste generator successfully.',
+                text: 'Added Edible food Pickup generator successfully.',
                 confirmButtonText: 'OK',
                 allowOutsideClick: false,     // Prevent click outside
                 allowEscapeKey: false,        // Prevent ESC key

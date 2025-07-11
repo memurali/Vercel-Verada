@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Edit Waste Collector{% endblock %}
+{% block title %}Edit Edible food Pickup Collector{% endblock %}
 
 {% block extra_css %}
 {% endblock %}
@@ -25,7 +25,7 @@
 
                   <div class="grid-x">
                     <div class="cell text-center">
-                      <p class="h5">Edit Waste Collector</p>
+                      <p class="h5">Edit Edible food Pickup Collector</p>
                     </div>
                   </div>
 
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="cell">
-                      <label>Waste Generator Status</label>
+                      <label>Edible food Pickup Generator Status</label>
                       <input type="checkbox" name="status" {% if collector.is_active %}checked{% endif %}> Active
                     </div>
                   </div>

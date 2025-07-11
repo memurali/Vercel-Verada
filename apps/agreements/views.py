@@ -74,7 +74,8 @@ def agreement_ajax_submit(request):
         if not (gen_id and col_id and file):
             return JsonResponse({"success": False, "message": "All fields are required."})
             
-        file = upload_file_to_s3_fileobj(file, 'agreements')
+        if file:
+            file = upload_file_to_s3_fileobj(file, 'agreements')
         start_date = date(2025, 4, 1)
         end_date = start_date + relativedelta(years=99)
 
@@ -118,7 +119,8 @@ def agreement_ajax_update(request):
         gen_id = request.POST.get("waste_generator")
         col_id = request.POST.get("waste_collector")
         file = request.FILES.get("agreement_file")
-        file = upload_file_to_s3_fileobj(file, 'agreements')
+        if file:
+            file = upload_file_to_s3_fileobj(file, 'agreements')
 
 
         if not agreement_id:

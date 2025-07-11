@@ -12,7 +12,7 @@
 {% include 'includes/sidebar_router.html' with active_page='agreement_dashboard' %}
 <div class="grid-x">
   <div class="cell large-10 large-offset-2">
-    {% include 'partials/header_authenticated.html' with page_name='Waste Generator and Collector' %}
+    {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup Generator and Collector' %}
 
     <div class="dashboard-content">
       <div class="grid-container">
@@ -24,9 +24,9 @@
                     <input type="hidden" name="agreement_id" value="{{ agreemnt.id }}">
                     <div class="grid-x">
                       <div class="cell">
-                        <label>Waste Generator</label>
+                        <label>Edible food Pickup Generator</label>
                         <select name="waste_generator" required>
-                          <option value="">Select Waste Generator</option>
+                          <option value="">Select Edible food Pickup Generator</option>
                           {% for g in generators %}
                             <option value="{{ g.id }}" {% if g.id == agreemnt.generator.id %} selected {% endif %}>{{ g.waste_source.name }}</option>
                           {% endfor %}
@@ -34,9 +34,9 @@
                       </div>
                   
                       <div class="cell">
-                        <label>Waste Collector</label>
+                        <label>Edible food Pickup Collector</label>
                         <select name="waste_collector" required>
-                          <option value="">Select Waste Collector</option>
+                          <option value="">Select Edible food Pickup Collector</option>
                           {% for c in collectors %}
                             <option value="{{ c.id }}" {% if c.id == agreemnt.collector.id%} selected {% endif %}>{{ c.name }}</option>
                           {% endfor %}

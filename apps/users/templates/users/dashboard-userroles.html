@@ -10,55 +10,50 @@
 
 {% block content %}
 <div class="off-canvas-content" data-off-canvas-content>
-    {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
-    <div class="grid-x">
+  {% include "includes/sidebar_router.html" with active_page="user_dashboard" %}
+  <div class="grid-x">
     <div class="cell large-10 large-offset-2">
-        {% include 'partials/header_authenticated.html' with page_name='Roles' %}
+      {% include 'partials/header_authenticated.html' with page_name='Roles' %}
 
-        <div class="dashboard-content">
+      <div class="dashboard-content">
         <div class="table-container">
-            <div class="callout">
+          <div class="callout">
             <div class="dashboard-callout">
-                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+              <div class="grid-x grid-margin-y small-up-1 medium-up-2">
                 <div class="cell"><span class="sub-title">Users</span></div>
                 <div class="cell">
                   <form id="user-role-search-form" method="get">
-                    <input
-                      type="search"
-                      name="q"
-                      id="user-role-search-input"
-                      placeholder="Search"
-                      class="pill"
-                      style="float: right;"
-                    >
-                  </form>                  
+                    <input type="search" name="q" id="user-role-search-input" placeholder="Search" class="pill"
+                      style="float: right;">
+                  </form>
                 </div>
-                </div>
+              </div>
             </div>
 
             <table class="stack" id="user-role-table">
-                <thead>
+              <thead>
                 <tr>
-                    <th>User Name</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                  <th>User Name</th>
+                  <th>Role</th>
+                  <th>Actions</th>
                 </tr>
-                </thead>
-                <tbody>
+              </thead>
+              <tbody>
                 {% for user in users %}
                 <tr>
-                    <td>{{ user.first_name }} {{ user.last_name }}</td>
-                    <td>{{ user.role.name|default:"None" }}</td>
-                    <td><button class="add-role-button" data-user-id="{{ user.id }}" data-open="userRoleModal">+</button></td>
+                  <td>{{ user.first_name }} {{ user.last_name }}</td>
+                  <td>{{ user.role.name|default:"None" }}</td>
+                  <td><button class="add-role-button" data-user-id="{{ user.id }}" data-user-role="{{ user.role.id }}"
+                      data-user-id="{{ user.id }}" data-open="userRoleModal">+</button></td>
                 </tr>
                 {% endfor %}
-                </tbody>
+              </tbody>
             </table>
-            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
-    </div>
+  </div>
 </div>
 
 <!-- Modal for Role Assignment -->
@@ -71,8 +66,8 @@
     <fieldset>
       <legend>Roles</legend>
       {% for role in roles %}
-        <input type="checkbox" id="role-{{ role.id }}" name="role_ids" value="{{ role.id }}">
-        <label for="role-{{ role.id }}">{{ role.name }}</label><br>
+      <input type="radio" id="role-{{ role.id }}" name="role_ids" value="{{ role.id }}">
+      <label for="role-{{ role.id }}">{{ role.name }}</label><br>
       {% endfor %}
     </fieldset>
     <button type="submit" class="button">Save</button>

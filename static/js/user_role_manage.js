@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     btn.addEventListener("click", function () {
       const userId = this.dataset.userId;
       const row = this.closest("tr");
+      const roleId = this.dataset.userRole;
+
       const username = row.querySelector("td:first-child").innerText;
 
       userIdInput.value = userId;
@@ -19,6 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
       form
         .querySelectorAll("input[name='role_ids']")
         .forEach((chk) => (chk.checked = false));
+
+
+      // Check the role radio if it exists
+      if (roleId) {
+        const radioToCheck = document.getElementById("role-" + roleId);
+        if (radioToCheck) {
+          radioToCheck.checked = true;
+        }
+      }
     });
   });
 
@@ -30,10 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
     ).value;
 
     fetch("/update-role/", {
-      method: "POST",
-      headers: { "X-CSRFToken": csrfToken },
-      body: formData,
-    })
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken
+        },
+        body: formData,
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {

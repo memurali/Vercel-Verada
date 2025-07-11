@@ -75,7 +75,8 @@ def submit_waste_pickup(request):
         pickup_date = request.POST.get("pikcup_date")
         address =  WasteSourceMaster.objects.get(id=request.POST.get("address"))
         image = request.FILES.get("upload_file")
-        image = upload_file_to_s3_fileobj(image, 'Pickup')
+        if image:
+            image = upload_file_to_s3_fileobj(image, 'Pickup')
 
         waste_source = WasteSource.objects.create(
             waste_source=source,

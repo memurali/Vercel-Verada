@@ -27,7 +27,7 @@
     font-weight: bold !important;
 }
 .lbs:after {
-    content: "Total Weights";
+    content: "lbs.";
     margin-left: 3px;
 }
 .percentage:after {

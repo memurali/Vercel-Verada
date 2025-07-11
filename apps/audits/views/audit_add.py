@@ -91,7 +91,8 @@ def audit_form_submit(request):
                 weight = Decimal(weight_val) if weight_val else Decimal("0.00")
                 contamination_weight = Decimal(contamination_weight_val) if contamination_weight_val else Decimal("0.00")
                 image = request.FILES.get(image_field)
-                image = upload_file_to_s3_fileobj(image, 'Audits')
+                if image:
+                    image = upload_file_to_s3_fileobj(image, 'Audits')
 
                 if weight > 0 or image:
                     AuditCommoditi.objects.create(

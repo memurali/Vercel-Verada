@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Waste Collector Dashboard{% endblock %}
+{% block title %}Edible food Pickup Collector Dashboard{% endblock %}
 {% block body_id %}dashboard{% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
     
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name='Waste Collector Dashboard' %}
+            {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup Collector Dashboard' %}
 
             <div class="dashboard-content">
                 <div class="table-container">
@@ -20,7 +20,7 @@
                                 <div class="dashboard-callout">
                                     <div class="grid-x grid-margin-y small-up-1 medium-up-2">
                                         <div class="cell">
-                                            <span class="sub-title">Waste Collectors</span>
+                                            <span class="sub-title">Edible food Pickup Collectors</span>
                                         </div>
                                         <div class="cell">
                                             <form method="get">
@@ -40,7 +40,7 @@
                                                 <th>Collector Address</th>
                                                 <th>Collector Tax-id</th>
                                                 <th>Created Date</th>
-                                                <th>Waste Generator Status</th>
+                                                <th>Edible food Pickup Generator Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>

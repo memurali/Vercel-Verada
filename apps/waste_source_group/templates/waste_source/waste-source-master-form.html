@@ -25,14 +25,14 @@
                                     {% csrf_token %}
                                     <div class="grid-x">
                                         <div class="cell text-center">
-                                            <!-- <p class="h5">Waste Generator Form</p> -->
+                                            <!-- <p class="h5">Edible food Pickup Generator Form</p> -->
                                         </div>
                                     </div>
 
                                     <div class="grid-x" id="master_exist">
 
                                         <div class="cell">
-                                            <label>Waste group Master</label>
+                                            <label>Edible food Pickup group Master</label>
                                             <select name="waste_group_master" required>
                                                 <option value="">Select Group</option>
                                                 {% for waste_group_generator in waste_group_generators %}
@@ -42,7 +42,7 @@
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Source Name</label>
+                                            <label>Edible food Pickup Source Name</label>
                                             <select name="existing_source_id" required>
                                                 <option value="">Select Group</option>
                                                 {% for source in sources %}
@@ -103,7 +103,7 @@
                                     <div class="grid-x" id="master_new">
 
                                         <div class="cell">
-                                            <label>Waste group Master</label>
+                                            <label>Edible food Pickup group Master</label>
                                             <select name="waste_group_master" required>
                                                 <option value="">Select Group</option>
                                                 {% for waste_group_generator in waste_group_generators %}
@@ -113,7 +113,7 @@
                                         </div>
 
                                         <div class="cell">
-                                            <label>Waste Source Name</label>
+                                            <label>Edible food Pickup Source Name</label>
                                             <input type="text" name="new_source_name">
                                         </div>
 

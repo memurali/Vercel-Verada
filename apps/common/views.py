@@ -44,7 +44,7 @@ def dashboard_analytics():
     stats = {}
     categories = {
         'food_waste': 'Food Recovery',
-        'recycle': 'Total Waste Recovered',
+        'recycle': 'Edible food Pickup Recovered',
         'compost': 'Compost',
         'landfill': 'Total Trash Weight'
     }

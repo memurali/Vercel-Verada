@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Waste Generator Dashboard{% endblock %}
+{% block title %}Edible food Pickup Generator Dashboard{% endblock %}
 {% block extra_css %}{% endblock %}
 {% block body_id %}dashboard{% endblock %}
 
@@ -10,7 +10,7 @@
     {% include "includes/sidebar_router.html" with active_page="waste_generator_dashboard" %}
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name="Waste Generator Dashboard" %}
+            {% include 'partials/header_authenticated.html' with page_name="Edible food Pickup Generator Dashboard" %}
             <div class="dashboard-content">
                 <div class="table-container">
                     <div class="grid-x">
@@ -19,7 +19,7 @@
                                 <div class="dashboard-callout">
                                     <div class="grid-x grid-margin-y small-up-1 medium-up-2">
                                         <div class="cell">
-                                            <span class="sub-title">Waste Generators</span>
+                                            <span class="sub-title">Edible food Pickup Generators</span>
                                         </div>
                                         <div class="cell">
                                             <form method="get">
@@ -33,13 +33,13 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Waste Generator Name</th>
-                                                <th>Waste Generator Address</th>
-                                                <th>Waste Generator Group</th>
+                                                <th>Edible food Pickup Generator Name</th>
+                                                <th>Edible food Pickup Generator Address</th>
+                                                <th>Edible food Pickup Generator Group</th>
                                                 <th>Contact Name</th>
                                                 <th>Contact Phone</th>
                                                 <th>Contact Email</th>
-                                                <th>Waste Generator Status</th>
+                                                <th>Edible food Pickup Generator Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>

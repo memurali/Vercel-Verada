@@ -23,9 +23,9 @@
                     {% csrf_token %}
                     <div class="grid-x">
                       <div class="cell">
-                        <label>Waste Generator</label>
+                        <label>Edible food Pickup Generator</label>
                         <select name="waste_generator" required>
-                          <option value="">Select Waste Generator</option>
+                          <option value="">Select Edible food Pickup Generator</option>
                           {% for g in generators %}
                             <option value="{{ g.id }}">{{ g.waste_source.name }}</option>
                           {% endfor %}
@@ -33,9 +33,9 @@
                       </div>
                   
                       <div class="cell">
-                        <label>Waste Collector</label>
+                        <label>Edible food Pickup Collector</label>
                         <select name="waste_collector" required>
-                          <option value="">Select Waste Collector</option>
+                          <option value="">Select Edible food Pickup Collector</option>
                           {% for c in collectors %}
                             <option value="{{ c.id }}">{{ c.name }}</option>
                           {% endfor %}

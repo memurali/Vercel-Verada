@@ -76,7 +76,8 @@ def submit_profile_data(request):
         client.company_phone = phone
 
         logo = request.FILES.get("company_logo")
-        logo = upload_file_to_s3_fileobj(logo, 'Company_profile')
+        if logo:
+            logo = upload_file_to_s3_fileobj(logo, 'Company_profile')
 
         if logo:
             client.company_logo = logo
