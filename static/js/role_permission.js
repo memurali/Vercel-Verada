@@ -69,10 +69,12 @@ document.addEventListener("DOMContentLoaded", function () {
     ).value;
 
     fetch("/permissions/assign/", {
-      method: "POST",
-      headers: { "X-CSRFToken": csrfToken },
-      body: formData,
-    })
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrfToken
+        },
+        body: formData,
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -137,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
             container.querySelector(".module-checkbox").checked = true;
             container.querySelector(".module-options").style.display = "block";
 
+
             // Check actions
             checkboxes.forEach((cb) => {
               if (actions.includes(cb.value)) cb.checked = true;
@@ -147,11 +150,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Toggle module options
-  document.querySelectorAll(".module-checkbox").forEach((cb) => {
-    cb.addEventListener("change", function () {
-      const options =
-        this.closest(".module-container").querySelector(".module-options");
-      options.style.display = this.checked ? "block" : "none";
+  // document.querySelectorAll(".module-checkbox").forEach((cb) => {
+  //   cb.addEventListener("change", function () {
+  //     const options =
+  //       this.closest(".module-container").querySelector(".module-options");
+  //     options.style.display = this.checked ? "block" : "none";
+  //   });
+  // });
+
+  document.querySelectorAll(".module-checkbox").forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const container = checkbox.closest(".module-container");
+      const options = container.querySelector(".module-options");
+
+      if (checkbox.checked) {
+        options.style.display = "block";
+      } else {
+        // Hide permissions and uncheck all inside this module
+        options.style.display = "none";
+        options.querySelectorAll("input[type='checkbox']").forEach((perm) => {
+          perm.checked = false;
+        });
+      }
     });
   });
+
 });
