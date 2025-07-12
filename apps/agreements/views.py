@@ -106,7 +106,9 @@ def agreement_edit_form(request, id):
     context = {
         'generators': generators,
         'collectors': collectors,
-        'agreemnt':agreemnt
+        'agreemnt':agreemnt,
+        "agreement_expiry_date": agreemnt.expiration_date.strftime("%Y-%m-%d") if agreemnt.expiration_date else ""
+
     }
 
     return render(request, 'agreements/agreement-edit-form.html', context)
@@ -118,6 +120,7 @@ def agreement_ajax_update(request):
         agreement_id = request.POST.get("agreement_id")
         gen_id = request.POST.get("waste_generator")
         col_id = request.POST.get("waste_collector")
+        expiration_date = request.POST.get("expiration_date")
         file = request.FILES.get("agreement_file")
         if file:
             file = upload_file_to_s3_fileobj(file, 'agreements')
@@ -134,6 +137,7 @@ def agreement_ajax_update(request):
         agreement = Agreement.objects.get(id=agreement_id)
         agreement.generator = WasteSourceMaster.objects.get(id=gen_id)
         agreement.collector = Collector.objects.get(id=col_id)
+        agreement.expiration_date = expiration_date  
 
         # Optional: Update file only if a new one is uploaded
         if file:

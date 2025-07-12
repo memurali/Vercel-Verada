@@ -14,7 +14,7 @@ from apps.users.views.ajax_views import AjaxLoginView
 from apps.users.views.usermanagement_views import dashboard_usermanagement_view
 from apps.users.views.add_user_views import ajax_create_user, user_form_view
 from apps.users.views.user_role_views import role_form_view, assign_role_ajax
-from apps.users.views.user_role_manage_views import user_roles_dashboard, update_user_role_ajax
+from apps.users.views.user_role_manage_views import user_roles_dashboard, update_user_role_ajax,role_names_dashboard,edit_roles_view, update_roles_names
 from apps.users.views.role_permission_views import permission_form_view, assign_permissions_ajax, get_role_permissions
 from apps.users.views.edit_user_handler_views import edit_user_view, update_user_ajax
 
@@ -51,6 +51,10 @@ urlpatterns = [
     path("user/update/", update_user_ajax, name="update_user"),
     # urls.py
     path('get-role-permissions/', get_role_permissions, name='get_role_permissions'),
+
+    path('roles/type/', role_names_dashboard, name='role_names_dashboard'),
+    path('roles/edit/<int:id>/', edit_roles_view, name='edit_roles_view'),
+    path('roles/update/<int:pk>/', update_roles_names, name='update_roles_names'),
 
 
     #REGITRATION HANDLING

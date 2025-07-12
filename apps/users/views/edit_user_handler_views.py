@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from apps.users.models import UserRole, Role
 from datetime import datetime
 from s3 import upload_file_to_s3_fileobj
+from apps.audits.models import Official
 
 
 User = get_user_model()
@@ -34,6 +35,26 @@ def update_user_ajax(request):
             user=user,
             defaults={'role': role}
         )
+
+        # if role.name == "Auditor":
+        official_qs = Official.objects.filter(user=user)
+
+        if official_qs.exists():
+            # Update existing record
+            official_qs.update(
+                name=request.POST.get("first_name"),
+                designation=role.name,
+                created_user=request.user
+            )
+        else:
+            # Create new record
+            Official.objects.create(
+                user=user,
+                name=request.POST.get("first_name"),
+                designation=role.name,
+                created_user=request.user
+            )
+
 
         # if request.FILES.get("profile_pic"):
         #     user.profile_photo = request.FILES["profile_pic"]

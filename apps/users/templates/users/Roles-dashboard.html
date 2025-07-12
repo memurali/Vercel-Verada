@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Roles Dashboard{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='user_dashboard' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Roles Dashboard' %}
+            <div class="dashboard-content">
+                <div class="table-container">
+                    <div class="grid-x">
+                        <div class="cell large-12">
+                            <div class="callout">
+                                <div class="dashboard-callout">
+                                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                        <div class="cell">
+                                            <span class="sub-title"
+                                                style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2017/240/iconmonstr-chart-22.png) no-repeat 0px center">Roles
+                                                </p>
+                                        </div>
+                                        <div class="cell">
+                                            <input type="search" placeholder="Search" class="pill"
+                                                style="width: 50%; float: right; padding-left: 15px; padding-right: 15px; box-shadow: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="stack">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <input type="checkbox" class="checkbox">
+                                                </th>
+                                                <th>Role ID</th>
+                                                <th>Role Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for Roles in Roles_obj%}
+                                            <tr>
+                                                <td><input type="checkbox" class="checkbox"></td>
+                                                <td>
+                                                    <a href="{% url 'edit_roles_view' Roles.id %}" id="commodity-{{ Roles.id }}">
+                                                        C-{{ Roles.id }}
+                                                    </a>
+                                                </td>                                                
+                                                </td>
+                                                <td>{{Roles.name}}</td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="12" class="text-center">No Roles available.</td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

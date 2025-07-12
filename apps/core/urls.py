@@ -14,7 +14,10 @@ from apps.core.views import (
     commodities_type_dashboard,
     create_commodity_type,
     edit_commodity_type_page,
-    edit_commodity_type
+    edit_commodity_type,
+    edit_units_view,
+    update_units,
+    units_names_dashboard
 )
 from apps.core.bulk_upload_view import bulk_upload_commodity_data
 
@@ -30,6 +33,10 @@ urlpatterns = [
     path("upload-document/", upload_commodity_document, name="upload_doc_commoditi"),
     path("unit/form/", unit_form_view, name="unit_form"),
     path("unit/add/", add_unit_ajax, name="add_unit"),
+
+    path('units/type/', units_names_dashboard, name='units_names_dashboard'),
+    path('units/edit/<int:id>/', edit_units_view, name='edit_units_view'),
+    path('units/update/<int:pk>/', update_units, name='update_units'),
 
     path("commodity/bulk-import/", commodity_bulk_import_view, name="commodity_bulk_import_view"),
     path('upload_excel/',upload_excel,name='upload_excel'),

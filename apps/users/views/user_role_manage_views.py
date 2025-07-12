@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from apps.users.models import User, Role, UserRole
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db import transaction
 from apps.audits.models import Official
+import json
 
 
 @login_required(login_url='login') 
@@ -55,10 +56,21 @@ def update_user_role_ajax(request):
             role = Role.objects.get(id=role_id)
             UserRole.objects.create(user=user, role=role)
             
-            if role.name == "Auditor":
+            # if role.name == "Auditor":
+            official_qs = Official.objects.filter(user=user)
+
+            if official_qs.exists():
+                # Update existing record
+                official_qs.update(
+                    name=user.first_name,
+                    designation=role.name,
+                    created_user=request.user
+                )
+            else:
+                # Create new record
                 Official.objects.create(
                     user=user,
-                    name=request.POST.get("first_name"),
+                    name=user.first_name,
                     designation=role.name,
                     created_user=request.user
                 )
@@ -66,3 +78,44 @@ def update_user_role_ajax(request):
         return JsonResponse({"success": True})
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)})
+    
+
+
+@login_required
+def role_names_dashboard(request):
+    Roles_obj = Role.objects.all()
+    return render(request, "users/Roles-dashboard.html", {
+        "Roles_obj":Roles_obj
+    })
+
+
+
+@login_required(login_url='login')
+def edit_roles_view(request, id):
+    Roles_id = id
+    Roles = get_object_or_404(Role, id=Roles_id)
+    return render(request, "users/edit-Roles-type.html", {
+        "Roles": Roles,
+    })
+
+
+def update_roles_names(request, pk):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            role_name = data.get('role_name')
+
+            Roles = get_object_or_404(Role, pk=pk)
+
+            if Role.objects.filter(name=role_name).exclude(pk=pk).exists():
+                return JsonResponse({'status': 'error', 'message': 'Another Roles with this name already exists.'})
+
+            Roles.name = role_name
+            Roles.save()
+
+            return JsonResponse({'status': 'success'})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})

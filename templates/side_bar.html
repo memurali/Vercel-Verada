@@ -77,6 +77,10 @@
             <a href="{% url 'role_form' %}" style="background: url() no-repeat 1px center">Add Roles</a>
         </li>
 
+        <li class="{% if request.path == '/roles/type/' %}selected{% endif %}">
+            <a href="{% url 'role_names_dashboard' %}" style="background: url() no-repeat 1px center">Roles Dashboard</a>
+        </li>
+
         <li class="{% if request.path == '/user/add/form/' %}selected{% endif %}">
             <a href="{% url 'user_add_form' %}" style="background: url() no-repeat 1px center">Add User</a>
         </li>
@@ -109,6 +113,11 @@
         <li class="{% if request.path == '/commodities/unit/form/' %}selected{% endif %}">
             <a href="{% url 'core:unit_form' %}" style="background: url() no-repeat 1px center">Unit</a>
         </li>
+
+        <li class="{% if request.path == '/commodities/units/type/' %}selected{% endif %}">
+                <a href="{% url 'core:units_names_dashboard' %}" style="background: url() no-repeat 1px center">Unit Dashboard</a>
+            </li>
+
 
         <li class="{% if request.path == '/commodities/add/' %}selected{% endif %}">
             <a href="{% url 'core:commondity_form' %}" style="background: url() no-repeat 1px center">

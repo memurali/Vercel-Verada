@@ -111,6 +111,47 @@ def add_unit_ajax(request):
         MeasuringUnitMaster.objects.create(name=name)
     return JsonResponse({"success": True})
 
+
+@login_required
+def units_names_dashboard(request):
+    units_obj = MeasuringUnitMaster.objects.all()
+    return render(request, "masters/units-dashboard.html", {
+        "units_obj":units_obj
+    })
+
+
+
+@login_required(login_url='login')
+def edit_units_view(request, id):
+    units_id = id
+    units = get_object_or_404(MeasuringUnitMaster, id=units_id)
+    return render(request, "masters/edit-unit-type.html", {
+        "units": units,
+    })
+
+
+def update_units(request, pk):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            unit_name = data.get('unit_name')
+
+            units = get_object_or_404(MeasuringUnitMaster, pk=pk)
+
+            if MeasuringUnitMaster.objects.filter(name=unit_name).exclude(pk=pk).exists():
+                return JsonResponse({'status': 'error', 'message': 'Another Units with this name already exists.'})
+
+            units.name = unit_name
+            units.save()
+
+            return JsonResponse({'status': 'success'})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+
+
 @login_required(login_url='login')
 def edit_commodity_view(request, id):
     commodity_id = id

@@ -18,10 +18,13 @@ from django.db import transaction
 
 @login_required(login_url='login')
 def schedule_audit_form_view(request):
-    auditors = Official.objects.filter(created_user=request.user)
+    # auditors = Official.objects.filter(created_user=request.user)
+    auditors = Official.objects.filter(created_user=request.user, designation="Auditor")
+
 
     addresses = WasteSourceMaster.objects.all().only('id', 'address') #.exclude(source__address_line_1=None)
     locations = MasterSource.objects.all().only('id', 'name')  # Update if you're using address fields directly in Generator
+
 
     context = {
         'auditors': auditors,

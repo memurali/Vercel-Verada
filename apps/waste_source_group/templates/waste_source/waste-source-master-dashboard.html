@@ -54,6 +54,9 @@
                                                 <th>Edible food Pickup Group Name</th>
                                                 <th>Edible food Pickup Source Name</th>
                                                 <th>Location</th>
+                                                <th>Contact Name</th>
+                                                <th>Contact Number</th>
+                                                <th>Email</th>
                                                 <th>Status</th>
                                                 <!-- <a href="#" id="delete_btn">Delete</a> -->
                                             </tr>
@@ -72,11 +75,15 @@
                                                 <td>{{waste_source_master.waste_group.name}}</td>
                                                 <td>{{waste_source_master.waste_source.name}}</td>
                                                 <td>{{waste_source_master.address|default:'-'}}</td>
+                                                <td>{{waste_source_master.contact_name}}</td>
+                                                <td>{{waste_source_master.contact_phone}}</td>
+                                                <td>{{waste_source_master.contact_email}}</td>
                                                 <td>{{waste_source_master.get_status_display}}</td>
                                             </tr>
                                             {% empty %}
                                             <tr>
-                                                <td colspan="12" class="text-center">No Edible food Pickup group available.</td>
+                                                <td colspan="12" class="text-center">No Edible food Pickup group
+                                                    available.</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
