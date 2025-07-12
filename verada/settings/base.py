@@ -19,8 +19,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-# ALLOWED_HOSTS = ['.vercel.app']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -99,29 +99,13 @@ WSGI_APPLICATION = 'verada.wsgi.application'
 #}
 
 # Vercel 
-# DATABASES = {
-#     'postgres': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DB_Name'),
-#         'USER': env('DB_user'),
-#         'PASSWORD': env('DB_password'),
-#         'HOST': env('DB_host'),
-#         'PORT': '5432',
-#     },
-#     'sqlite': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': str(BASE_DIR / "db.sqlite3"),
-#     },
-# }
-
-# Local 
 DATABASES = {
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'verada1',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
+        'NAME': env('DB_Name'),
+        'USER': env('DB_user'),
+        'PASSWORD': env('DB_password'),
+        'HOST': env('DB_host'),
         'PORT': '5432',
     },
     'sqlite': {
@@ -129,6 +113,22 @@ DATABASES = {
         'NAME': str(BASE_DIR / "db.sqlite3"),
     },
 }
+
+# Local 
+# DATABASES = {
+#     'postgres': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'verada1',
+#         'USER': 'postgres',
+#         'PASSWORD': 'admin',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     },
+#     'sqlite': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(BASE_DIR / "db.sqlite3"),
+#     },
+# }
 
  
 DATABASES['default'] = DATABASES['postgres']
@@ -169,15 +169,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 # Static files
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 
-# STATIC_URL = '/staticfiles/'
-# #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# #STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # Where collectstatic
+STATIC_URL = '/staticfiles/'
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+#STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # Where collectstatic
 
 
 # Media files
@@ -227,3 +227,19 @@ EMAIL_USE_TLS = True  # or EMAIL_USE_SSL = True if using 465
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
+
+# AWS S3 
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'us-east-1'  # e.g. 'ap-south-1'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+# Media files
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+# MEDIA_ROOT = BASE_DIR / 'media'
