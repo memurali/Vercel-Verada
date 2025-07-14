@@ -46,6 +46,6 @@ def get_user_module_permissions(user):
         module_access[code]["write"] |= perm.can_write
         module_access[code]["delete"] |= perm.can_delete
 
-    print(f"module_access: {module_access}")
+    # print(f"module_access: {module_access}")
 
     return module_access

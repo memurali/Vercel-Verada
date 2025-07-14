@@ -4,7 +4,7 @@ from django.utils.crypto import get_random_string
 from django.urls import reverse
 from apps.common.services.email_service import EmailService
 from apps.common.services.async_email import AsyncEmailSender
-from apps.users.models import Role, UserRole
+from apps.users.models import Role, UserRole, Client
 from django.db import transaction
 
 User = get_user_model()
@@ -41,6 +41,15 @@ class RegistrationService:
 
         password = get_random_string(length=10)
         with transaction.atomic():
+
+            client = Client.objects.create(
+                company_name=name,
+                company_email=email,
+                company_phone=phone,
+                company_address="",
+                company_logo="",
+            )
+
             user = User.objects.create_user(
                 username=email,
                 email=email,
@@ -48,6 +57,7 @@ class RegistrationService:
                 first_name=name.split()[0],
                 last_name=" ".join(name.split()[1:]) if len(name.split()) > 1 else "",
                 phone=phone,
+                client=client,
                 is_active=False
             )
 

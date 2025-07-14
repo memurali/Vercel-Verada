@@ -204,8 +204,6 @@ def update_waste_group_master(request):
         pin_code = data.get("pin_code")
         is_active = data.get("active_status")
 
-        print(generator_name,"........")
-
         if not source_id:
             return JsonResponse({"success": False, "message": "Source ID is missing."})
 

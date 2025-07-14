@@ -118,7 +118,7 @@ DATABASES = {
 # DATABASES = {
 #     'postgres': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'verada1',
+#         'NAME': 'verda2',
 #         'USER': 'postgres',
 #         'PASSWORD': 'admin',
 #         'HOST': 'localhost',
@@ -226,4 +226,5 @@ EMAIL_PORT = 587  # or 465 for SSL
 EMAIL_USE_TLS = True  # or EMAIL_USE_SSL = True if using 465
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
 

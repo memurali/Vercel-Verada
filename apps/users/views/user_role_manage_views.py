@@ -12,17 +12,32 @@ import json
 @login_required(login_url='login') 
 def user_roles_dashboard(request):
     query = request.GET.get("q", "").strip()
-    users = User.objects.exclude(is_staff=True, is_superuser=True)
+    client_id = getattr(request.user, 'client_id', None)
+
+    # 🔍 Get IDs of users with "City Admin" role
+    city_admin_user_ids = UserRole.objects.filter(role__name="City Admin").values_list('user_id', flat=True)
+
+    # users = User.objects.exclude(is_staff=True, is_superuser=True)
+    users = User.objects.exclude(is_staff=True, is_superuser=True).exclude(id__in=city_admin_user_ids)
+
+    if client_id:
+        users = users.filter(client_id=client_id)
+    else:
+        users = users.none()  # No client assigned — return empty
+
 
     if query:
         users = users.filter(
             Q(first_name__icontains=query) |
             Q(last_name__icontains=query) |
             Q(email__icontains=query) |
-            Q(phone__icontains=query)
+            Q(phone__icontains=query) |
+            Q(client__company_name__icontains=query)
+
         )
 
-    roles = Role.objects.all()
+    # roles = Role.objects.all()
+    roles = Role.objects.exclude(name="City Admin")
     user_roles = {
         ur.user_id: ur.role for ur in UserRole.objects.select_related("role")
     }

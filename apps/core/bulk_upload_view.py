@@ -93,7 +93,7 @@ class BulkUploadPreValidator:
     def __init__(self, data):
         self.data = data.get("data", [])
         self.mappings = data.get("mappings", {})
-        print(f"self.mappings: {self.mappings}")
+        # print(f"self.mappings: {self.mappings}")
         self.errors = []
 
         # Load valid options from DB
@@ -147,7 +147,7 @@ def start_bulk_upload_thread(data):
         )
 
         result = processor.process_bulk_upload(data)
-        print(result)  # Optionally log or store the result
+        # print(result)  # Optionally log or store the result
 
     except Exception as e:
         print(f"Error processing bulk upload: {str(e)}")
@@ -168,7 +168,7 @@ def bulk_upload_commodity_data(request):
         validator = BulkUploadPreValidator(data)
         errors = validator.validate()
 
-        print(f"errors: {errors}")
+        # print(f"errors: {errors}")
 
         if errors:
             return JsonResponse({"status": "error", "errors": errors}, status=422)

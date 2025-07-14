@@ -34,7 +34,7 @@ def audit_report_view(request, audit_id):
         images = f"{item.get('image')}"
         total_percent += percent
 
-        print(f"percent: {percent}")
+        # print(f"percent: {percent}")
 
         table_data.append({
             "name": name,

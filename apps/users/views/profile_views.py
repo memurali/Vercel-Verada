@@ -11,9 +11,10 @@ from s3 import upload_file_to_s3_fileobj
 
 @login_required(login_url='login')
 def company_profile_dashboard(request):
-    users_with_profile = User.objects.select_related('client').exclude(is_staff=True, is_superuser=True)
+    # users_with_profile = User.objects.select_related('client').exclude(is_staff=True, is_superuser=True)
+    user = request.user
     return render(request, 'profile/profile.html', {
-        'users': users_with_profile
+        'users': [user]
     })
 
 
@@ -47,12 +48,13 @@ def submit_profile_data(request):
 
         email = request.POST.get("email", "").strip()
         phone = request.POST.get("phone", "").strip()
+        client_id = getattr(request.user, 'client_id', None)
 
         # 4. Duplicate checks
-        if User.objects.filter(email=email).exclude(id=target_user.id).exists():
+        if User.objects.filter(email=email,client_id=client_id).exclude(id=target_user.id).exists():
             return JsonResponse({"success": False, "message": "Email is already registered."})
 
-        if User.objects.filter(phone=phone).exclude(id=target_user.id).exists():
+        if User.objects.filter(phone=phone, client_id=client_id).exclude(id=target_user.id).exists():
             return JsonResponse({"success": False, "message": "Phone number is already in use."})
 
         # --- Update User Info ---
