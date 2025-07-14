@@ -20,7 +20,7 @@
                   {% csrf_token %}
                   <input type="hidden" name="id" value="{{ source_master.id }}">
 
-                  <label>Edible food Pickup Group</label>
+                  <label>Generator type</label>
                   <select name="waste_group_master" required>
                     <option value="">Select Group</option>
                     {% for group in waste_groups %}

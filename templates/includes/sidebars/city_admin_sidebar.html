@@ -40,7 +40,7 @@
             </li>
             <li>
                 <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
-                    Manage Edible food Pickup Group
+                    Manage Generator type
                 </a>
             </li>
             <li>
@@ -223,12 +223,12 @@
         {% elif active_page == 'waste_source' %}
             <li class="{% if request.path == '/waste/group/dashboard/' %}selected{% endif %}">
                 <a href="{% url 'waste_source_group:waste_group_master_dashboard' %}" style="background: url() no-repeat 1px center">
-                    Edible food Pickup Group Master Dashboard
+                    Generator type Master Dashboard
                 </a>
             </li>
             <li class="{% if request.path == '/waste/group/form/' %}selected{% endif %}">
                 <a href="{% url 'waste_source_group:waste_group_master_form' %}" style="background: url() no-repeat 1px center">
-                    Add Edible food Pickup Group Master
+                    Add Generator type Master
                 </a>
             </li>
             <li class="{% if request.path == '/waste/source/dashboard/' %}selected{% endif %}">

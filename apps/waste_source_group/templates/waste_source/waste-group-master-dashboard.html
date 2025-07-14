@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Edible food Pickup Group Master Dashboard{% endblock %}
+{% block title %}Generator type Master Dashboard{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -24,7 +24,7 @@
     {% include "includes/sidebar_router.html" with active_page="waste_source" %}
     <div class="grid-x">
         <div class="cell large-10 large-offset-2">
-            {% include 'partials/header_authenticated.html' with page_name="Edible food Pickup Group Master Dashboard" %}
+            {% include 'partials/header_authenticated.html' with page_name="Generator type Master Dashboard" %}
             <div class="dashboard-content">
 
                 <!-- Dashboard Full Table Begin-->
@@ -56,7 +56,7 @@
                                                     <input type="checkbox" class="checkbox" id="select-all">
                                                 </th>
                                                 <th>ID</th>
-                                                <th>Edible food Pickup group Name</th>
+                                                <th>Generator type Name</th>
                                                 <th>Description</th>
                                                 <!-- <a href="#" id="delete_btn">Delete</a> -->
 
@@ -79,7 +79,7 @@
                                             </tr>
                                             {% empty %}
                                             <tr>
-                                                <td colspan="12" class="text-center">No Edible food Pickup group available.</td>
+                                                <td colspan="12" class="text-center">No Generator type available.</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

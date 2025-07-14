@@ -9,7 +9,7 @@
   {% include 'includes/sidebar_router.html' with active_page='waste_source' %}
   <div class="grid-x">
     <div class="cell large-10 large-offset-2">
-      {% include 'partials/header_authenticated.html' with page_name='Edible food Pickup Group Master' %}
+      {% include 'partials/header_authenticated.html' with page_name='Generator type Master' %}
 
       <div class="dashboard-content">
         <div class="grid-container">
@@ -22,7 +22,7 @@
 
                   <div class="grid-x">
                     <div class="cell">
-                      <label>Edible food Pickup Group</label>
+                      <label>Generator type</label>
                       <select name="waste_group_id" required>
                         <option value="">Select Group</option>
                         {% for group in groups %}
