@@ -609,6 +609,8 @@ def save_mapped_data(request):
         pickup_dates = collected_values.get('wastepickup', {}).get('pickup_date', [])
         address_names = collected_values.get('address', {}).get('name', [])
 
+        # print(address_names,"...............")
+
         valid_food_types = set(CommodityMater.objects.values_list('name', flat=True))  # Assumes name is unique
 
 
@@ -623,6 +625,7 @@ def save_mapped_data(request):
             pickup_date = pickup_dates[i]
             destination_id = collector_ids[i]
             address_name = address_names[i]
+
        
         # # Create or get WasteSource
             existing_source = WasteSource.objects.filter(waste_source=master_source_name,
@@ -640,6 +643,7 @@ def save_mapped_data(request):
                 waste_weight=waste_weight
             )
 
+            print(pickup_date,waste_source.id,address_name,destination_id,new_data_added,"..............")
         #     # Create or get WastePickUp
             WastePickUp.objects.get_or_create(
                 pickup_date=pickup_date,

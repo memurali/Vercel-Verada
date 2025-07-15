@@ -38,10 +38,15 @@ $('#upload_file').on('change', function (e) {
                 // $("#output").html("output => " + JSON.stringify(results));
 
                 // Convert the list of links into a mapping object: { "Excel Column": "Model Field" }
+                var fieldMap = inputOri.Lists[1].map;  // { "Field Label 1": "actual_field_1", ... }
+
                 var mappings = {};
                 results['links'].forEach(function (link) {
-                    mappings[link.from] = link.to;
+                    const label = link.to;
+                    const actualField = fieldMap[label];
+                    mappings[link.from] = actualField || label;  // fallback to label if mapping not found
                 });
+
 
                 // Make sure the backend gave us the full original Excel data
                 var excelData = inputOri.Lists; // assuming backend includes full row data here
@@ -57,12 +62,14 @@ $('#upload_file').on('change', function (e) {
                 };
 
                 // Save mapped data
+                console.log(inputOri.data,">>>>>>>>>>>")
                 $.ajax({
                     url: '/collectors/save_mapped_data', // Your new API to insert into the DB
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(payload),
                     success: function (response) {
+                        console.log(response,".............")
                         if (response['status'] == 'success') {
                             alert("Data saved successfully");
 

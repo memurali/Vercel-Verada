@@ -101,6 +101,8 @@ def upload_excel(request):
         for _, row in df.iterrows():
             data_rows.append({"list": row.to_dict()})
 
+        print(field_map,"..............")
+
 
         # Step 4: Prepare the JSON response
         response_data = {
@@ -314,7 +316,7 @@ def save_mapped_data(request):
 
         # Example Usage:
         model_map = get_specific_model_map()
-        # print(model_data_map,model_map,"..........>>>>>>>>>......")
+        print(model_data_map,model_map,"..........>>>>>>>>>......")
         # removed_new_items = remove_new_items(model_data_map, model_map)
         # print(removed_new_items,"..............")
         updated_records = update_record_with_unique_ids(model_data_map, model_map)
@@ -323,7 +325,7 @@ def save_mapped_data(request):
         # Loop through each index
         collected_values = {}
 
-        # print(updated_records,".............")
+        print(updated_records,".............")
 
         for (app_label, model_name), records in updated_records.items():
             key = model_name
@@ -340,13 +342,13 @@ def save_mapped_data(request):
                         collected_values[key][field] = field_values
 
         # Extract values
-        # print(collected_values,"...........>>>>>....")
+        print(collected_values,"...........>>>>>....")
         collectorname = collected_values.get('collector', {}).get('name', [])
         collector_type_id = collected_values.get('collectortype', {}).get('name', [])
         tax_ids = collected_values.get('collector', {}).get('tax_id', [])
         pickupdate = collected_values.get('collector', {}).get('collector_create_date', [])
         address_names = collected_values.get('address', {}).get('name', [])
-        # print(address_names,">>>>>>>>>>>>>")
+        print(address_names,">>>>>>>>>>>>>")
 
         record_count = min(len(collectorname), len(pickupdate), len(tax_ids), len(address_names), len(collector_type_id))
         
@@ -354,6 +356,7 @@ def save_mapped_data(request):
         new_data_added = False  # Track if we create any new records
 
         for i in range(record_count):
+            
             # Get values for this iteration
             pickup_date = str(pickupdate[i])
             collector_name = collectorname[i]
@@ -364,6 +367,8 @@ def save_mapped_data(request):
 
             # Check if the address already exists
             cursor = connection.cursor()
+
+            print(address_names,">>>>>>.........")
 
             address_parts = address_namess.split(',')
             if len(address_parts) < 4:
