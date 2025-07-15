@@ -78,7 +78,8 @@
         </li>
 
         <li class="{% if request.path == '/roles/type/' %}selected{% endif %}">
-            <a href="{% url 'role_names_dashboard' %}" style="background: url() no-repeat 1px center">Roles Dashboard</a>
+            <a href="{% url 'role_names_dashboard' %}" style="background: url() no-repeat 1px center">Roles
+                Dashboard</a>
         </li>
 
         <li class="{% if request.path == '/user/add/form/' %}selected{% endif %}">
@@ -115,8 +116,9 @@
         </li>
 
         <li class="{% if request.path == '/commodities/units/type/' %}selected{% endif %}">
-                <a href="{% url 'core:units_names_dashboard' %}" style="background: url() no-repeat 1px center">Unit Dashboard</a>
-            </li>
+            <a href="{% url 'core:units_names_dashboard' %}" style="background: url() no-repeat 1px center">Unit
+                Dashboard</a>
+        </li>
 
 
         <li class="{% if request.path == '/commodities/add/' %}selected{% endif %}">
@@ -144,12 +146,20 @@
             </a>
         </li>
 
+        
         <li class="{% if request.path == '/collectors/collector_type_form_add/' %}selected{% endif %}">
             <a href="{% url 'collectors:collector_type_form_add' %}" style="background: url() no-repeat 1px center">
                 Add Collector Type
             </a>
         </li>
 
+        <li class="{% if request.path == '/collectors/collectors_type/type/' %}selected{% endif %}">
+            <a href="{% url 'collectors:collector_type_dashboard' %}"
+                style="background: url() no-repeat 1px center">Collector Type Dashboard</a>
+        </li>
+
+
+        
         <li class="{% if request.path == '/collectors/add/' %}selected{% endif %}">
             <a href="{% url 'collectors:add' %}" style="background: url() no-repeat 1px center">
                 Add Edible food Pickup Collector

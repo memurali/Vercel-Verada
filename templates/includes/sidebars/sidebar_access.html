@@ -219,6 +219,10 @@
             </a>
         </li>
 
+        <li class="{% if request.path == '/collectors/collectors_type/type/' %}selected{% endif %}">
+                <a href="{% url 'collectors:collector_type_dashboard' %}" style="background: url() no-repeat 1px center">Collector Type Dashboard</a>
+            </li>
+
         <li class="{% if request.path == '/collectors/add/' %}selected{% endif %}">
             <a href="{% url 'collectors:add' %}" style="background: url() no-repeat 1px center">
                 Add Edible food Pickup Collector

@@ -14,6 +14,7 @@ from apps.users.models import User
 from datetime import datetime
 from django.views.decorators.http import require_POST
 from apps.common.models import Address
+import json
 
 
 @login_required(login_url='login')
@@ -174,3 +175,45 @@ def assign_collector_type_ajax(request):
         return JsonResponse({"success": True})
     except Exception as e:
         return JsonResponse({"success": False, "message": str(e)})
+    
+
+
+@login_required
+def collector_type_dashboard(request):
+    collector_type_obj = CollectorType.objects.all()
+    return render(request, "collectors/collector_type_dashboard.html", {
+        "collector_type_obj":collector_type_obj
+    })
+
+
+
+@login_required(login_url='login')
+def edit_collector_type_view(request, id):
+    collector_type_id = id
+    collector_type = get_object_or_404(CollectorType, id=collector_type_id)
+    return render(request, "collectors/edit-collector-type.html", {
+        "collector_type": collector_type,
+    })
+
+
+def update_collector_type(request, pk):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            collector_type_name = data.get('collector_type')
+
+            collector_type = get_object_or_404(CollectorType, pk=pk)
+
+            if CollectorType.objects.filter(name=collector_type_name).exclude(pk=pk).exists():
+                return JsonResponse({'status': 'error', 'message': 'Another CollectorType with this name already exists.'})
+
+            collector_type.name = collector_type_name
+            collector_type.save()
+
+            return JsonResponse({'status': 'success'})
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+

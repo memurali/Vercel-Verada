@@ -16,6 +16,10 @@ urlpatterns = [
     path("collector_type_form_add/", views.collector_type_form_add, name="collector_type_form_add"),
     path("assign_collector_type_ajax/", views.assign_collector_type_ajax, name="assign_collector_type_ajax"),
 
+    path('collectors_type/type/', views.collector_type_dashboard, name='collector_type_dashboard'),
+    path('collectors_type/edit/<int:id>/', views.edit_collector_type_view, name='edit_collector_type_view'),
+    path('collectors_type/update/<int:pk>/', views.update_collector_type, name='update_collector_type'),
+
 
     # Import 
     path('waste_collector_import/', collector_import.waste_collector_import, name='waste_collector_import'),

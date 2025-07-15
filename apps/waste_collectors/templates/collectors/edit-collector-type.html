@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Collector Type Name{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-message {
+        display: none;
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block body_id %}dashboard{% endblock %}
+
+{% block content %}
+<div class="off-canvas-content" data-off-canvas-content>
+    {% include 'includes/sidebar_router.html' with active_page='waste_collector' %}
+    <div class="grid-x">
+        <div class="cell large-10 large-offset-2">
+            {% include 'partials/header_authenticated.html' with page_name='Edit Collector Type Name' %}
+            <div class="dashboard-content">
+                <div class="grid-container">
+                    <div class="grid-x">
+                        <div class="cell large-7 grid-center">
+                            <div class="callout">
+                                <form id="edit-collector_type-form" method="POST">
+                                    {% csrf_token %}
+                                    <div class="grid-x">
+                                        <div class="cell text-center">
+                                            <div id="error-message" class="error-message"></div>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" id="collector_type_id" value="{{ collector_type.id }}">
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <label>Collector Type
+                                                <input type="text" name="collector_type" id="collector_type" value="{{ collector_type.name }}" required>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-x">
+                                        <div class="cell">
+                                            <div class="button-group expanded">
+                                                <button type="submit" class="button pill" id="submit-button">Update Collector Type</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/edit_collector_type.js' %}"></script>
+{% endblock %}
