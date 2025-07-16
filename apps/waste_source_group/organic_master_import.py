@@ -1,54 +1,34 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from apps.waste_generators.models import WastePickUp, WasteSource, WasteSourceMaster
-from apps.waste_source_group.models import MasterSource
-from apps.core.models import CommodityGroup, MeasuringUnitMaster
+from apps.waste_source_group.models import MasterSource, WasteGeneratorGroup
 from apps.common.models import Address
-from decimal import Decimal
-from django.views.decorators.http import require_POST
-from apps.waste_collectors.models import Collector, CollectorType
-from django.db import transaction, models, connection
-from apps.core.models import CommodityMater
+from apps.waste_generators.models import WasteSourceMaster
+from django.http import JsonResponse
+from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
-import pandas as pd, json, openpyxl
-from django.http import JsonResponse, HttpResponse
-from apps.waste_collectors.models import Collector
-from datetime import datetime, timedelta, date
+import json
+from datetime import date
 from django.apps import apps
 from apps.common.models import tbl_ErrorLog as ErrorLog  # replace 'your_app' with your actual app name
+from apps.waste_collectors.collector_import import upload_get_model_columns, map_getting_model_fields_names, get_specific_model_map, datatype_field_value
 
 import traceback
 import sys
 # Import 
 @login_required(login_url='login')
-def waste_collector_import(request):
-    return render(request, "collectors/waste-collector-import-form.html")
+def organic_master_import(request):
+    return render(request, "waste_source/waste-source-master-import-form.html")
 
-def waste_collector_download_template(request):
-    collector_types = CollectorType.objects.distinct()
-    return render(request, "collectors/waste-collector-download_template.html", {
-        "collector_types": collector_types
-    })
 
 # Import 
 def get_common_model_classes():
     return [
-        Collector,
-        CollectorType,
+        WasteGeneratorGroup,
+        MasterSource,
+        WasteSourceMaster,
         Address,
     ]
 
-
-def upload_get_model_columns(model):
-    app_name = model._meta.app_label
-    model_name = model.__name__.lower()  # or model._meta.model_name
-    prefix_column_name = {
-        field.name: f"{app_name}-{model_name}-{field.name}"
-        for field in model._meta.fields
-    }
-    return prefix_column_name
-  
 
 def upload_getting_model_names():
     model_classes = get_common_model_classes()
@@ -59,11 +39,13 @@ def upload_getting_model_names():
     }
 
     field_mapping = {
-        'Collector Name': ('Collector', 'name'),
-        'Colector Type': ('CollectorType', 'name'),
-        'Created Date': ('Collector', 'collector_create_date'),
-        'Tax ID': ('Collector', 'tax_id'),
-        'Address': ('Address', 'address_line_1')
+        'Generator Type': ('WasteGeneratorGroup', 'name'),
+        'Source Name': ('MasterSource', 'name'),
+        'Address': ('Address', 'address_line_1'),
+        'Contact Name': ('WasteSourceMaster', 'contact_name'),
+        'Contact Number': ('WasteSourceMaster', 'contact_name'),
+        'Contact Email': ('WasteSourceMaster', 'contact_email'),
+        'Description': ('WasteSourceMaster', 'description')
     }
 
     result = []
@@ -75,93 +57,6 @@ def upload_getting_model_names():
         })
 
     return result
-
-
-@csrf_exempt
-def upload_excel(request):
-    if request.method == 'POST' and request.FILES.get('file'):
-        excel_file = request.FILES['file']
-        df = pd.read_excel(excel_file)
-
-        # Step 1: Extract headers from uploaded Excel
-        file_columns = list(df.columns)
-
-        model_fields = upload_getting_model_names()
-
-        # Step 3: Separate keys and key->value mapping
-        field_keys = [item['key'] for item in model_fields]
-        field_map = {item['key']: item['value'] for item in model_fields}
-
-        # Step 4: Convert DataFrame rows to a list of dicts
-        data_rows = [{"list": row.to_dict()} for _, row in df.iterrows()]
-
-        # Convert DataFrame rows to a list of dicts
-        data_rows = []
-        for _, row in df.iterrows():
-            data_rows.append({"list": row.to_dict()})
-
-        print(field_map,"..............")
-
-
-        # Step 4: Prepare the JSON response
-        response_data = {
-            "localization": {},
-                "options": {
-                    "associationMode": "oneToOne", # oneToOne,manyToMany
-                    "lineStyle": "square-ends",
-                    "buttonErase": "Erase Links",
-                    "displayMode": "original",
-                    # "whiteSpace": $("input[name='whiteSpace']:checked").val(),
-                    "mobileClickIt": False
-                },
-            "Lists": [
-                {
-                    "name": "Columns in files",
-                    "list": file_columns
-                },
-                {
-                    "name": "Available Fields",
-                    "list": field_keys,   # ✅ Only 'key' values shown to UI
-                    "map": field_map      # ✅ Key → backend value mapping
-                    # "mandatories": mandatory_fields
-                }
-            ],
-            "data": data_rows  # ✅ This is important!
-        }
-
-        return JsonResponse(response_data)
-    
-    return JsonResponse({"error": "Invalid request"}, status=400)
-
-
-def map_get_model_with_prefix(model_class):
-    return [
-        f'{model_class._meta.app_label}.{model_class._meta.model_name}.{field.name}' 
-        for field in model_class._meta.get_fields()
-        if isinstance(field, models.Field)
-    ]
-
-
-def map_getting_model_fields_names():
-    model_classes = get_common_model_classes()
-
-    model_names = []
-    for model_class in model_classes:
-        model_names.extend(map_get_model_with_prefix(model_class))
-    
-    return model_names
-
-
-def get_specific_model_map():
-    model_classes = get_common_model_classes()
-    
-    model_map = {}
-    for model in model_classes:
-        app_label = model._meta.app_label
-        model_name = model._meta.model_name
-        model_map[(app_label, model_name)] = model
-        
-    return model_map
 
 
 def update_record_with_unique_ids(temp_models, model_map):
@@ -315,7 +210,6 @@ def save_mapped_data(request):
 
         # Example Usage:
         model_map = get_specific_model_map()
-        print(model_data_map,model_map,"..........>>>>>>>>>......")
         # removed_new_items = remove_new_items(model_data_map, model_map)
         # print(removed_new_items,"..............")
         updated_records = update_record_with_unique_ids(model_data_map, model_map)
@@ -323,8 +217,6 @@ def save_mapped_data(request):
         # Get raw data lists
         # Loop through each index
         collected_values = {}
-
-        print(updated_records,".............")
 
         for (app_label, model_name), records in updated_records.items():
             key = model_name
@@ -439,103 +331,4 @@ def save_mapped_data(request):
         print(f"Exception on line {line_number} in {filename}: {e}")
 
         return JsonResponse({'message': 'There is No Unique Data'}, status=400)
-
-
-
-def datatype_field_value(field, value):
-    """Parse the value according to the model field type."""
-
-
-    if isinstance(field, models.DateTimeField):
-        if isinstance(value, (int, float)):
-            return datetime(1899, 12, 30) + timedelta(days=int(value))
-        elif isinstance(value, str):
-            try:
-                return datetime.fromisoformat(value)
-            except ValueError:
-                return None
-        return None
-
-    elif isinstance(field, models.DateField):
-        if value in [None, "", "NA"]:
-            return None
-        if isinstance(value, (int, float)):
-            return (datetime(1899, 12, 30) + timedelta(days=int(value))).date()
-        elif isinstance(value, str):
-            try:
-                return datetime.strptime(value, "%Y-%m-%d").date()
-            except ValueError:
-                return None
-        return None
-
-    elif isinstance(field, models.IntegerField):
-        try:
-            return int(value) if value not in [None, "", "NA"] else None
-        except (ValueError, TypeError):
-            return None
-
-    elif isinstance(field, models.FloatField):
-        try:
-            return float(value) if value not in [None, "", "NA"] else None
-        except (ValueError, TypeError):
-            return None
-
-    elif isinstance(field, models.CharField):
-        return value if value not in [None, ""] else "NA"
-
-    elif isinstance(field, models.BooleanField):
-        return str(value).lower() in ["true", "1"]
-
-    elif isinstance(field, models.ForeignKey):
-        related_model = field.related_model
-        if isinstance(value, int) or (isinstance(value, str) and value.isdigit()):
-            fk_id = int(value)
-            try:
-                return related_model.objects.get(id=fk_id)
-            except related_model.DoesNotExist:
-                return None
-        return None
-
-
-
-def download_template(request):
-    collector_type = request.GET.get("collector_type", "N/A")
-
-    # Create workbook
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Template"
-
-    # Define only the needed fields as headers
-    headers = [
-        "Adddress",    # Possibly from CommodityMater.name or another related model
-        "Collector Date",
-        "Collector Name",         # Assuming from WastePickUp or related Collector
-        "Tax Number",      # You may need to concatenate address_line_1 and address_line_2
-        "Collector Type",   # Custom label for something like WastePickUp.waste_source
-    ]
-
-
-    # Add headers to Excel
-    ws.append(headers)
-
-    # Create one blank row with generator & location filled
-    row = [""] * len(headers)
-    try:
-        Collector_index = headers.index("Collector Type")
-        row[Collector_index] = collector_type
-    except ValueError:
-        pass
-
-
-    ws.append(row)
-
-    # Return response
-    filename = f"template_{collector_type}.xlsx".replace(" ", "_")
-    response = HttpResponse(
-        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
-    response["Content-Disposition"] = f'attachment; filename="{filename}'
-    wb.save(response)
-    return response
 

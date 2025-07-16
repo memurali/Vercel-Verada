@@ -19,8 +19,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['.vercel.app']
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -99,29 +99,13 @@ WSGI_APPLICATION = 'verada.wsgi.application'
 #}
 
 # Vercel 
-DATABASES = {
-    'postgres': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_Name'),
-        'USER': env('DB_user'),
-        'PASSWORD': env('DB_password'),
-        'HOST': env('DB_host'),
-        'PORT': '5432',
-    },
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / "db.sqlite3"),
-    },
-}
-
-# Local 
 # DATABASES = {
 #     'postgres': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'verada1',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin',
-#         'HOST': 'localhost',
+#         'NAME': env('DB_Name'),
+#         'USER': env('DB_user'),
+#         'PASSWORD': env('DB_password'),
+#         'HOST': env('DB_host'),
 #         'PORT': '5432',
 #     },
 #     'sqlite': {
@@ -129,6 +113,22 @@ DATABASES = {
 #         'NAME': str(BASE_DIR / "db.sqlite3"),
 #     },
 # }
+
+# Local 
+DATABASES = {
+    'postgres': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'verada1',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
+    'sqlite': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(BASE_DIR / "db.sqlite3"),
+    },
+}
 
  
 DATABASES['default'] = DATABASES['postgres']
@@ -169,9 +169,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 # Static files
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [BASE_DIR / 'static']
-# STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 
 
 STATIC_URL = '/staticfiles/'

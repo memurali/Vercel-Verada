@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from . import organic_master_import
+from apps.waste_collectors.collector_import import upload_excel
 
 app_name = "waste_source_group"
 
@@ -20,6 +22,14 @@ urlpatterns = [
 
     path('source/edit/<int:id>/', views.edit_group_master_view, name='edit_group_master_view'),
     path('source/updates/', views.update_waste_group_master, name='update_waste_group_master'),
-    path('source/delete/', views.delete_waste_source_master, name='update_waste_group')
+    path('source/delete/', views.delete_waste_source_master, name='update_waste_group'),
+
+    # Import 
+    path('organic_master_import/', organic_master_import.organic_master_import, name='organic_master_import'),
+
+    # Import and download template 
+    path('upload_excel', upload_excel, name='upload_excel'),
+    path('save_mapped_data', organic_master_import.save_mapped_data, name='save_mapped_data'),
+    
 
 ]

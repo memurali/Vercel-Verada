@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     title: "Success!",
                     text: "Data submitted successfully.",
                 }).then(() => {
-                    window.location.href = "/waste/source/dashboard/";
+                    // window.location.href = "/waste/source/dashboard/";
                 });
             } else {
                 Swal.fire("Error", data.message || "Something went wrong.", "error");
