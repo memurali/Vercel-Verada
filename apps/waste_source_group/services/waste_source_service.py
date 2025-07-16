@@ -49,16 +49,40 @@ class WasteSourceService:
                 pin_code=data.get('zipcode'),
             )
 
-            WasteSourceMaster.objects.create(
-                waste_source=master_source,
-                status=status,
-                waste_group=group,
-                address=address,
-                description=description,
-                contact_name=contact_name,
-                contact_phone=contact_phone,
-                contact_email=contact_email
-            )
+            try:
+                WasteSourceMaster.objects.create(
+                    waste_source=master_source,
+                    status=status,
+                    waste_group=group,
+                    address=address,
+                    description=description,
+                    contact_name=contact_name,
+                    contact_phone=contact_phone,
+                    contact_email=contact_email
+                )
+            except Exception as e:
+                exc_type, exc_value, exc_traceback = sys.exc_info()
+                tb_list = traceback.extract_tb(exc_traceback)
+                
+                # Get the last traceback item (where the exception occurred)
+                filename, line_number, function_name, text = tb_list[-1]
+                
+                # Log to database
+                ErrorLog.objects.create(
+                    error_message=str(e),
+                    file_name=filename,
+                    line_number=line_number,
+                    function_name=function_name,
+                    error_line=text
+                )
+                
+                # Optionally print or log elsewhere
+                print(f"Exception on line {line_number} in {filename}: {e}")
+
+                return JsonResponse({'message': 'There is No Unique Data'}, status=400)
+
+
+
         except Exception as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             tb_list = traceback.extract_tb(exc_traceback)
